@@ -9,8 +9,8 @@ import { clearAuthData } from '../utils/authUtils';
 // Base API URL - use relative path in development to work with Vite proxy
 // In production, use the full API URL from environment variable
 const API_BASE_URL = import.meta.env.PROD
-  ? (import.meta.env.VITE_API_URL || 'http://localhost:5000')
-  : ''; // Empty string means use relative paths in dev mode
+  ? (import.meta.env.VITE_API_URL || '')
+  : ''; // Empty string means use relative paths (works in both dev and prod)
 
 // Create axios instance with default config
 const api = axios.create({
