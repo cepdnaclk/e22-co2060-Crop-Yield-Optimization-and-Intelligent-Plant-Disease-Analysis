@@ -105,7 +105,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
         {/* Content */}
         <div className="relative z-10 flex flex-col justify-center px-16 text-white">
           <h1 className="text-5xl font-bold mb-6 leading-tight">
-            AGRICONNECT
+            AGRICONNECT Test
           </h1>
           <p className="text-xl text-green-50 leading-relaxed max-w-lg">
             Empowering Sri Lankan farmers with data-driven insights and real-time disease and disaster monitoring
