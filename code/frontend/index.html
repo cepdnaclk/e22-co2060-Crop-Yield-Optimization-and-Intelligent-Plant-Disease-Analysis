@@ -5,10 +5,18 @@
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>AgriConnect</title>
+      <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
     </head>
 
     <body>
       <div id="root"></div>
+      <script type="module">
+	import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+	createChat({
+		webhookUrl: 'http://localhost:5678/webhook/246e550d-c772-4fcb-bae5-e847e8c632ce/chat'
+	});
+      </script>
       <script type="module" src="/src/main.tsx"></script>
     </body>
   </html>

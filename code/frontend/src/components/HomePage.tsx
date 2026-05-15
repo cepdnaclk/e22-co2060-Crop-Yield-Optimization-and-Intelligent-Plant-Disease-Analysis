@@ -1,10 +1,10 @@
 /**
  * Farmer Home Dashboard
  * Displays a personalized greeting, points summary, disease heat map,
- * and a floating AI chatbot interface.
+ * and a dashboard summary.
  */
-import { Star, HandIcon, SearchIcon, FileText, Bot, AlertTriangle, MapPin } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Star, HandIcon, SearchIcon, FileText, AlertTriangle, MapPin } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router';
 import { userAPI, farmAPI } from '../services/api';
 import { SummaryCard } from './SummaryCard';
@@ -70,9 +70,6 @@ interface HomePageProps {
 }
 
 export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
-  const [showChatbot, setShowChatbot] = useState(false);
-  const [chatMessage, setChatMessage] = useState('');
-
   // Dynamic User State
   const [userProfile, setUserProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -249,94 +246,6 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
         </div>
       </div>
 
-      {/* AI Chatbot Button */}
-      <button
-        onClick={() => setShowChatbot(!showChatbot)}
-        className="fixed bottom-6 right-6 md:bottom-8 md:right-8 w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 z-50"
-      >
-        <Bot className="w-7 h-7 md:w-8 md:h-8" />
-      </button>
-
-      {/* AI Chatbot Window */}
-      {showChatbot && (
-        <div className="fixed bottom-24 right-4 md:bottom-28 md:right-8 w-[calc(100vw-2rem)] sm:w-96 h-[calc(100vh-200px)] sm:h-[500px] bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col z-50">
-          {/* Chatbot Header */}
-          <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4 rounded-t-2xl flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Bot className="w-6 h-6" />
-              <div>
-                <h3 className="font-semibold">AgriBot Assistant</h3>
-                <p className="text-xs opacity-90">Online</p>
-              </div>
-            </div>
-            <button
-              onClick={() => setShowChatbot(false)}
-              className="hover:bg-white/20 p-1 rounded-lg transition-colors"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-
-          {/* Chatbot Messages */}
-          <div className="flex-1 p-4 overflow-y-auto space-y-3">
-            <div className="flex gap-2">
-              <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
-                <Bot className="w-5 h-5 text-white" />
-              </div>
-              <div className="bg-gray-100 rounded-2xl rounded-tl-sm p-3 max-w-[80%]">
-                <p className="text-sm text-gray-800">
-                  Hello! I'm AgriBot, your AI farming assistant. How can I help you today?
-                </p>
-              </div>
-            </div>
-            <div className="flex gap-2 flex-wrap">
-              <button className="text-xs px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors">
-                Crop disease tips
-              </button>
-              <button className="text-xs px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors">
-                Weather forecast
-              </button>
-              <button className="text-xs px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors">
-                Fertilizer advice
-              </button>
-            </div>
-          </div>
-
-          {/* Chatbot Input */}
-          <div className="p-4 border-t border-gray-200">
-            <div className="flex gap-2">
-              <input
-                type="text"
-                placeholder="Ask me anything..."
-                value={chatMessage}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setChatMessage(e.target.value)}
-                onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                  if (e.key === 'Enter' && chatMessage.trim()) {
-                    setChatMessage(''); // Reset state for now
-                    // TODO: dispatch message to AI backend
-                  }
-                }}
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-              />
-              <button
-                className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
-                onClick={() => {
-                  if (chatMessage.trim()) {
-                    setChatMessage('');
-                    // TODO: dispatch message to AI backend
-                  }
-                }}
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
