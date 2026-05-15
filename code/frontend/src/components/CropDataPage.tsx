@@ -1,4 +1,4 @@
-import { Layers, MapPin, Wheat, TrendingUp, Calendar, Loader, RefreshCw } from 'lucide-react';
+import { Download, Layers, MapPin, Wheat, TrendingUp, Calendar, Loader, RefreshCw } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { farmAPI, userAPI } from '../services/api';
 
@@ -28,6 +28,8 @@ export function CropDataPage() {
   const [selectedYear, setSelectedYear] = useState('');
   const [selectedSeason, setSelectedSeason] = useState('');
   const [selectedCrop, setSelectedCrop] = useState('');
+  const [sortBy, setSortBy] = useState<'newest' | 'highestYield'>('newest');
+  const [selectedHarvestIds, setSelectedHarvestIds] = useState<string[]>([]);
 
   useEffect(() => {
     fetchMyFarms();
@@ -99,9 +101,24 @@ export function CropDataPage() {
     return flatHarvests
       .filter((record) => (selectedYear ? String(record.year) === selectedYear : true))
       .filter((record) => (selectedSeason ? record.season === selectedSeason : true))
-      .filter((record) => (selectedCrop ? record.crop === selectedCrop : true))
-      .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
+      .filter((record) => (selectedCrop ? record.crop === selectedCrop : true));
   }, [flatHarvests, selectedYear, selectedSeason, selectedCrop]);
+
+  const displayedHarvests = useMemo(() => {
+    return [...filteredHarvests].sort((a, b) => {
+      if (sortBy === 'highestYield') {
+        return (b.harvestQty || 0) - (a.harvestQty || 0);
+      }
+
+      return new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime();
+    });
+  }, [filteredHarvests, sortBy]);
+
+  useEffect(() => {
+    setSelectedHarvestIds((currentSelection) =>
+      currentSelection.filter((id) => filteredHarvests.some((record) => record._id === id)),
+    );
+  }, [filteredHarvests]);
 
   const filteredFarms = useMemo(() => {
     const farmsById = new Map<string, FarmWithHarvests>();
@@ -122,6 +139,54 @@ export function CropDataPage() {
   const totalRecords = filteredHarvests.length;
   const avgYieldPerAcre = totalAcres > 0 ? (totalYield / 1000) / totalAcres : 0;
   const totalYieldTons = totalYield / 1000;
+
+  const selectedVisibleHarvests = displayedHarvests.filter((record) => selectedHarvestIds.includes(record._id));
+
+  const handleToggleHarvestSelection = (harvestId: string) => {
+    setSelectedHarvestIds((currentSelection) =>
+      currentSelection.includes(harvestId)
+        ? currentSelection.filter((id) => id !== harvestId)
+        : [...currentSelection, harvestId],
+    );
+  };
+
+  const handleExportCsv = () => {
+    if (selectedVisibleHarvests.length === 0) {
+      return;
+    }
+
+    const escapeCsvValue = (value: string | number | null | undefined) => {
+      const normalizedValue = value === null || value === undefined ? '' : String(value);
+      return `"${normalizedValue.replace(/"/g, '""')}"`;
+    };
+
+    const csvRows = [
+      ['Season', 'Year', 'Farm', 'Location', 'Crop', 'Acres', 'Harvest Qty (kg)', 'Points Earned', 'Date Recorded'],
+      ...selectedVisibleHarvests.map((record) => [
+        record.season,
+        record.year,
+        record.farmName,
+        record.location,
+        record.crop,
+        record.acres,
+        record.harvestQty,
+        record.pointsEarned ?? '',
+        new Date(record.createdDate).toLocaleDateString(),
+      ]),
+    ];
+
+    const csvContent = csvRows.map((row) => row.map(escapeCsvValue).join(',')).join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const downloadUrl = URL.createObjectURL(blob);
+    const downloadLink = document.createElement('a');
+
+    downloadLink.href = downloadUrl;
+    downloadLink.download = 'crop-data-export.csv';
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+    URL.revokeObjectURL(downloadUrl);
+  };
 
   if (loading) {
     return (
@@ -250,10 +315,10 @@ export function CropDataPage() {
           <button
             onClick={handleRefreshPoints}
             disabled={refreshingPoints}
-            className="flex items-center gap-2 px-4 py-2 bg-green-50 text-green-700 hover:bg-green-100 rounded-lg transition-colors font-medium text-sm disabled:opacity-50"
+            className="flex min-w-[140px] items-center justify-center gap-2 rounded-full border border-green-100 bg-green-50 px-8 py-2 text-sm font-semibold text-green-700 shadow-sm transition-colors hover:bg-green-100 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            <RefreshCw className={`w-4 h-4 ${refreshingPoints ? 'animate-spin' : ''}`} />
-            {refreshingPoints ? 'Recalculating...' : 'Refresh Points'}
+            <RefreshCw className={`w-4 h-4 text-green-600 ${refreshingPoints ? 'animate-spin' : ''}`} />
+            {refreshingPoints ? 'Refreshing...' : 'Refresh'}
           </button>
         </div>
       </div>
@@ -338,62 +403,269 @@ export function CropDataPage() {
       </div>
 
       {/* Cultivation Records */}
-      <div className="bg-white rounded-xl border border-gray-200">
-        <div className="p-4 md:p-6 border-b border-gray-200">
-          <h3 className="text-base md:text-lg font-semibold text-gray-800">Cultivation Records</h3>
-        </div>
+      <div className="rounded-xl bg-[#f9fafb]">
+        <div className="p-4 md:p-6 border-b border-transparent space-y-4">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <h3 style={{ fontSize: 20, fontWeight: 600, color: '#111827', margin: 0 }}>
+                Cultivation Records
+              </h3>
+              <span style={{ fontSize: 12, color: '#6b7280', background: '#f3f4f6', border: '0.5px solid #e5e7eb', borderRadius: 20, padding: '3px 10px' }}>
+                {displayedHarvests.length} records
+              </span>
+            </div>
 
-        <div className="p-4 md:p-6 space-y-4">
-          {filteredHarvests.length === 0 ? (
-            <p className="text-gray-500 text-center py-4">No harvest records found.</p>
-          ) : (
-            filteredHarvests.map((record) => (
-              <div key={record._id} className="border border-gray-200 rounded-xl p-4 md:p-6">
-                <div className="flex flex-col sm:flex-row sm:items-start justify-between mb-4 gap-2">
-                  <div>
-                    <h4 className="text-base md:text-lg font-semibold text-gray-800 mb-1">{record.season} {record.year}</h4>
-                    <p className="text-xs md:text-sm text-gray-600">Farm: {record.farmName}</p>
-                  </div>
-                  <span className="inline-flex px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs md:text-sm font-medium w-fit">
-                    Verified
-                  </span>
-                </div>
+            <div className="flex items-center gap-3 flex-wrap">
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <label htmlFor="crop-record-sort" style={{ fontSize: 13, color: '#6b7280', marginRight: 6 }}>Sort by</label>
 
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
-                  <div>
-                    <p className="text-xs text-gray-600 mb-1">Date Recorded</p>
-                    <p className="text-xs md:text-sm font-medium text-gray-800">{new Date(record.createdDate).toLocaleDateString()}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-600 mb-1">Location</p>
-                    <p className="text-xs md:text-sm font-medium text-gray-800">{record.location}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-600 mb-1">Acres Cultivated</p>
-                    <p className="text-xs md:text-sm font-medium text-gray-800">{record.acres} acres</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-600 mb-1">Paddy Variety</p>
-                    <p className="text-xs md:text-sm font-medium text-gray-800">{record.crop}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-600 mb-1">Harvested Yield</p>
-                    <p className="text-xs md:text-sm font-medium text-gray-800">{(record.harvestQty / 1000).toFixed(2)} tons</p>
-                  </div>
-                </div>
-
-                <div className="mt-4 pt-4 border-t border-gray-200">
-                  <div className="flex items-center justify-between">
-                    <p className="text-xs md:text-sm text-gray-600">Points Earned</p>
-                    <p className="text-lg md:text-xl font-bold text-green-600">
-                      {record.pointsEarned === null || record.pointsEarned === undefined
-                        ? 'Pending'
-                        : `+${Math.round(record.pointsEarned)} points`}
-                    </p>
-                  </div>
+                <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center' }}>
+                  <select
+                    id="crop-record-sort"
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value as 'newest' | 'highestYield')}
+                    style={{
+                      appearance: 'none',
+                      WebkitAppearance: 'none',
+                      background: '#ffffff',
+                      border: '0.5px solid #d1d5db',
+                      borderRadius: 8,
+                      padding: '5px 30px 5px 10px',
+                      fontSize: 13,
+                      fontWeight: 500,
+                      color: '#111827',
+                    }}
+                  >
+                    <option value="newest">Newest</option>
+                    <option value="highestYield">Highest Yield</option>
+                  </select>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', right: 8, pointerEvents: 'none' }} aria-hidden>
+                    <path d="M6 9l6 6 6-6" stroke="#374151" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
                 </div>
               </div>
-            ))
+
+              {selectedVisibleHarvests.length > 0 && (
+                <button
+                  type="button"
+                  onClick={handleExportCsv}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 8,
+                    background: '#2d6a4f',
+                    color: '#ffffff',
+                    borderRadius: 10,
+                    fontSize: 13,
+                    fontWeight: 600,
+                    padding: '8px 12px',
+                    transition: 'background-color 0.2s ease',
+                    border: 'none',
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLButtonElement).style.background = '#1a4731';
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLButtonElement).style.background = '#2d6a4f';
+                  }}
+                >
+                  <Download className="h-4 w-4" />
+                  Export CSV
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="p-4 md:p-6">
+          {displayedHarvests.length === 0 ? (
+            <p className="text-gray-500 text-center py-4">No harvest records found.</p>
+          ) : (
+            <div className="space-y-4">
+              {displayedHarvests.map((record) => (
+              <div
+                key={record._id}
+                className={`overflow-hidden rounded-[22px] bg-white transition-[box-shadow,transform] duration-200 ease-in-out hover:-translate-y-[2px] hover:shadow-[0_6px_24px_rgba(0,0,0,0.09)] ${
+                  selectedHarvestIds.includes(record._id) ? 'ring-2 ring-green-200' : ''
+                }`}
+                style={{
+                  border: '0.5px solid #e5e7eb',
+                  borderLeft: '3px solid #2d6a4f',
+                  boxShadow: '0 2px 12px rgba(0,0,0,0.07)',
+                  backgroundColor: '#ffffff',
+                }}
+              >
+                <div className="flex flex-col justify-between gap-3 border-b sm:flex-row sm:items-center" style={{ borderBottom: '0.5px solid #f0f0f0', padding: '16px 20px 14px' }}>
+                  <div className="flex items-center" style={{ gap: 10 }}>
+                    <h4 style={{ fontSize: 17, fontWeight: 600, color: '#111827', margin: 0 }}>
+                      {record.season} {record.year}
+                    </h4>
+
+                    <span
+                      className="inline-flex items-center"
+                      style={{ background: '#e8f5e9', color: '#2d6a4f', padding: '4px 10px', borderRadius: 20, fontSize: 11, fontWeight: 500, gap: 5 }}
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M12 2C10.34 2 8.8 2.5 7.5 3.36C6.2 4.23 5.24 5.46 4.78 6.94C4.32 8.42 4.39 9.98 5.08 11.5C5.77 13.02 6.95 14.38 8.45 15.12C9.95 15.86 11.66 15.93 13.2 15.31C14.74 14.69 15.98 13.48 16.7 11.95C17.42 10.42 17.46 8.71 16.8 7.18C16.14 5.65 14.85 4.47 13.3 3.86C12.68 3.64 12.34 3.52 12 3.5V2Z" fill="#2d6a4f"/>
+                        <path d="M5 20C5 17.79 6.79 16 9 16H15C17.21 16 19 17.79 19 20V21H5V20Z" fill="#2d6a4f"/>
+                      </svg>
+                      <span>Farm: {record.farmName}</span>
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 self-start">
+                    <span
+                      className="inline-flex items-center"
+                      style={{
+                        background: '#dcfce7',
+                        color: '#16a34a',
+                        fontWeight: 600,
+                        padding: '5px 12px',
+                        borderRadius: 20,
+                        fontSize: 11,
+                        border: '0.5px solid #86efac',
+                        gap: 4,
+                      }}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" fill="#16a34a" />
+                      </svg>
+                      <span>Verified</span>
+                    </span>
+
+                    <button
+                      type="button"
+                      onClick={() => handleToggleHarvestSelection(record._id)}
+                      aria-pressed={selectedHarvestIds.includes(record._id)}
+                      style={{
+                        background: selectedHarvestIds.includes(record._id) ? '#2d6a4f' : '#ffffff',
+                        color: selectedHarvestIds.includes(record._id) ? '#ffffff' : '#6b7280',
+                        border: selectedHarvestIds.includes(record._id) ? '0.5px solid #2d6a4f' : '0.5px solid #d1d5db',
+                        borderRadius: 20,
+                        padding: '5px 12px',
+                        fontSize: 11,
+                        fontWeight: 500,
+                        transition: 'background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 5,
+                        cursor: 'pointer',
+                      }}
+                      onMouseEnter={(e) => {
+                        if (!selectedHarvestIds.includes(record._id)) {
+                          (e.currentTarget as HTMLButtonElement).style.background = '#2d6a4f';
+                          (e.currentTarget as HTMLButtonElement).style.color = '#ffffff';
+                          (e.currentTarget as HTMLButtonElement).style.borderColor = '#2d6a4f';
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (selectedHarvestIds.includes(record._id)) {
+                          (e.currentTarget as HTMLButtonElement).style.background = '#2d6a4f';
+                          (e.currentTarget as HTMLButtonElement).style.color = '#ffffff';
+                          (e.currentTarget as HTMLButtonElement).style.borderColor = '#2d6a4f';
+                        } else {
+                          (e.currentTarget as HTMLButtonElement).style.background = '#ffffff';
+                          (e.currentTarget as HTMLButtonElement).style.color = '#6b7280';
+                          (e.currentTarget as HTMLButtonElement).style.borderColor = '#d1d5db';
+                        }
+                      }}
+                    >
+                      <span
+                        className={`inline-flex h-4 w-4 items-center justify-center rounded ${
+                          selectedHarvestIds.includes(record._id) ? 'bg-[#2d6a4f] text-white border border-[#2d6a4f]' : 'bg-white text-[#6b7280] border border-[#d1d5db]'
+                        }`}
+                        aria-hidden="true"
+                        style={{ width: 16, height: 16, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', borderRadius: 4 }}
+                      >
+                        {selectedHarvestIds.includes(record._id) ? '✓' : ''}
+                      </span>
+                      <span>Select</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div className="grid" style={{ gridTemplateColumns: 'repeat(1, minmax(0, 1fr))', background: '#f8fdf9' }}>
+                  <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}>
+                    <div className="relative px-4 py-3.5">
+                      <p className="mb-1 flex items-center gap-1 text-[9px] font-semibold uppercase tracking-[0.06em] text-gray-400">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 2v3M16 2v3M3 10h18M5 6h14a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                        Date Recorded
+                      </p>
+                      <p className="text-[15px] font-semibold text-gray-900">{new Date(record.createdDate).toLocaleDateString()}</p>
+                    </div>
+                    <div className="relative px-4 py-3.5 before:absolute before:left-0 before:top-[14px] before:bottom-[14px] before:w-px before:bg-[#e5e7eb]">
+                      <p className="mb-1 flex items-center gap-1 text-[9px] font-semibold uppercase tracking-[0.06em] text-gray-400">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s7-5.69 7-11a7 7 0 1 0-14 0c0 5.31 7 11 7 11Z" stroke="currentColor" strokeWidth="1.8"/><circle cx="12" cy="10" r="2.5" stroke="currentColor" strokeWidth="1.8"/></svg>
+                        Location
+                      </p>
+                      <p className="text-[15px] font-semibold text-gray-900">{record.location}</p>
+                    </div>
+                    <div className="relative px-4 py-3.5 before:absolute before:left-0 before:top-[14px] before:bottom-[14px] before:w-px before:bg-[#e5e7eb]">
+                      <p className="mb-1 flex items-center gap-1 text-[9px] font-semibold uppercase tracking-[0.06em] text-gray-400">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                        Acres Cultivated
+                      </p>
+                      <p className="text-[15px] font-semibold text-gray-900">{record.acres} acres</p>
+                    </div>
+                    <div className="relative px-4 py-3.5 before:absolute before:left-0 before:top-[14px] before:bottom-[14px] before:w-px before:bg-[#e5e7eb]">
+                      <p className="mb-1 flex items-center gap-1 text-[9px] font-semibold uppercase tracking-[0.06em] text-gray-400">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 20c0-5-4-9-9-9 0 5 4 9 9 9Zm0 0c0-5 4-9 9-9 0 5-4 9-9 9Zm0 0V4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                        Paddy Variety
+                      </p>
+                      <p className="text-[15px] font-semibold text-gray-900">{record.crop}</p>
+                    </div>
+                    <div className="relative bg-[#f0fdf4] px-4 py-3.5 before:absolute before:left-0 before:top-[14px] before:bottom-[14px] before:w-px before:bg-[#e5e7eb]">
+                      <p className="mb-1 flex items-center gap-1 text-[9px] font-semibold uppercase tracking-[0.06em] text-gray-400">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v18M6 8h12M8 16h8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                        Harvested Yield
+                      </p>
+                      <p className="text-[16px] font-semibold text-green-600">{(record.harvestQty / 1000).toFixed(2)} tons</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between" style={{ borderTop: '0.5px solid #f0f0f0', padding: '12px 20px' }}>
+                    <div className="flex items-center gap-2">
+                      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M12 2l2.09 4.24L18.6 7l-3.3 2.9.98 4.55L12 11.9 7.72 14.45 8.7 9.9 5.4 7l4.51-.76L12 2z" fill="#fbbf24"/>
+                        <circle cx="12" cy="17" r="3" fill="#f59e0b" />
+                      </svg>
+                      <p style={{ fontSize: 13, fontWeight: 500, color: '#6b7280', margin: 0 }}>Points Earned</p>
+                    </div>
+
+                    {record.pointsEarned === null || record.pointsEarned === undefined ? (
+                      <span
+                        style={{
+                          background: '#fffbeb',
+                          border: '0.5px solid #fcd34d',
+                          color: '#b45309',
+                          fontSize: 11,
+                          fontWeight: 600,
+                          padding: '5px 13px',
+                          borderRadius: 20,
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: 5,
+                        }}
+                      >
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                          <path d="M6 2v6h.01L12 13l6-5V2H6z" fill="#f59e0b" />
+                          <path d="M6 22h12v-2H6v2z" fill="#f59e0b" />
+                        </svg>
+                        <span>Pending review</span>
+                      </span>
+                    ) : (
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#fff7ed', padding: '6px 14px', borderRadius: 20, fontWeight: 700, color: '#b45309' }}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                          <circle cx="12" cy="12" r="9" fill="#f59e0b" />
+                          <path d="M12 7v6l3 2" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                        <span style={{ color: '#92400e' }}>{Math.round(record.pointsEarned)} points</span>
+                      </span>
+                    )}
+                  </div>
+                </div>
+            ))}
+            </div>
           )}
         </div>
       </div>
