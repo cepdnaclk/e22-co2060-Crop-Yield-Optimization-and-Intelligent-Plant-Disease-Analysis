@@ -21,6 +21,41 @@ const api = axios.create({
   timeout: 10000, // 10 seconds timeout
 });
 
+const extractChatbotReply = (payload: any): string => {
+  if (typeof payload === 'string') {
+    return payload;
+  }
+
+  if (!payload || typeof payload !== 'object') {
+    return 'I received your message, but the chatbot response could not be read.';
+  }
+
+  const candidateValues = [
+    payload.reply,
+    payload.message,
+    payload.text,
+    payload.output,
+    payload.answer,
+    payload.response,
+  ];
+
+  for (const value of candidateValues) {
+    if (typeof value === 'string' && value.trim()) {
+      return value;
+    }
+  }
+
+  if (Array.isArray(payload) && payload.length > 0) {
+    return extractChatbotReply(payload[0]);
+  }
+
+  if (payload.data) {
+    return extractChatbotReply(payload.data);
+  }
+
+  return 'I received your message, but the chatbot response could not be read.';
+};
+
 // Request interceptor to add auth token
 api.interceptors.request.use(
   (config) => {
@@ -221,6 +256,23 @@ export const inquiryAPI = {
     const response = await api.put(`/api/inquiries/${inquiryId}/status`, { status });
     return response.data;
   }
+};
+
+export const chatbotAPI = {
+  sendMessage: async (message: string, context?: Record<string, unknown>) => {
+    const response = await api.post('/api/chatbot', {
+      message,
+      text: message,
+      query: message,
+      input: message,
+      ...context,
+    });
+
+    return {
+      raw: response.data,
+      reply: extractChatbotReply(response.data),
+    };
+  },
 };
 
 // Export the axios instance for custom requests
