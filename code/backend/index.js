@@ -42,10 +42,18 @@ app.use(express.json())
  * Global Authentication Middleware
  * Validates 'Authorization: Bearer <token>' headers on incoming requests.
  * If present and valid, decodes the token and attaches `req.user`.
- * Note: If no token is provided, it currently falls through (open by default).
+ * Skips token verification for public endpoints (login, register).
  */
 app.use(
     (req, res, next) => {
+        // Public endpoints that don't require authentication
+        const publicEndpoints = ['/api/users/login', '/api/users']
+        
+        // Skip token verification for public endpoints
+        if (publicEndpoints.some(endpoint => req.path === endpoint)) {
+            return next()
+        }
+
         const value = req.header("Authorization")
         if (value != null) {
             const token = value.replace("Bearer ", "")
@@ -53,7 +61,7 @@ app.use(
             jwt.verify(token, process.env.JWT_SECRET,
                 (err, decoded) => {
                     if (decoded == null) {
-                        res.status(403).json({
+                        return res.status(403).json({
                             message: "unauthorized"
                         })
                     } else {

@@ -1,5 +1,5 @@
 import { MapPin, Wheat, TrendingUp, Calendar, Loader, RefreshCw } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { farmAPI, userAPI } from '../services/api';
 
 interface HarvestDetail {
@@ -25,6 +25,9 @@ export function CropDataPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [refreshingPoints, setRefreshingPoints] = useState(false);
+  const [selectedYear, setSelectedYear] = useState('');
+  const [selectedSeason, setSelectedSeason] = useState('');
+  const [selectedCrop, setSelectedCrop] = useState('');
 
   useEffect(() => {
     fetchMyFarms();
@@ -69,30 +72,55 @@ export function CropDataPage() {
     }
   };
 
-  // Calculate aggregates
-  let totalYield = 0;
-  let totalAcres = 0;
-  let totalRecords = 0;
+  const flatHarvests = useMemo(
+    () =>
+      farms.flatMap((farm) =>
+        (farm.harvests || []).map((harvest) => ({
+          ...harvest,
+          farmId: farm._id,
+          farmName: farm.farmName,
+          location: farm.location,
+          crop: farm.crop,
+          acres: farm.farmSize,
+        })),
+      ),
+    [farms],
+  );
 
-  const flatHarvests = farms.flatMap(farm => {
-    totalAcres += farm.farmSize || 0;
-    return (farm.harvests || []).map(h => {
-      totalYield += h.harvestQty || 0;
-      totalRecords += 1;
-      return {
-        ...h,
-        farmName: farm.farmName,
-        location: farm.location,
-        crop: farm.crop,
-        acres: farm.farmSize
-      };
+  const filterOptions = useMemo(() => {
+    const years = Array.from(new Set(flatHarvests.map((record) => String(record.year)))).sort((a, b) => Number(b) - Number(a));
+    const seasons = Array.from(new Set(flatHarvests.map((record) => record.season))).sort();
+    const crops = Array.from(new Set(flatHarvests.map((record) => record.crop))).sort();
+
+    return { years, seasons, crops };
+  }, [flatHarvests]);
+
+  const filteredHarvests = useMemo(() => {
+    return flatHarvests
+      .filter((record) => (selectedYear ? String(record.year) === selectedYear : true))
+      .filter((record) => (selectedSeason ? record.season === selectedSeason : true))
+      .filter((record) => (selectedCrop ? record.crop === selectedCrop : true))
+      .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
+  }, [flatHarvests, selectedYear, selectedSeason, selectedCrop]);
+
+  const filteredFarms = useMemo(() => {
+    const farmsById = new Map<string, FarmWithHarvests>();
+
+    filteredHarvests.forEach((record) => {
+      const matchingFarm = farms.find((farm) => farm._id === record.farmId);
+
+      if (matchingFarm) {
+        farmsById.set(matchingFarm._id, matchingFarm);
+      }
     });
-  });
 
-  // Sort by date descending
-  flatHarvests.sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
+    return Array.from(farmsById.values());
+  }, [farms, filteredHarvests]);
 
-  const avgYieldPerAcre = totalAcres > 0 ? (totalYield / 1000) / totalAcres : 0; // Assuming yield is kg, converting to tons for display
+  const totalYield = filteredHarvests.reduce((sum, record) => sum + (record.harvestQty || 0), 0);
+  const totalAcres = filteredFarms.reduce((sum, farm) => sum + (farm.farmSize || 0), 0);
+  const totalRecords = filteredHarvests.length;
+  const avgYieldPerAcre = totalAcres > 0 ? (totalYield / 1000) / totalAcres : 0;
   const totalYieldTons = totalYield / 1000;
 
   if (loading) {
@@ -113,19 +141,121 @@ export function CropDataPage() {
 
   return (
     <div className="space-y-4 md:space-y-6">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <p className="text-sm md:text-base text-gray-600">View your paddy cultivation data entered by district officers</p>
-        </div>
-        <button
-          onClick={handleRefreshPoints}
-          disabled={refreshingPoints}
-          className="flex items-center gap-2 px-4 py-2 bg-green-50 text-green-700 hover:bg-green-100 rounded-lg transition-colors font-medium text-sm disabled:opacity-50"
+      {/* Filter Toolbar */}
+      <div
+        style={{
+          background: 'linear-gradient(135deg, #FFFBEB 0%, #FFFEF7 100%)',
+          border: '1px solid #FDE68A',
+          borderRadius: '14px',
+          padding: '20px 24px',
+          boxShadow: '0 1px 4px rgba(0,0,0,0.05)',
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            gap: '16px',
+            alignItems: 'flex-end',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+          }}
         >
-          <RefreshCw className={`w-4 h-4 ${refreshingPoints ? 'animate-spin' : ''}`} />
-          {refreshingPoints ? 'Recalculating...' : 'Refresh Points'}
-        </button>
+          <div
+            style={{
+              display: 'flex',
+              gap: '16px',
+              alignItems: 'flex-end',
+              flexWrap: 'wrap',
+            }}
+          >
+            <div>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: '#6B7280', marginBottom: '4px' }}>Year</label>
+              <select
+                value={selectedYear}
+                onChange={(e) => setSelectedYear(e.target.value)}
+                style={{
+                  padding: '10px 14px',
+                  background: 'white',
+                  border: '1px solid #E5E7EB',
+                  borderRadius: '10px',
+                  fontSize: '14px',
+                  fontWeight: 500,
+                  color: '#111827',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                <option value="">All Years</option>
+                {filterOptions.years.map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: '#6B7280', marginBottom: '4px' }}>Season</label>
+              <select
+                value={selectedSeason}
+                onChange={(e) => setSelectedSeason(e.target.value)}
+                style={{
+                  padding: '10px 14px',
+                  background: 'white',
+                  border: '1px solid #E5E7EB',
+                  borderRadius: '10px',
+                  fontSize: '14px',
+                  fontWeight: 500,
+                  color: '#111827',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                <option value="">All Seasons</option>
+                {filterOptions.seasons.map((season) => (
+                  <option key={season} value={season}>
+                    {season}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: '#6B7280', marginBottom: '4px' }}>Crop</label>
+              <select
+                value={selectedCrop}
+                onChange={(e) => setSelectedCrop(e.target.value)}
+                style={{
+                  padding: '10px 14px',
+                  background: 'white',
+                  border: '1px solid #E5E7EB',
+                  borderRadius: '10px',
+                  fontSize: '14px',
+                  fontWeight: 500,
+                  color: '#111827',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                <option value="">All Crops</option>
+                {filterOptions.crops.map((crop) => (
+                  <option key={crop} value={crop}>
+                    {crop}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <button
+            onClick={handleRefreshPoints}
+            disabled={refreshingPoints}
+            className="flex items-center gap-2 px-4 py-2 bg-green-50 text-green-700 hover:bg-green-100 rounded-lg transition-colors font-medium text-sm disabled:opacity-50"
+          >
+            <RefreshCw className={`w-4 h-4 ${refreshingPoints ? 'animate-spin' : ''}`} />
+            {refreshingPoints ? 'Recalculating...' : 'Refresh Points'}
+          </button>
+        </div>
       </div>
 
       {/* Stats Cards */}
@@ -186,10 +316,10 @@ export function CropDataPage() {
         </div>
 
         <div className="p-4 md:p-6 space-y-4">
-          {flatHarvests.length === 0 ? (
+          {filteredHarvests.length === 0 ? (
             <p className="text-gray-500 text-center py-4">No harvest records found.</p>
           ) : (
-            flatHarvests.map((record) => (
+            filteredHarvests.map((record) => (
               <div key={record._id} className="border border-gray-200 rounded-xl p-4 md:p-6">
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between mb-4 gap-2">
                   <div>
