@@ -21,7 +21,7 @@ dns.setServers(['1.1.1.1', '8.8.8.8'])
 
 dotenv.config()
 
-const CHATBOT_WEBHOOK_URL = process.env.CHATBOT_WEBHOOK_URL || 'http://localhost:5678/webhook/246e550d-c772-4fcb-bae5-e847e8c632ce/chat'
+const CHATBOT_WEBHOOK_URL = process.env.CHATBOT_WEBHOOK_URL || 'https://n8n-opvk.onrender.com/webhook/246e550d-c772-4fcb-bae5-e847e8c632ce/chat'
 const CHATBOT_WEBHOOK_TEST_URL = process.env.CHATBOT_WEBHOOK_TEST_URL || ''
 
 
