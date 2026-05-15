@@ -1,4 +1,4 @@
-import { MapPin, Wheat, TrendingUp, Calendar, Loader, RefreshCw } from 'lucide-react';
+import { Layers, MapPin, Wheat, TrendingUp, Calendar, Loader, RefreshCw } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { farmAPI, userAPI } from '../services/api';
 
@@ -259,52 +259,80 @@ export function CropDataPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
-        <div className="bg-white rounded-xl p-4 md:p-6 border border-gray-200">
-          <div className="flex items-start justify-between mb-4">
-            <div>
-              <p className="text-gray-600 text-xs md:text-sm mb-1">Total Yield</p>
-              <p className="text-2xl md:text-4xl font-bold text-gray-900">{totalYieldTons.toFixed(1)} <span className="text-sm md:text-lg font-normal text-gray-600">tons</span></p>
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-6" style={{ marginTop: 0 }}>
+        <div
+          className="shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:cursor-pointer group"
+          style={{ background: 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)', borderRadius: '14px', padding: '16px 20px' }}
+        >
+          <div className="flex flex-col">
+            <div className="flex items-center">
+              <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: '#C8E6C9', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' }}>
+                <Wheat className="w-5 h-5 text-green-700 opacity-70 group-hover:opacity-100 transition-opacity" />
+              </div>
             </div>
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-              <Wheat className="w-5 h-5 md:w-6 md:h-6 text-orange-600" />
+            <p style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>Total Yield</p>
+            <div className="flex min-w-0 flex-wrap items-baseline gap-1 sm:gap-2 my-2">
+              <p className="text-3xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words min-w-0">{totalYieldTons.toFixed(1)}</p>
+              <span className="text-xs sm:text-sm font-medium text-gray-600 break-words">tons</span>
             </div>
+            <p className="text-xs sm:text-sm text-green-700 flex items-center gap-1 mt-2">
+              <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4" />
+              Filtered harvest output
+            </p>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl p-4 md:p-6 border border-gray-200">
-          <div className="flex items-start justify-between mb-4">
-            <div>
-              <p className="text-gray-600 text-xs md:text-sm mb-1">Total Acres</p>
-              <p className="text-2xl md:text-4xl font-bold text-gray-900">{totalAcres.toFixed(1)}</p>
+        <div
+          className="shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:cursor-pointer group"
+          style={{ background: 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)', borderRadius: '14px', padding: '16px 20px' }}
+        >
+          <div className="flex flex-col">
+            <div className="flex items-center">
+              <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: '#DCEDD5', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' }}>
+                <Layers className="w-5 h-5 text-lime-700 opacity-70 group-hover:opacity-100 transition-opacity" />
+              </div>
             </div>
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-green-100 rounded-lg flex items-center justify-center">
-              <MapPin className="w-5 h-5 md:w-6 md:h-6 text-green-600" />
-            </div>
+            <p style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>Total Acres</p>
+            <p className="text-3xl sm:text-2xl lg:text-3xl font-bold text-gray-900 my-2 break-words min-w-0">{totalAcres.toFixed(1)}</p>
+            <p className="text-xs sm:text-sm text-gray-600 mt-2">Cultivated land in the filtered set</p>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl p-4 md:p-6 border border-gray-200">
-          <div className="flex items-start justify-between mb-4">
-            <div>
-              <p className="text-gray-600 text-xs md:text-sm mb-1">Avg Yield/Acre</p>
-              <p className="text-2xl md:text-4xl font-bold text-gray-900">{avgYieldPerAcre.toFixed(2)} <span className="text-sm md:text-lg font-normal text-gray-600">t/ac</span></p>
+        <div
+          className="shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:cursor-pointer group"
+          style={{ background: 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)', borderRadius: '14px', padding: '16px 20px' }}
+        >
+          <div className="flex flex-col">
+            <div className="flex items-center">
+              <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: '#D5F5E3', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' }}>
+                <TrendingUp className="w-5 h-5 text-emerald-500 opacity-70 group-hover:opacity-100 transition-opacity" />
+              </div>
             </div>
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-              <TrendingUp className="w-5 h-5 md:w-6 md:h-6 text-blue-600" />
+            <p style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>Avg Yield/Acre</p>
+            <div className="flex min-w-0 flex-wrap items-baseline gap-1 sm:gap-2 my-2">
+              <p className="text-3xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words min-w-0">{avgYieldPerAcre.toFixed(2)}</p>
+              <span className="text-xs sm:text-sm font-medium text-gray-600 break-words">t/ac</span>
             </div>
+            <p className="text-xs sm:text-sm text-green-700 flex items-center gap-1 mt-2">
+              <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4" />
+              Average yield efficiency
+            </p>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl p-4 md:p-6 border border-gray-200">
-          <div className="flex items-start justify-between mb-4">
-            <div>
-              <p className="text-gray-600 text-xs md:text-sm mb-1">Total Records</p>
-              <p className="text-2xl md:text-4xl font-bold text-gray-900">{totalRecords}</p>
+        <div
+          className="shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:cursor-pointer group"
+          style={{ background: 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)', borderRadius: '14px', padding: '16px 20px' }}
+        >
+          <div className="flex flex-col">
+            <div className="flex items-center">
+              <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: '#DCFCE7', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' }}>
+                <Calendar className="w-5 h-5 text-green-600 opacity-70 group-hover:opacity-100 transition-opacity" />
+              </div>
             </div>
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-              <Calendar className="w-5 h-5 md:w-6 md:h-6 text-purple-600" />
-            </div>
+            <p style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>Total Records</p>
+            <p className="text-3xl sm:text-2xl lg:text-3xl font-bold text-gray-900 my-2 break-words min-w-0">{totalRecords}</p>
+            <p className="text-xs sm:text-sm text-gray-600 mt-2">Harvest entries in view</p>
           </div>
         </div>
       </div>
