@@ -11,11 +11,106 @@
     <body>
       <div id="root"></div>
       <script type="module">
-	import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+      import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
 
-	createChat({
-		webhookUrl: 'https://n8n-opvk.onrender.com/webhook/246e550d-c772-4fcb-bae5-e847e8c632ce/chat'
-	});
+      createChat({
+        webhookUrl: 'https://n8n-opvk.onrender.com/webhook/246e550d-c772-4fcb-bae5-e847e8c632ce/chat'
+      });
+
+      // Polished chat styling and small DOM enhancements
+      (function enhanceChatUi() {
+        const css = `
+        /* Container polish */
+        .n8n-chat .chat-window-wrapper { z-index: 9999; }
+        .n8n-chat .chat-layout {
+          border-radius: 16px;
+          overflow: hidden;
+          box-shadow: 0 10px 30px rgba(15,23,42,0.35), 0 2px 8px rgba(15,23,42,0.12);
+          backdrop-filter: blur(6px) saturate(120%);
+        }
+
+        /* Header: gradient, larger text */
+        .n8n-chat .chat-layout .chat-header {
+          background: linear-gradient(90deg, var(--color-primary, #16a34a), #22c55e);
+          color: var(--color-primary-foreground, #ffffff);
+          padding: 14px 16px;
+          display: flex;
+          gap: 12px;
+          align-items: center;
+        }
+        .n8n-chat .chat-layout .chat-header h1 {
+          font-weight: 700;
+          font-size: 1.05rem;
+          margin: 0;
+          letter-spacing: 0.2px;
+        }
+        .n8n-chat .chat-layout .chat-header p { margin: 0; opacity: 0.92; font-size: 0.825rem; }
+
+        /* Avatar */
+        .n8n-chat .chat-layout .agri-avatar {
+          width: 42px; height: 42px; border-radius: 50%; flex: 0 0 42px; background: #fff; display:inline-block; overflow:hidden; box-shadow: 0 4px 12px rgba(2,6,23,0.18);
+        }
+        .n8n-chat .chat-layout .agri-avatar img { width:100%; height:100%; object-fit:cover; display:block; }
+
+        /* Toggle button polish */
+        .n8n-chat .chat-window-toggle { right: 24px; bottom: 24px; border-radius: 14px; padding: 10px 12px; transition: transform 220ms cubic-bezier(.2,.9,.3,1); }
+        .n8n-chat .chat-window-toggle:hover { transform: translateY(-4px) scale(1.02); }
+
+        /* Message bubble tweaks (use safe CSS vars from widget where available) */
+        :root { --agri-bubble: rgba(255,255,255,0.96); }
+        .n8n-chat .chat-message { max-width: 78%; border-radius: 14px; padding: 10px 12px; }
+        .n8n-chat .chat-message--from-me { background: rgba(34,197,94,0.12); color: var(--color-primary-foreground, #083344); }
+        .n8n-chat .chat-message--from-other { background: var(--agri-bubble); color: #0f172a; }
+
+        /* Input area subtle styling */
+        .n8n-chat .chat-layout .chat-input { padding: 12px; }
+        .n8n-chat .chat-layout .chat-input .chat-send-button { background: var(--color-primary, #16a34a); color: var(--color-primary-foreground,#fff); border-radius: 10px; padding: 8px 12px; }
+
+        /* Entrance animation for the panel */
+        .n8n-chat .chat-layout { transform-origin: bottom right; animation: agri-entrance 300ms ease both; }
+        @keyframes agri-entrance { from { transform: translateY(12px) scale(0.98); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
+        `;
+
+        const style = document.createElement('style'); style.textContent = css; document.head.appendChild(style);
+
+        // SVG leaf avatar (data URI)
+        const leafSvg = encodeURIComponent(`
+          <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
+            <defs><linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='%2316a34a'/><stop offset='1' stop-color='%2322c55e'/></linearGradient></defs>
+            <path fill='url(%23g)' d='M2 62c20-30 34-34 60-60C46 30 10 50 2 62z'/>
+          </svg>
+        `);
+        const avatarUrl = `data:image/svg+xml;utf8,${leafSvg}`;
+
+        // Wait for the widget header then inject avatar + set names
+        const MAX = 80; let attempts = 0;
+        const id = setInterval(() => {
+          attempts += 1;
+          const header = document.querySelector('.n8n-chat .chat-layout .chat-header');
+          if (header) {
+            // Avoid duplicating
+            if (!header.querySelector('.agri-avatar')) {
+              const wrap = document.createElement('div'); wrap.className = 'agri-avatar';
+              const img = document.createElement('img'); img.src = avatarUrl; img.alt = 'AgriBot'; wrap.appendChild(img);
+              header.prepend(wrap);
+            }
+
+            const title = header.querySelector('h1'); if (title) title.textContent = 'AgriBot';
+            const subtitle = header.querySelector('p'); if (subtitle) subtitle.textContent = 'Farming assistant';
+
+            // Add a subtle pulse to the toggle when closed to draw attention
+            const toggle = document.querySelector('.n8n-chat .chat-window-toggle');
+            if (toggle) toggle.style.boxShadow = '0 6px 18px rgba(34,197,94,0.18)';
+
+            clearInterval(id);
+          }
+          if (attempts > MAX) clearInterval(id);
+        }, 120);
+
+        // Observe additions so that dynamic re-renders keep our styles
+        const observer = new MutationObserver(() => { /* no-op, styles are global */ });
+        observer.observe(document.documentElement, { childList: true, subtree: true });
+      })();
       </script>
       <script type="module" src="/src/main.tsx"></script>
     </body>
