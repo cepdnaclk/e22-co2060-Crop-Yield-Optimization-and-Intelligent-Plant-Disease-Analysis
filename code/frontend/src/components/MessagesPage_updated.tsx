@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Send, Upload, FileText, Trash2, AlertCircle, CheckCircle2, Clock, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { inquiryAPI } from '../services/api';
-import ComposeMessage from './ComposeMessage';
 
 export function MessagesPage() {
   const [subject, setSubject] = useState('');
@@ -133,41 +132,110 @@ export function MessagesPage() {
           </p>
         </div>
 
-        {/* Submit New Message (uses supplied HTML-like compose component) */}
-        <ComposeMessage
-          onSubmit={async ({ subject: s, category: c, message: m, files }) => {
-            setSubmitting(true);
-            try {
-              const authDataStr = localStorage.getItem('agriconnect_auth');
-              const authData = authDataStr ? JSON.parse(authDataStr) : null;
+        {/* Submit New Message */}
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
+          <h3 className="text-base md:text-lg font-semibold text-gray-800 mb-4">Contact Admin</h3>
 
-              const fullSubject = `[${c}] ${s.trim()}`;
-              const newInquiry = await inquiryAPI.createInquiry({
-                subject: fullSubject,
-                message: m.trim(),
-                farmerId: authData?.userId,
-              });
+          <div className="space-y-4">
+            {/* Subject */}
+            <div>
+              <label className="block text-xs md:text-sm font-medium text-gray-700 mb-2">
+                Subject <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+                placeholder="Brief subject of your message"
+                className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm md:text-base"
+              />
+            </div>
 
-              if (files && files.length > 0) {
-                try {
-                  await inquiryAPI.uploadDocuments(newInquiry._id, files);
-                  console.log('Document(s) uploaded successfully');
-                } catch (uploadError: any) {
-                  console.error('Error uploading document:', uploadError);
-                  toast.error(uploadError.response?.data?.message || 'Message submitted but document upload failed');
-                }
-              }
+            {/* Category */}
+            <div>
+              <label className="block text-xs md:text-sm font-medium text-gray-700 mb-2">
+                Category <span className="text-red-500">*</span>
+              </label>
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm md:text-base"
+              >
+                <option value="">Select a category</option>
+                {categories.map((cat) => (
+                  <option key={cat} value={cat}>
+                    {cat}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-              toast.success('Message submitted successfully!');
-              setTimeout(() => fetchInquiries(), 500);
-            } catch (error) {
-              console.error('Failed to submit inquiry', error);
-              toast.error('Failed to submit message. Please try again.');
-            } finally {
-              setSubmitting(false);
-            }
-          }}
-        />
+            {/* Message Text Area */}
+            <div>
+              <label className="block text-xs md:text-sm font-medium text-gray-700 mb-2">
+                Message <span className="text-red-500">*</span>
+              </label>
+              <textarea
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Describe your issue, complaint, or inquiry in detail..."
+                rows={6}
+                className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none text-sm md:text-base"
+              />
+            </div>
+
+            {/* File Upload */}
+            <div>
+              <label className="block text-xs md:text-sm font-medium text-gray-700 mb-2">
+                Attach Supporting Documents (Optional)
+              </label>
+              <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 md:p-6 hover:border-green-500 transition-colors">
+                <input
+                  type="file"
+                  id="document-upload"
+                  onChange={handleFileChange}
+                  className="hidden"
+                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                />
+                <label
+                  htmlFor="document-upload"
+                  className="flex flex-col items-center cursor-pointer"
+                >
+                  <Upload className="w-8 h-8 md:w-10 md:h-10 text-gray-400 mb-2" />
+                  <p className="text-xs md:text-sm text-gray-600 mb-1 text-center">
+                    {uploadedFile ? uploadedFile.name : 'Click to upload document or photo'}
+                  </p>
+                  <p className="text-xs text-gray-500 text-center">
+                    PDF, DOC, JPG, PNG (Max 10MB)
+                  </p>
+                </label>
+                {uploadedFile && (
+                  <div className="mt-4 flex items-center justify-center gap-2 flex-wrap">
+                    <FileText className="w-4 h-4 text-green-600" />
+                    <span className="text-xs md:text-sm text-gray-700 break-all">{uploadedFile.name}</span>
+                    <button
+                      type="button"
+                      onClick={() => setUploadedFile(null)}
+                      className="text-red-600 hover:text-red-700"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <button
+              onClick={handleSubmit}
+              disabled={!subject.trim() || !category || !message.trim() || submitting}
+              className="w-full py-2 md:py-3 bg-green-600 hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-medium rounded-lg flex items-center justify-center gap-2 transition-colors text-sm md:text-base"
+            >
+              {submitting ? <Loader2 className="w-4 h-4 md:w-5 md:h-5 animate-spin" /> : <Send className="w-4 h-4 md:w-5 md:h-5" />}
+              {submitting ? 'Submitting...' : 'Submit Message'}
+            </button>
+          </div>
+        </div>
 
         {/* Previous Messages */}
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm">
