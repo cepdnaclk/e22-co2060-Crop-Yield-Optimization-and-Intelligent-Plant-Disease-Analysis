@@ -61,13 +61,31 @@ export function MessagesPage() {
       try {
         const authDataStr = localStorage.getItem('agriconnect_auth');
         const authData = authDataStr ? JSON.parse(authDataStr) : null;
+        console.log("Auth data:", authData);
 
         const fullSubject = `[${category}] ${subject.trim()}`;
-        const newInquiry = await inquiryAPI.createInquiry({
+        let newInquiry = await inquiryAPI.createInquiry({
           subject: fullSubject,
           message: message.trim(),
           farmerId: authData?.userId,
         });
+        console.log("Inquiry created:", newInquiry);
+
+        // Upload supporting document if provided
+        if (uploadedFile) {
+          try {
+            console.log("Uploading file:", uploadedFile.name);
+            const uploadResponse = await inquiryAPI.uploadDocuments(newInquiry._id, [uploadedFile]);
+            console.log("Upload response:", uploadResponse);
+            // Use the updated inquiry from the upload response which includes documents
+            newInquiry = uploadResponse.inquiry || newInquiry;
+            console.log("Updated inquiry with documents:", newInquiry);
+          } catch (uploadError) {
+            console.error('Error uploading document:', uploadError);
+            console.error('Upload error details:', uploadError.response?.data);
+            toast.error('Message submitted but document upload failed');
+          }
+        }
 
         setSubmittedMessages([newInquiry, ...submittedMessages]);
         setSubject('');

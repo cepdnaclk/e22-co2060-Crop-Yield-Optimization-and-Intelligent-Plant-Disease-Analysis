@@ -9,6 +9,8 @@ import mongoose from "mongoose"
 import dotenv from "dotenv"
 import bodyParser from "body-parser"
 import cors from "cors"
+import path from "path"
+import { fileURLToPath } from "url"
 import userRouter from "./routers/userRouter.js"
 import farmRouter from "./routers/farmRouter.js"
 import jwt from "jsonwebtoken"
@@ -20,6 +22,8 @@ dns.setServers(['1.1.1.1', '8.8.8.8'])
 
 dotenv.config()
 
+// Get __dirname equivalent in ES6 modules
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const app = express()
 
@@ -65,6 +69,10 @@ app.use(
                             message: "unauthorized"
                         })
                     } else {
+                        // Normalize token payload: ensure `_id` is available for code expecting it
+                        if (decoded.id && !decoded._id) {
+                            decoded._id = decoded.id
+                        }
                         req.user = decoded
                         next()
                     }
@@ -78,6 +86,9 @@ app.use(
 
     }
 )
+
+// Serve static files from uploads directory
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
 /**
  * Initialize MongoDB Connection and start the server.
