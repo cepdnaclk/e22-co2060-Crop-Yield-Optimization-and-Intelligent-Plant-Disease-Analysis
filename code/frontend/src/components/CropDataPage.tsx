@@ -1,4 +1,4 @@
-import { Download, Layers, MapPin, Wheat, TrendingUp, Calendar, Loader, RefreshCw } from 'lucide-react';
+import { Download, Layers, MapPin, Wheat, TrendingUp, Calendar, Loader, RefreshCw, BarChart3, Sprout } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { farmAPI, userAPI } from '../services/api';
 
@@ -190,481 +190,252 @@ export function CropDataPage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
+      <div className="flex flex-col justify-center items-center h-64 gap-3">
         <Loader className="w-8 h-8 animate-spin text-green-600" />
+        <p style={{ fontSize: '14px', color: '#6B7280' }}>Loading your cultivation data...</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="p-4 bg-red-50 text-red-600 rounded-lg border border-red-200">
+      <div style={{ padding: '20px', background: '#FEF2F2', color: '#DC2626', borderRadius: '14px', border: '1px solid #FECACA', fontSize: '14px' }}>
         {error}
       </div>
     );
   }
 
+  const filterSelectStyle = {
+    padding: '9px 14px', background: 'white', border: '1.5px solid #E5E7EB',
+    borderRadius: '10px', fontSize: '13px', fontWeight: 500 as const, color: '#111827',
+    cursor: 'pointer', transition: 'border-color 0.2s', minWidth: '130px',
+  };
+
   return (
-    <div className="space-y-4 md:space-y-6">
-      {/* Filter Toolbar */}
-      <div
-        style={{
-          background: 'linear-gradient(135deg, #FFFBEB 0%, #FFFEF7 100%)',
-          border: '1px solid #FDE68A',
-          borderRadius: '14px',
-          padding: '20px 24px',
-          boxShadow: '0 1px 4px rgba(0,0,0,0.05)',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            gap: '16px',
-            alignItems: 'flex-end',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              gap: '16px',
-              alignItems: 'flex-end',
-              flexWrap: 'wrap',
-            }}
-          >
-            <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: '#6B7280', marginBottom: '4px' }}>Year</label>
-              <select
-                value={selectedYear}
-                onChange={(e) => setSelectedYear(e.target.value)}
-                style={{
-                  padding: '10px 14px',
-                  background: 'white',
-                  border: '1px solid #E5E7EB',
-                  borderRadius: '10px',
-                  fontSize: '14px',
-                  fontWeight: 500,
-                  color: '#111827',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                }}
-              >
-                <option value="">All Years</option>
-                {filterOptions.years.map((year) => (
-                  <option key={year} value={year}>
-                    {year}
-                  </option>
-                ))}
-              </select>
+    <div className="space-y-5">
+      {/* Hero Header */}
+      <div style={{ background: 'linear-gradient(135deg, #065F46 0%, #047857 50%, #059669 100%)', borderRadius: '16px', padding: '26px 30px', color: 'white', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', top: '-30px', right: '-30px', width: '140px', height: '140px', background: 'rgba(255,255,255,0.07)', borderRadius: '50%' }} />
+        <div style={{ position: 'absolute', bottom: '-20px', right: '100px', width: '80px', height: '80px', background: 'rgba(255,255,255,0.04)', borderRadius: '50%' }} />
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '14px', position: 'relative', zIndex: 1 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+            <div style={{ width: '46px', height: '46px', background: 'rgba(255,255,255,0.15)', borderRadius: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)' }}>
+              <Sprout style={{ width: '24px', height: '24px' }} />
             </div>
-
             <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: '#6B7280', marginBottom: '4px' }}>Season</label>
-              <select
-                value={selectedSeason}
-                onChange={(e) => setSelectedSeason(e.target.value)}
-                style={{
-                  padding: '10px 14px',
-                  background: 'white',
-                  border: '1px solid #E5E7EB',
-                  borderRadius: '10px',
-                  fontSize: '14px',
-                  fontWeight: 500,
-                  color: '#111827',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                }}
-              >
-                <option value="">All Seasons</option>
-                {filterOptions.seasons.map((season) => (
-                  <option key={season} value={season}>
-                    {season}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: '#6B7280', marginBottom: '4px' }}>Crop</label>
-              <select
-                value={selectedCrop}
-                onChange={(e) => setSelectedCrop(e.target.value)}
-                style={{
-                  padding: '10px 14px',
-                  background: 'white',
-                  border: '1px solid #E5E7EB',
-                  borderRadius: '10px',
-                  fontSize: '14px',
-                  fontWeight: 500,
-                  color: '#111827',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                }}
-              >
-                <option value="">All Crops</option>
-                {filterOptions.crops.map((crop) => (
-                  <option key={crop} value={crop}>
-                    {crop}
-                  </option>
-                ))}
-              </select>
+              <h2 style={{ fontSize: '21px', fontWeight: '700', margin: 0 }}>My Crop Data</h2>
+              <p style={{ fontSize: '13px', opacity: 0.85, margin: '2px 0 0' }}>Track your cultivation records, yields & performance</p>
             </div>
           </div>
-
           <button
             onClick={handleRefreshPoints}
             disabled={refreshingPoints}
-            className="flex min-w-[140px] items-center justify-center gap-2 rounded-full border border-green-100 bg-green-50 px-8 py-2 text-sm font-semibold text-green-700 shadow-sm transition-colors hover:bg-green-100 disabled:cursor-not-allowed disabled:opacity-50"
+            style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '9px 20px', background: 'rgba(255,255,255,0.18)', border: '1px solid rgba(255,255,255,0.3)', borderRadius: '10px', color: 'white', fontSize: '13px', fontWeight: 600, cursor: refreshingPoints ? 'not-allowed' : 'pointer', backdropFilter: 'blur(4px)', transition: 'background 0.2s', opacity: refreshingPoints ? 0.7 : 1 }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.28)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.18)'; }}
           >
-            <RefreshCw className={`w-4 h-4 text-green-600 ${refreshingPoints ? 'animate-spin' : ''}`} />
-            {refreshingPoints ? 'Refreshing...' : 'Refresh'}
+            <RefreshCw className={`w-4 h-4 ${refreshingPoints ? 'animate-spin' : ''}`} />
+            {refreshingPoints ? 'Refreshing...' : 'Refresh Points'}
           </button>
         </div>
       </div>
 
+      {/* Filter Toolbar */}
+      <div style={{ background: 'white', border: '1px solid #E5E7EB', borderRadius: '14px', padding: '16px 20px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+        <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
+          <BarChart3 style={{ width: '18px', height: '18px', color: '#6B7280' }} />
+          <span style={{ fontSize: '13px', fontWeight: 600, color: '#374151', marginRight: '4px' }}>Filters</span>
+          <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)} style={filterSelectStyle}>
+            <option value="">All Years</option>
+            {filterOptions.years.map((y) => <option key={y} value={y}>{y}</option>)}
+          </select>
+          <select value={selectedSeason} onChange={(e) => setSelectedSeason(e.target.value)} style={filterSelectStyle}>
+            <option value="">All Seasons</option>
+            {filterOptions.seasons.map((s) => <option key={s} value={s}>{s}</option>)}
+          </select>
+          <select value={selectedCrop} onChange={(e) => setSelectedCrop(e.target.value)} style={filterSelectStyle}>
+            <option value="">All Crops</option>
+            {filterOptions.crops.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
+        </div>
+      </div>
+
       {/* Stats Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-6" style={{ marginTop: 0 }}>
-        <div
-          className="shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:cursor-pointer group"
-          style={{ background: 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)', borderRadius: '14px', padding: '16px 20px' }}
-        >
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-6">
+        {/* Total Yield */}
+        <div className="shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:cursor-pointer group"
+          style={{ background: 'linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)', borderRadius: '16px', padding: '18px 20px', border: '1px solid #A7F3D0' }}>
           <div className="flex flex-col">
-            <div className="flex items-center">
-              <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: '#C8E6C9', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' }}>
-                <Wheat className="w-5 h-5 text-green-700 opacity-70 group-hover:opacity-100 transition-opacity" />
-              </div>
+            <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'linear-gradient(135deg, #059669, #10B981)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px', boxShadow: '0 2px 8px rgba(5,150,105,0.3)' }}>
+              <Wheat style={{ width: '18px', height: '18px', color: 'white' }} />
             </div>
-            <p style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>Total Yield</p>
-            <div className="flex min-w-0 flex-wrap items-baseline gap-1 sm:gap-2 my-2">
-              <p className="text-3xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words min-w-0">{totalYieldTons.toFixed(1)}</p>
-              <span className="text-xs sm:text-sm font-medium text-gray-600 break-words">tons</span>
+            <p style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Total Yield</p>
+            <div className="flex items-baseline gap-1 my-1">
+              <p className="text-2xl lg:text-3xl font-bold text-gray-900">{totalYieldTons.toFixed(1)}</p>
+              <span style={{ fontSize: '13px', fontWeight: 500, color: '#6B7280' }}>tons</span>
             </div>
-            <p className="text-xs sm:text-sm text-green-700 flex items-center gap-1 mt-2">
-              <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4" />
-              Filtered harvest output
+            <p style={{ fontSize: '12px', color: '#059669', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
+              <TrendingUp style={{ width: '13px', height: '13px' }} />Filtered output
             </p>
           </div>
         </div>
 
-        <div
-          className="shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:cursor-pointer group"
-          style={{ background: 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)', borderRadius: '14px', padding: '16px 20px' }}
-        >
+        {/* Total Acres */}
+        <div className="shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:cursor-pointer group"
+          style={{ background: 'linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)', borderRadius: '16px', padding: '18px 20px', border: '1px solid #93C5FD' }}>
           <div className="flex flex-col">
-            <div className="flex items-center">
-              <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: '#DCEDD5', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' }}>
-                <Layers className="w-5 h-5 text-lime-700 opacity-70 group-hover:opacity-100 transition-opacity" />
-              </div>
+            <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'linear-gradient(135deg, #2563EB, #3B82F6)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px', boxShadow: '0 2px 8px rgba(37,99,235,0.3)' }}>
+              <Layers style={{ width: '18px', height: '18px', color: 'white' }} />
             </div>
-            <p style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>Total Acres</p>
-            <p className="text-3xl sm:text-2xl lg:text-3xl font-bold text-gray-900 my-2 break-words min-w-0">{totalAcres.toFixed(1)}</p>
-            <p className="text-xs sm:text-sm text-gray-600 mt-2">Cultivated land in the filtered set</p>
+            <p style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Total Acres</p>
+            <p className="text-2xl lg:text-3xl font-bold text-gray-900 my-1">{totalAcres.toFixed(1)}</p>
+            <p style={{ fontSize: '12px', color: '#2563EB', marginTop: '4px' }}>Cultivated land area</p>
           </div>
         </div>
 
-        <div
-          className="shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:cursor-pointer group"
-          style={{ background: 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)', borderRadius: '14px', padding: '16px 20px' }}
-        >
+        {/* Avg Yield/Acre */}
+        <div className="shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:cursor-pointer group"
+          style={{ background: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)', borderRadius: '16px', padding: '18px 20px', border: '1px solid #FCD34D' }}>
           <div className="flex flex-col">
-            <div className="flex items-center">
-              <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: '#D5F5E3', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' }}>
-                <TrendingUp className="w-5 h-5 text-emerald-500 opacity-70 group-hover:opacity-100 transition-opacity" />
-              </div>
+            <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'linear-gradient(135deg, #D97706, #F59E0B)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px', boxShadow: '0 2px 8px rgba(217,119,6,0.3)' }}>
+              <TrendingUp style={{ width: '18px', height: '18px', color: 'white' }} />
             </div>
-            <p style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>Avg Yield/Acre</p>
-            <div className="flex min-w-0 flex-wrap items-baseline gap-1 sm:gap-2 my-2">
-              <p className="text-3xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words min-w-0">{avgYieldPerAcre.toFixed(2)}</p>
-              <span className="text-xs sm:text-sm font-medium text-gray-600 break-words">t/ac</span>
+            <p style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Avg Yield/Acre</p>
+            <div className="flex items-baseline gap-1 my-1">
+              <p className="text-2xl lg:text-3xl font-bold text-gray-900">{avgYieldPerAcre.toFixed(2)}</p>
+              <span style={{ fontSize: '13px', fontWeight: 500, color: '#6B7280' }}>t/ac</span>
             </div>
-            <p className="text-xs sm:text-sm text-green-700 flex items-center gap-1 mt-2">
-              <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4" />
-              Average yield efficiency
+            <p style={{ fontSize: '12px', color: '#D97706', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
+              <TrendingUp style={{ width: '13px', height: '13px' }} />Yield efficiency
             </p>
           </div>
         </div>
 
-        <div
-          className="shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:cursor-pointer group"
-          style={{ background: 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)', borderRadius: '14px', padding: '16px 20px' }}
-        >
+        {/* Total Records */}
+        <div className="shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:cursor-pointer group"
+          style={{ background: 'linear-gradient(135deg, #FAF5FF 0%, #F3E8FF 100%)', borderRadius: '16px', padding: '18px 20px', border: '1px solid #D8B4FE' }}>
           <div className="flex flex-col">
-            <div className="flex items-center">
-              <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: '#DCFCE7', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' }}>
-                <Calendar className="w-5 h-5 text-green-600 opacity-70 group-hover:opacity-100 transition-opacity" />
-              </div>
+            <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'linear-gradient(135deg, #7C3AED, #8B5CF6)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px', boxShadow: '0 2px 8px rgba(124,58,237,0.3)' }}>
+              <Calendar style={{ width: '18px', height: '18px', color: 'white' }} />
             </div>
-            <p style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>Total Records</p>
-            <p className="text-3xl sm:text-2xl lg:text-3xl font-bold text-gray-900 my-2 break-words min-w-0">{totalRecords}</p>
-            <p className="text-xs sm:text-sm text-gray-600 mt-2">Harvest entries in view</p>
+            <p style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Total Records</p>
+            <p className="text-2xl lg:text-3xl font-bold text-gray-900 my-1">{totalRecords}</p>
+            <p style={{ fontSize: '12px', color: '#7C3AED', marginTop: '4px' }}>Harvest entries</p>
           </div>
         </div>
       </div>
 
       {/* Cultivation Records */}
-      <div className="rounded-xl bg-[#f9fafb]">
-        <div className="p-4 md:p-6 border-b border-transparent space-y-4">
+      <div style={{ background: 'white', borderRadius: '16px', border: '1px solid #E5E7EB', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+        <div style={{ padding: '16px 22px', borderBottom: '1px solid #F3F4F6' }}>
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <h3 style={{ fontSize: 20, fontWeight: 600, color: '#111827', margin: 0 }}>
-                Cultivation Records
-              </h3>
-              <span style={{ fontSize: 12, color: '#6b7280', background: '#f3f4f6', border: '0.5px solid #e5e7eb', borderRadius: 20, padding: '3px 10px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'linear-gradient(135deg, #059669, #10B981)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Wheat style={{ width: '16px', height: '16px', color: 'white' }} />
+              </div>
+              <h3 style={{ fontSize: 18, fontWeight: 700, color: '#111827', margin: 0 }}>Cultivation Records</h3>
+              <span style={{ fontSize: 11, color: '#059669', background: '#ECFDF5', border: '1px solid #A7F3D0', borderRadius: 20, padding: '3px 10px', fontWeight: 600 }}>
                 {displayedHarvests.length} records
               </span>
             </div>
-
-            <div className="flex items-center gap-3 flex-wrap">
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <label htmlFor="crop-record-sort" style={{ fontSize: 13, color: '#6b7280', marginRight: 6 }}>Sort by</label>
-
-                <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center' }}>
-                  <select
-                    id="crop-record-sort"
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value as 'newest' | 'highestYield')}
-                    style={{
-                      appearance: 'none',
-                      WebkitAppearance: 'none',
-                      background: '#ffffff',
-                      border: '0.5px solid #d1d5db',
-                      borderRadius: 8,
-                      padding: '5px 30px 5px 10px',
-                      fontSize: 13,
-                      fontWeight: 500,
-                      color: '#111827',
-                    }}
-                  >
-                    <option value="newest">Newest</option>
-                    <option value="highestYield">Highest Yield</option>
-                  </select>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', right: 8, pointerEvents: 'none' }} aria-hidden>
-                    <path d="M6 9l6 6 6-6" stroke="#374151" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span style={{ fontSize: 12, color: '#6b7280' }}>Sort</span>
+                <select id="crop-record-sort" value={sortBy} onChange={(e) => setSortBy(e.target.value as 'newest' | 'highestYield')}
+                  style={{ background: '#F9FAFB', border: '1px solid #E5E7EB', borderRadius: 8, padding: '6px 12px', fontSize: 12, fontWeight: 500, color: '#111827', cursor: 'pointer' }}>
+                  <option value="newest">Newest</option>
+                  <option value="highestYield">Highest Yield</option>
+                </select>
               </div>
-
               {selectedVisibleHarvests.length > 0 && (
-                <button
-                  type="button"
-                  onClick={handleExportCsv}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: 8,
-                    background: '#2d6a4f',
-                    color: '#ffffff',
-                    borderRadius: 10,
-                    fontSize: 13,
-                    fontWeight: 600,
-                    padding: '8px 12px',
-                    transition: 'background-color 0.2s ease',
-                    border: 'none',
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLButtonElement).style.background = '#1a4731';
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLButtonElement).style.background = '#2d6a4f';
-                  }}
-                >
-                  <Download className="h-4 w-4" />
-                  Export CSV
+                <button type="button" onClick={handleExportCsv}
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'linear-gradient(135deg, #059669, #10B981)', color: '#fff', borderRadius: 8, fontSize: 12, fontWeight: 600, padding: '7px 14px', border: 'none', cursor: 'pointer', boxShadow: '0 2px 6px rgba(5,150,105,0.3)' }}>
+                  <Download className="h-3.5 w-3.5" />Export CSV
                 </button>
               )}
             </div>
           </div>
         </div>
 
-        <div className="p-4 md:p-6">
+        <div style={{ padding: '16px 20px' }}>
           {displayedHarvests.length === 0 ? (
-            <p className="text-gray-500 text-center py-4">No harvest records found.</p>
+            <div style={{ textAlign: 'center', padding: '40px 20px', color: '#9CA3AF' }}>
+              <Wheat style={{ width: '40px', height: '40px', margin: '0 auto 12px', opacity: 0.4 }} />
+              <p style={{ fontSize: '14px', fontWeight: 500, margin: 0 }}>No harvest records found</p>
+              <p style={{ fontSize: '12px', marginTop: '4px' }}>Try adjusting your filters</p>
+            </div>
           ) : (
-            <div className="space-y-4">
-              {displayedHarvests.map((record) => (
-              <div
-                key={record._id}
-                className={`overflow-hidden rounded-[22px] bg-white transition-[box-shadow,transform] duration-200 ease-in-out hover:-translate-y-[2px] hover:shadow-[0_6px_24px_rgba(0,0,0,0.09)] ${
-                  selectedHarvestIds.includes(record._id) ? 'ring-2 ring-green-200' : ''
-                }`}
-                style={{
-                  border: '0.5px solid #e5e7eb',
-                  borderLeft: '3px solid #2d6a4f',
-                  boxShadow: '0 2px 12px rgba(0,0,0,0.07)',
-                  backgroundColor: '#ffffff',
-                }}
-              >
-                <div className="flex flex-col justify-between gap-3 border-b sm:flex-row sm:items-center" style={{ borderBottom: '0.5px solid #f0f0f0', padding: '16px 20px 14px' }}>
-                  <div className="flex items-center" style={{ gap: 10 }}>
-                    <h4 style={{ fontSize: 17, fontWeight: 600, color: '#111827', margin: 0 }}>
-                      {record.season} {record.year}
-                    </h4>
-
-                    <span
-                      className="inline-flex items-center"
-                      style={{ background: '#e8f5e9', color: '#2d6a4f', padding: '4px 10px', borderRadius: 20, fontSize: 11, fontWeight: 500, gap: 5 }}
-                    >
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path d="M12 2C10.34 2 8.8 2.5 7.5 3.36C6.2 4.23 5.24 5.46 4.78 6.94C4.32 8.42 4.39 9.98 5.08 11.5C5.77 13.02 6.95 14.38 8.45 15.12C9.95 15.86 11.66 15.93 13.2 15.31C14.74 14.69 15.98 13.48 16.7 11.95C17.42 10.42 17.46 8.71 16.8 7.18C16.14 5.65 14.85 4.47 13.3 3.86C12.68 3.64 12.34 3.52 12 3.5V2Z" fill="#2d6a4f"/>
-                        <path d="M5 20C5 17.79 6.79 16 9 16H15C17.21 16 19 17.79 19 20V21H5V20Z" fill="#2d6a4f"/>
-                      </svg>
-                      <span>Farm: {record.farmName}</span>
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 self-start">
-                    <span
-                      className="inline-flex items-center"
-                      style={{
-                        background: '#dcfce7',
-                        color: '#16a34a',
-                        fontWeight: 600,
-                        padding: '5px 12px',
-                        borderRadius: 20,
-                        fontSize: 11,
-                        border: '0.5px solid #86efac',
-                        gap: 4,
-                      }}
-                    >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" fill="#16a34a" />
-                      </svg>
-                      <span>Verified</span>
-                    </span>
-
-                    <button
-                      type="button"
-                      onClick={() => handleToggleHarvestSelection(record._id)}
-                      aria-pressed={selectedHarvestIds.includes(record._id)}
-                      style={{
-                        background: selectedHarvestIds.includes(record._id) ? '#2d6a4f' : '#ffffff',
-                        color: selectedHarvestIds.includes(record._id) ? '#ffffff' : '#6b7280',
-                        border: selectedHarvestIds.includes(record._id) ? '0.5px solid #2d6a4f' : '0.5px solid #d1d5db',
-                        borderRadius: 20,
-                        padding: '5px 12px',
-                        fontSize: 11,
-                        fontWeight: 500,
-                        transition: 'background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: 5,
-                        cursor: 'pointer',
-                      }}
-                      onMouseEnter={(e) => {
-                        if (!selectedHarvestIds.includes(record._id)) {
-                          (e.currentTarget as HTMLButtonElement).style.background = '#2d6a4f';
-                          (e.currentTarget as HTMLButtonElement).style.color = '#ffffff';
-                          (e.currentTarget as HTMLButtonElement).style.borderColor = '#2d6a4f';
-                        }
-                      }}
-                      onMouseLeave={(e) => {
-                        if (selectedHarvestIds.includes(record._id)) {
-                          (e.currentTarget as HTMLButtonElement).style.background = '#2d6a4f';
-                          (e.currentTarget as HTMLButtonElement).style.color = '#ffffff';
-                          (e.currentTarget as HTMLButtonElement).style.borderColor = '#2d6a4f';
-                        } else {
-                          (e.currentTarget as HTMLButtonElement).style.background = '#ffffff';
-                          (e.currentTarget as HTMLButtonElement).style.color = '#6b7280';
-                          (e.currentTarget as HTMLButtonElement).style.borderColor = '#d1d5db';
-                        }
-                      }}
-                    >
-                      <span
-                        className={`inline-flex h-4 w-4 items-center justify-center rounded ${
-                          selectedHarvestIds.includes(record._id) ? 'bg-[#2d6a4f] text-white border border-[#2d6a4f]' : 'bg-white text-[#6b7280] border border-[#d1d5db]'
-                        }`}
-                        aria-hidden="true"
-                        style={{ width: 16, height: 16, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', borderRadius: 4 }}
-                      >
-                        {selectedHarvestIds.includes(record._id) ? '✓' : ''}
-                      </span>
-                      <span>Select</span>
-                    </button>
-                  </div>
-                </div>
-
-                <div className="grid" style={{ gridTemplateColumns: 'repeat(1, minmax(0, 1fr))', background: '#f8fdf9' }}>
-                  <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}>
-                    <div className="relative px-4 py-3.5">
-                      <p className="mb-1 flex items-center gap-1 text-[9px] font-semibold uppercase tracking-[0.06em] text-gray-400">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 2v3M16 2v3M3 10h18M5 6h14a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                        Date Recorded
-                      </p>
-                      <p className="text-[15px] font-semibold text-gray-900">{new Date(record.createdDate).toLocaleDateString()}</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              {displayedHarvests.map((record) => {
+                const isSelected = selectedHarvestIds.includes(record._id);
+                return (
+                <div key={record._id} style={{ borderRadius: '14px', overflow: 'hidden', transition: 'all 0.2s', border: isSelected ? '1.5px solid #10B981' : '1px solid #E5E7EB', background: isSelected ? '#F0FDF4' : '#fff', boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}>
+                  {/* Header */}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', borderBottom: '1px solid #F3F4F6', flexWrap: 'wrap', gap: '8px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                      <div style={{ width: '32px', height: '32px', borderRadius: '9px', background: 'linear-gradient(135deg, #065F46, #059669)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Calendar style={{ width: '15px', height: '15px', color: 'white' }} />
+                      </div>
+                      <div>
+                        <h4 style={{ fontSize: '14px', fontWeight: 700, color: '#111827', margin: 0 }}>{record.season} {record.year}</h4>
+                        <span style={{ fontSize: '11px', color: '#6B7280' }}>{new Date(record.createdDate).toLocaleDateString()}</span>
+                      </div>
+                      <span style={{ background: '#ECFDF5', color: '#059669', padding: '3px 9px', borderRadius: 20, fontSize: '10px', fontWeight: 600, border: '1px solid #A7F3D0' }}>🌾 {record.farmName}</span>
                     </div>
-                    <div className="relative px-4 py-3.5 before:absolute before:left-0 before:top-[14px] before:bottom-[14px] before:w-px before:bg-[#e5e7eb]">
-                      <p className="mb-1 flex items-center gap-1 text-[9px] font-semibold uppercase tracking-[0.06em] text-gray-400">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s7-5.69 7-11a7 7 0 1 0-14 0c0 5.31 7 11 7 11Z" stroke="currentColor" strokeWidth="1.8"/><circle cx="12" cy="10" r="2.5" stroke="currentColor" strokeWidth="1.8"/></svg>
-                        Location
-                      </p>
-                      <p className="text-[15px] font-semibold text-gray-900">{record.location}</p>
-                    </div>
-                    <div className="relative px-4 py-3.5 before:absolute before:left-0 before:top-[14px] before:bottom-[14px] before:w-px before:bg-[#e5e7eb]">
-                      <p className="mb-1 flex items-center gap-1 text-[9px] font-semibold uppercase tracking-[0.06em] text-gray-400">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                        Acres Cultivated
-                      </p>
-                      <p className="text-[15px] font-semibold text-gray-900">{record.acres} acres</p>
-                    </div>
-                    <div className="relative px-4 py-3.5 before:absolute before:left-0 before:top-[14px] before:bottom-[14px] before:w-px before:bg-[#e5e7eb]">
-                      <p className="mb-1 flex items-center gap-1 text-[9px] font-semibold uppercase tracking-[0.06em] text-gray-400">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 20c0-5-4-9-9-9 0 5 4 9 9 9Zm0 0c0-5 4-9 9-9 0 5-4 9-9 9Zm0 0V4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                        Paddy Variety
-                      </p>
-                      <p className="text-[15px] font-semibold text-gray-900">{record.crop}</p>
-                    </div>
-                    <div className="relative bg-[#f0fdf4] px-4 py-3.5 before:absolute before:left-0 before:top-[14px] before:bottom-[14px] before:w-px before:bg-[#e5e7eb]">
-                      <p className="mb-1 flex items-center gap-1 text-[9px] font-semibold uppercase tracking-[0.06em] text-gray-400">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v18M6 8h12M8 16h8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                        Harvested Yield
-                      </p>
-                      <p className="text-[16px] font-semibold text-green-600">{(record.harvestQty / 1000).toFixed(2)} tons</p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <span style={{ background: '#DCFCE7', color: '#16A34A', fontWeight: 600, padding: '3px 9px', borderRadius: 20, fontSize: '10px', border: '1px solid #86EFAC' }}>✓ Verified</span>
+                      <button type="button" onClick={() => handleToggleHarvestSelection(record._id)}
+                        style={{ width: '26px', height: '26px', borderRadius: '7px', border: isSelected ? '1.5px solid #10B981' : '1.5px solid #D1D5DB', background: isSelected ? '#10B981' : '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: '11px', color: isSelected ? 'white' : '#9CA3AF', transition: 'all 0.15s' }}>
+                        {isSelected ? '✓' : ''}
+                      </button>
                     </div>
                   </div>
-                </div>
-
-                <div className="flex items-center justify-between" style={{ borderTop: '0.5px solid #f0f0f0', padding: '12px 20px' }}>
-                    <div className="flex items-center gap-2">
-                      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path d="M12 2l2.09 4.24L18.6 7l-3.3 2.9.98 4.55L12 11.9 7.72 14.45 8.7 9.9 5.4 7l4.51-.76L12 2z" fill="#fbbf24"/>
-                        <circle cx="12" cy="17" r="3" fill="#f59e0b" />
-                      </svg>
-                      <p style={{ fontSize: 13, fontWeight: 500, color: '#6b7280', margin: 0 }}>Points Earned</p>
+                  {/* Data Grid */}
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', background: '#FAFBFC' }}>
+                    <div style={{ padding: '12px 14px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '3px' }}>
+                        <MapPin style={{ width: '11px', height: '11px', color: '#9CA3AF' }} />
+                        <span style={{ fontSize: '11px', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Location</span>
+                      </div>
+                      <p style={{ fontSize: '15px', fontWeight: 600, color: '#1F2937', margin: 0 }}>{record.location}</p>
                     </div>
-
+                    <div style={{ padding: '12px 14px', borderLeft: '1px solid #F3F4F6' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '3px' }}>
+                        <Layers style={{ width: '11px', height: '11px', color: '#9CA3AF' }} />
+                        <span style={{ fontSize: '11px', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Acres</span>
+                      </div>
+                      <p style={{ fontSize: '15px', fontWeight: 600, color: '#1F2937', margin: 0 }}>{record.acres} acres</p>
+                    </div>
+                    <div style={{ padding: '12px 14px', borderLeft: '1px solid #F3F4F6' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '3px' }}>
+                        <Sprout style={{ width: '11px', height: '11px', color: '#9CA3AF' }} />
+                        <span style={{ fontSize: '11px', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Crop</span>
+                      </div>
+                      <p style={{ fontSize: '15px', fontWeight: 600, color: '#1F2937', margin: 0 }}>{record.crop}</p>
+                    </div>
+                    <div style={{ padding: '12px 14px', borderLeft: '1px solid #F3F4F6', background: '#F0FDF4' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '3px' }}>
+                        <TrendingUp style={{ width: '11px', height: '11px', color: '#059669' }} />
+                        <span style={{ fontSize: '11px', fontWeight: 600, color: '#059669', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Yield</span>
+                      </div>
+                      <p style={{ fontSize: '17px', fontWeight: 700, color: '#059669', margin: 0 }}>{(record.harvestQty / 1000).toFixed(2)} tons</p>
+                    </div>
+                  </div>
+                  {/* Points Footer */}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '9px 16px', borderTop: '1px solid #F3F4F6', background: '#FEFCE8' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                      <span style={{ fontSize: '14px' }}>⭐</span>
+                      <span style={{ fontSize: '13px', fontWeight: 600, color: '#92400E' }}>Points Earned</span>
+                    </div>
                     {record.pointsEarned === null || record.pointsEarned === undefined ? (
-                      <span
-                        style={{
-                          background: '#fffbeb',
-                          border: '0.5px solid #fcd34d',
-                          color: '#b45309',
-                          fontSize: 11,
-                          fontWeight: 600,
-                          padding: '5px 13px',
-                          borderRadius: 20,
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: 5,
-                        }}
-                      >
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                          <path d="M6 2v6h.01L12 13l6-5V2H6z" fill="#f59e0b" />
-                          <path d="M6 22h12v-2H6v2z" fill="#f59e0b" />
-                        </svg>
-                        <span>Pending review</span>
-                      </span>
+                      <span style={{ background: '#FEF3C7', border: '1px solid #FCD34D', color: '#92400E', fontSize: '12px', fontWeight: 600, padding: '4px 12px', borderRadius: 20 }}>⏳ Pending review</span>
                     ) : (
-                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#fff7ed', padding: '6px 14px', borderRadius: 20, fontWeight: 700, color: '#b45309' }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                          <circle cx="12" cy="12" r="9" fill="#f59e0b" />
-                          <path d="M12 7v6l3 2" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                        <span style={{ color: '#92400e' }}>{Math.round(record.pointsEarned)} points</span>
-                      </span>
+                      <span style={{ background: '#FDE68A', color: '#92400E', fontSize: '13px', fontWeight: 700, padding: '5px 14px', borderRadius: 20 }}>🏆 {Math.round(record.pointsEarned)} pts</span>
                     )}
                   </div>
                 </div>
-            ))}
+                );
+              })}
             </div>
           )}
         </div>
