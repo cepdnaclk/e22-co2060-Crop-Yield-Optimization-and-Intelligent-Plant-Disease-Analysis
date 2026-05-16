@@ -57,6 +57,14 @@ const userSchema = new mongoose.Schema(
             type: String,
             default: "NOT GIVEN"
         },
+        latitude: {
+            type: Number,
+            default: null
+        },
+        longitude: {
+            type: Number,
+            default: null
+        },
         points: {
             type: Number,
             default: 0

@@ -3,6 +3,7 @@ import { User, MapPin, Phone, IdCard, Save, Plus, Trash2, AlertCircle, CheckCirc
 import { userAPI, farmAPI } from '../../services/api';
 import uploadfile from '../../utils/mediaUpload';
 import { toast } from 'sonner';
+import { AddressLocationPicker } from './AddressLocationPicker';
 
 interface FarmData {
   farmName: string;
@@ -21,6 +22,8 @@ interface FarmerFormData {
   phone: string;
   email: string;
   password: string;
+  latitude: number | null;
+  longitude: number | null;
 }
 
 interface ExistingFarmer {
@@ -67,6 +70,8 @@ export function RegisterFarmer() {
     phone: '',
     email: '',
     password: '',
+    latitude: null,
+    longitude: null,
   } as FarmerFormData);
 
   const [farms, setFarms] = useState([
@@ -255,6 +260,8 @@ export function RegisterFarmer() {
         role: 'farmer' as const,
         isBlocked: false,
         image: imageUrl,
+        latitude: farmerData.latitude,
+        longitude: farmerData.longitude,
       };
 
       const response = await userAPI.register(userData);
@@ -362,7 +369,8 @@ export function RegisterFarmer() {
         if (mode === 'new') {
           setFarmerData({
             firstName: '', lastName: '', nic: '', address: '',
-            district: '', division: '', phone: '', email: '', password: ''
+            district: '', division: '', phone: '', email: '', password: '',
+            latitude: null, longitude: null,
           });
           setStep(1);
           setRegisteredFarmerId(null);
@@ -816,22 +824,18 @@ export function RegisterFarmer() {
                   </select>
                 </div>
 
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Address *
-                  </label>
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
-                    <textarea
-                      value={farmerData.address}
-                      onChange={(e) => setFarmerData({ ...farmerData, address: e.target.value })}
-                      placeholder="Enter full address"
-                      rows={3}
-                      className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 resize-none"
-                      required
-                    />
-                  </div>
-                </div>
+                <AddressLocationPicker
+                  address={farmerData.address}
+                  onAddressChange={(addr) => setFarmerData({ ...farmerData, address: addr })}
+                  onLocationConfirm={(data) => setFarmerData({
+                    ...farmerData,
+                    address: data.address,
+                    latitude: data.latitude,
+                    longitude: data.longitude,
+                  })}
+                  latitude={farmerData.latitude}
+                  longitude={farmerData.longitude}
+                />
               </div>
             </div>
 
@@ -850,7 +854,8 @@ export function RegisterFarmer() {
                 onClick={() => {
                   setFarmerData({
                     firstName: '', lastName: '', nic: '', address: '',
-                    district: '', division: '', phone: '', email: '', password: ''
+                    district: '', division: '', phone: '', email: '', password: '',
+                    latitude: null, longitude: null,
                   });
                   setProfileImage(null);
                   setProfileImagePreview(null);

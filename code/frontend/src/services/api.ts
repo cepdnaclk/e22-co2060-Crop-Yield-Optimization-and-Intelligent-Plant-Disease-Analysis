@@ -75,6 +75,9 @@ export const userAPI = {
     district: string;
     role: 'farmer' | 'admin';
     isBlocked?: boolean;
+    image?: string;
+    latitude?: number | null;
+    longitude?: number | null;
   }) => {
     const response = await api.post('/api/users', userData);
     return response.data;
