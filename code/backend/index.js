@@ -16,6 +16,7 @@ import farmRouter from "./routers/farmRouter.js"
 import jwt from "jsonwebtoken"
 import avgYieldRouter from "./routers/avgYieldRouter.js"
 import inquiryRouter from "./routers/inquiryRouter.js"
+import geocodeRouter from "./routers/geocodeRouter.js"
 
 import dns from "node:dns"
 dns.setServers(['1.1.1.1', '8.8.8.8'])
@@ -53,8 +54,8 @@ app.use(
         // Public endpoints that don't require authentication
         const publicEndpoints = ['/api/users/login', '/api/users']
         
-        // Skip token verification for public endpoints
-        if (publicEndpoints.some(endpoint => req.path === endpoint)) {
+        // Skip token verification for public endpoints (including geocode proxy)
+        if (publicEndpoints.some(endpoint => req.path === endpoint) || req.path.startsWith('/api/geocode')) {
             return next()
         }
 
@@ -110,6 +111,7 @@ app.use("/api/users", userRouter)
 app.use("/api/farms", farmRouter)
 app.use("/api/avgYields", avgYieldRouter)
 app.use("/api/inquiries", inquiryRouter)
+app.use("/api/geocode", geocodeRouter)
 
 
 

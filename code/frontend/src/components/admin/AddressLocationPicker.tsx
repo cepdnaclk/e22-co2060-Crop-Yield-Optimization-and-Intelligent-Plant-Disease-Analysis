@@ -3,7 +3,6 @@ import { MapPin, Search, X, Navigation, CheckCircle2, Loader2, MousePointer } fr
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-const GEOAPIFY_KEY = 'f8348ae376fc4ddd9b4357a90a86a8b1';
 
 // Fix Leaflet default marker icon issue in bundled apps
 const defaultIcon = L.icon({
@@ -75,7 +74,7 @@ export function AddressLocationPicker({
     setReverseGeocoding(true);
     try {
       const res = await fetch(
-        `https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${lng}&apiKey=${GEOAPIFY_KEY}`
+        `/api/geocode/reverse?lat=${lat}&lon=${lng}`
       );
       const data = await res.json();
       if (data.features && data.features.length > 0) {
@@ -141,7 +140,7 @@ export function AddressLocationPicker({
       setReverseGeocoding(true);
       try {
         const res = await fetch(
-          `https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${lng}&apiKey=${GEOAPIFY_KEY}`
+          `/api/geocode/reverse?lat=${lat}&lon=${lng}`
         );
         const data = await res.json();
         let addr = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
@@ -202,7 +201,7 @@ export function AddressLocationPicker({
     setSearching(true);
     try {
       const res = await fetch(
-        `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(text)}&filter=countrycode:lk&limit=6&apiKey=${GEOAPIFY_KEY}`
+        `/api/geocode/autocomplete?text=${encodeURIComponent(text)}&limit=6`
       );
       const data = await res.json();
       console.log('Geoapify autocomplete response:', data);
