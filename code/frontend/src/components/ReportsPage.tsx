@@ -47,7 +47,10 @@ export function ReportsPage() {
     const fetchReportData = async () => {
       try {
         const data = await farmAPI.getAllFarms();
-        const fetchedFarms = data.farms || [];
+        const fetchedFarms = (data.farms || []).map((farm: any) => ({
+          ...farm,
+          sizeInAcres: farm.sizeInAcres ?? farm.farmSize ?? 0,
+        }));
         setFarms(fetchedFarms);
 
         const yearSet = new Set<string>();
