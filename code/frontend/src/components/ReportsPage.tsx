@@ -1,36 +1,159 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Download, TrendingUp, BarChart3, PieChart } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, PieChart as RePieChart, Pie, Cell } from 'recharts';
 import { farmAPI } from '../services/api';
+import { AdminReportFilters } from './admin/AdminReportFilters';
+
+interface HarvestRecord {
+  season: string;
+  year: number;
+  harvestQty: number;
+  pointsEarned: number | null;
+  createdDate: string;
+}
+
+interface FarmerFarm {
+  farmId: string;
+  crop: string;
+  sizeInAcres: number;
+  harvests: HarvestRecord[];
+}
+
+const defaultCropOptions = ['Paddy', 'Corn', 'Wheat', 'Tomatoes', 'Onions', 'Carrots', 'Cabbage', 'Potatoes'];
+
+const normalizeSeason = (value?: string | null) => {
+  if (!value) return '';
+  const season = String(value).toLowerCase().trim();
+  if (season.includes('maha')) return 'Maha';
+  if (season.includes('yala')) return 'Yala';
+  return season.charAt(0).toUpperCase() + season.slice(1);
+};
+
+const getMonthName = (date: Date) => {
+  return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][date.getMonth()];
+};
 
 export function ReportsPage() {
-  const [reportData, setReportData] = useState<{
-    totalPoints: number;
-    totalAcres: number;
-    cropVarieties: { name: string; acres: number; value: number }[];
-    harvestTrend?: { month: string; qty: number }[];
-  } | null>(null);
+  const [farms, setFarms] = useState<FarmerFarm[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedYear, setSelectedYear] = useState<string>('');
+  const [selectedSeason, setSelectedSeason] = useState<string>('');
+  const [selectedCrop, setSelectedCrop] = useState<string | null>(null);
+  const [years, setYears] = useState<string[]>(['2026', '2025', '2024']);
+  const [seasons, setSeasons] = useState<string[]>(['Maha', 'Yala']);
+  const [availableCrops, setAvailableCrops] = useState<string[]>([]);
 
   useEffect(() => {
-    const fetchReport = async () => {
+    const fetchReportData = async () => {
       try {
-        const data = await farmAPI.getFarmerReport();
-        setReportData(data);
+        const data = await farmAPI.getAllFarms();
+        const fetchedFarms = data.farms || [];
+        setFarms(fetchedFarms);
+
+        const yearSet = new Set<string>();
+        const seasonSet = new Set<string>();
+        const cropSet = new Set<string>();
+
+        fetchedFarms.forEach((farm: FarmerFarm) => {
+          if (farm.crop) cropSet.add(farm.crop);
+          (farm.harvests || []).forEach((harvest) => {
+            if (harvest.year) yearSet.add(String(harvest.year));
+            const normalized = normalizeSeason(harvest.season);
+            if (normalized) seasonSet.add(normalized);
+          });
+        });
+
+        setAvailableCrops(Array.from(cropSet).sort());
+        const sortedYears = Array.from(yearSet).sort((a, b) => Number(b) - Number(a));
+        if (sortedYears.length > 0) {
+          setYears(sortedYears);
+        }
+        if (seasonSet.size > 0) {
+          setSeasons(Array.from(seasonSet).sort());
+        }
       } catch (error) {
-        console.error("Failed to fetch report", error);
+        console.error('Failed to fetch report data', error);
       } finally {
         setLoading(false);
       }
     };
-    fetchReport();
+
+    fetchReportData();
   }, []);
 
-  const harvestData = reportData?.harvestTrend || [];
+  const allHarvests = useMemo(
+    () => farms.flatMap((farm) =>
+      (farm.harvests || []).map((harvest) => ({
+        ...harvest,
+        farm,
+      }))
+    ),
+    [farms]
+  );
 
-  const cropVarietyData = reportData?.cropVarieties && reportData.cropVarieties.length > 0
-    ? reportData.cropVarieties
-    : [{ name: 'No Data', value: 100, acres: 0 }];
+  const filteredHarvests = useMemo(() => {
+    return allHarvests.filter((harvest) => {
+      const yearMatch = selectedYear ? String(harvest.year) === selectedYear : true;
+      const seasonMatch = selectedSeason ? normalizeSeason(harvest.season) === normalizeSeason(selectedSeason) : true;
+      const cropMatch = selectedCrop ? harvest.farm.crop.toLowerCase() === selectedCrop.toLowerCase() : true;
+      return yearMatch && seasonMatch && cropMatch;
+    });
+  }, [allHarvests, selectedYear, selectedSeason, selectedCrop]);
+
+  const filteredFarms = useMemo(() => {
+    const farmIds = new Set(filteredHarvests.map((harvest) => harvest.farm.farmId));
+    return farms.filter((farm) => farmIds.has(farm.farmId));
+  }, [farms, filteredHarvests]);
+
+  const totalAcres = useMemo(
+    () => filteredFarms.reduce((sum, farm) => sum + Number(farm.sizeInAcres || 0), 0),
+    [filteredFarms]
+  );
+
+  const totalPoints = useMemo(
+    () => filteredHarvests.reduce((sum, harvest) => sum + Number(harvest.pointsEarned || 0), 0),
+    [filteredHarvests]
+  );
+
+  const cropVarietyData = useMemo(() => {
+    const varietyMap = new Map<string, number>();
+
+    filteredFarms.forEach((farm) => {
+      const previous = varietyMap.get(farm.crop) || 0;
+      varietyMap.set(farm.crop, previous + Number(farm.sizeInAcres || 0));
+    });
+
+    const result = Array.from(varietyMap.entries()).map(([name, acres]) => ({
+      name,
+      acres,
+      value: totalAcres > 0 ? parseFloat(((acres / totalAcres) * 100).toFixed(1)) : 0,
+    }));
+
+    return result.length > 0 ? result : [{ name: 'No Data', acres: 0, value: 100 }];
+  }, [filteredFarms, totalAcres]);
+
+  const harvestTrend = useMemo(() => {
+    const today = new Date();
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const trendMap: Record<string, number> = {};
+
+    for (let i = 5; i >= 0; i -= 1) {
+      const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
+      trendMap[monthNames[date.getMonth()]] = 0;
+    }
+
+    filteredHarvests.forEach((harvest) => {
+      const harvestDate = new Date(harvest.createdDate);
+      if (Number.isNaN(harvestDate.getTime())) return;
+      const diffMonths = (today.getFullYear() - harvestDate.getFullYear()) * 12 + today.getMonth() - harvestDate.getMonth();
+      if (diffMonths >= 0 && diffMonths < 6) {
+        const monthName = monthNames[harvestDate.getMonth()];
+        trendMap[monthName] = (trendMap[monthName] || 0) + Number(harvest.harvestQty || 0);
+      }
+    });
+
+    return Object.keys(trendMap).map((month) => ({ month, qty: trendMap[month] }));
+  }, [filteredHarvests]);
 
   const diseaseData = [
     { name: 'Brown Spot', value: 40 },
@@ -46,6 +169,19 @@ export function ReportsPage() {
 
   return (
     <div className="space-y-6">
+      <AdminReportFilters
+        selectedYear={selectedYear}
+        selectedSeason={selectedSeason}
+        selectedCrop={selectedCrop}
+        years={years}
+        seasons={seasons}
+        availableCrops={availableCrops}
+        defaultCropOptions={defaultCropOptions}
+        onYearChange={setSelectedYear}
+        onSeasonChange={setSelectedSeason}
+        onCropChange={setSelectedCrop}
+      />
+
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-6">
         {/* Total Points Card */}
@@ -74,11 +210,11 @@ export function ReportsPage() {
               </div>
             </div>
             <p style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>Total Points</p>
-            <p style={{ fontSize: '28px', fontWeight: 700, color: '#111827', margin: '0', marginBottom: '4px' }} title={Math.round(reportData?.totalPoints || 0)?.toLocaleString()}>
-              {Math.round(reportData?.totalPoints || 0)?.toLocaleString()}
+            <p style={{ fontSize: '28px', fontWeight: 700, color: '#111827', margin: '0', marginBottom: '4px' }} title={Math.round(totalPoints).toLocaleString()}>
+              {Math.round(totalPoints).toLocaleString()}
             </p>
             <p style={{ fontSize: '11px', color: '#9CA3AF', fontStyle: 'normal', marginTop: '4px' }}>
-              This season
+              Selected period
             </p>
           </div>
         </div>
@@ -109,8 +245,8 @@ export function ReportsPage() {
               </div>
             </div>
             <p style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>Total Acres</p>
-            <p style={{ fontSize: '28px', fontWeight: 700, color: '#111827', margin: '0', marginBottom: '4px' }} title={(reportData?.totalAcres || 0).toString()}>
-              {reportData?.totalAcres || 0}
+            <p style={{ fontSize: '28px', fontWeight: 700, color: '#111827', margin: '0', marginBottom: '4px' }} title={totalAcres.toString()}>
+              {totalAcres}
             </p>
             <p style={{ fontSize: '11px', color: '#9CA3AF', fontStyle: 'normal', marginTop: '4px' }}>
               Under cultivation
@@ -144,8 +280,8 @@ export function ReportsPage() {
               </div>
             </div>
             <p style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>Crop Varieties</p>
-            <p style={{ fontSize: '28px', fontWeight: 700, color: '#111827', margin: '0', marginBottom: '4px' }} title={(reportData?.cropVarieties?.length || 0).toString()}>
-              {reportData?.cropVarieties?.length || 0}
+            <p style={{ fontSize: '28px', fontWeight: 700, color: '#111827', margin: '0', marginBottom: '4px' }} title={cropVarietyData.length.toString()}>
+              {cropVarietyData.length}
             </p>
             <p style={{ fontSize: '11px', color: '#9CA3AF', fontStyle: 'normal', marginTop: '4px' }}>
               Total varieties
@@ -202,7 +338,7 @@ export function ReportsPage() {
           </div>
           <div style={{ padding: '12px', background: '#FFFFFF', borderRadius: '8px' }}>
             <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={harvestData}>
+              <LineChart data={harvestTrend}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                 <XAxis dataKey="month" stroke="#666" />
                 <YAxis stroke="#666" />
