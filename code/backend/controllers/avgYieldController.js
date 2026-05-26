@@ -3,6 +3,7 @@ import { isAdmin } from "./userController.js";
 import { recalculatePendingPointsForAverage } from "./farmController.js";
 
 
+
 function buildUniqueYieldKeys(records) {
    const uniqueMap = new Map();
 
