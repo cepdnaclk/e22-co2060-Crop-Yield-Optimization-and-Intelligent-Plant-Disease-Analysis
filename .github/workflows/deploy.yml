@@ -74,10 +74,16 @@ jobs:
 
       - name: Install Dependencies
         run: npm install
+      - name: Install Root Dev Dependencies
+        run: npm install
+
+      - name: Install Backend Dependencies
+        run: npm install --prefix code/backend
 
       - name: Run Backend Tests
         run: |
-          echo "Add your tests here"
+          echo "Running backend test suite"
+          npm test --prefix code/backend
 
       - name: Trigger Render Deployment
         run: |
