@@ -72,18 +72,11 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install Dependencies
-        run: npm install
-      - name: Install Root Dev Dependencies
-        run: npm install
-
       - name: Install Backend Dependencies
-        run: npm install --prefix code/backend
+        run: npm ci
 
       - name: Run Backend Tests
-        run: |
-          echo "Running backend test suite"
-          npm test --prefix code/backend
+        run: npm test
 
       - name: Trigger Render Deployment
         run: |
