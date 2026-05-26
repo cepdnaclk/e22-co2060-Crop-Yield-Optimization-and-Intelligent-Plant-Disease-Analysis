@@ -2,6 +2,7 @@ import { MapPin, Wheat, TrendingUp, Calendar, Loader, RefreshCw } from 'lucide-r
 import { useState, useEffect } from 'react';
 import { farmAPI, userAPI } from '../services/api';
 
+
 interface HarvestDetail {
   _id: string;
   season: string;
