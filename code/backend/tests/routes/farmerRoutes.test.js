@@ -66,7 +66,7 @@ describe("Farmer Routes", () => {
         res.end(JSON.stringify(body));
       };
 
-      if (req.method === "POST" && req.url === "/api/farmers") {
+      if (req.method === "GET" && req.url === "/api/farmers") {
         req.query = {};
         return getRecentFarmers(req, res);
       }
