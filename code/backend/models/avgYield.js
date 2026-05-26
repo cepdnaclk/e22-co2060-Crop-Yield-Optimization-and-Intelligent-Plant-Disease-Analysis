@@ -5,6 +5,7 @@
  */
 import mongoose from "mongoose";
 
+
 const avgYieldSchema = new mongoose.Schema({
     district: {
         type: String,
