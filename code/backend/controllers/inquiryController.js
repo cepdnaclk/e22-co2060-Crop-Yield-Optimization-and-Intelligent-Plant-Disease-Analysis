@@ -1,8 +1,8 @@
 import Inquiry from "../models/inquiryModel.js";
 import { isAdmin } from "./userController.js";
 
-const SUPABASE_URL = process.env.SUPABASE_URL || "https://lqiytbcuhhezawsxgoxl.supabase.co";
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || "sb_publishable_Lp5Zrzxu21uFkLtCLMr6sQ_YdFiQdrF";
+const SUPABASE_URL = "https://lqiytbcuhhezawsxgoxl.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_Lp5Zrzxu21uFkLtCLMr6sQ_YdFiQdrF";
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 const SUPABASE_BUCKET = process.env.SUPABASE_BUCKET || "images";
 
@@ -18,6 +18,17 @@ const buildPublicUrl = (bucket, objectPath) => {
     return `${SUPABASE_URL}/storage/v1/object/public/${bucket}/${encodedPath}`;
 };
 
+const getObjectPathFromUrl = (url) => {
+    const prefix = `/storage/v1/object/public/${SUPABASE_BUCKET}/`;
+    const index = url.indexOf(prefix);
+
+    if (index === -1) {
+        return url;
+    }
+
+    return decodeURIComponent(url.slice(index + prefix.length));
+};
+
 const getSupabaseHeaders = () => {
     const key = getSupabaseKey();
     return {
@@ -27,6 +38,10 @@ const getSupabaseHeaders = () => {
 };
 
 const uploadFileToSupabase = async (file, objectPath) => {
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+        throw new Error("Supabase storage is not configured");
+    }
+
     const response = await fetch(buildStorageUrl(SUPABASE_BUCKET, objectPath), {
         method: "POST",
         headers: {
@@ -49,6 +64,10 @@ const uploadFileToSupabase = async (file, objectPath) => {
 };
 
 const deleteFileFromSupabase = async (objectPath) => {
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+        throw new Error("Supabase storage is not configured");
+    }
+
     const response = await fetch(buildStorageUrl(SUPABASE_BUCKET, objectPath), {
         method: "DELETE",
         headers: getSupabaseHeaders(),
@@ -183,16 +202,18 @@ export const uploadDocuments = async (req, res) => {
 
         const uploadedDocs = [];
         for (const file of req.files) {
-            const objectPath = `inquiries/${inquiryId}/${Date.now()}_${file.originalname}`;
+            const storedFileName = `${Date.now()}_${file.originalname}`;
+            const objectPath = storedFileName;
             console.log("Uploading document to Supabase:", objectPath);
 
             const storageResult = await uploadFileToSupabase(file, objectPath);
             uploadedDocs.push({
-                filename: objectPath.split("/").pop(),
+                filename: storedFileName,
                 originalname: file.originalname,
                 mimetype: file.mimetype,
                 size: file.size,
                 path: storageResult.path,
+                url: storageResult.publicUrl,
                 uploadedAt: new Date(),
             });
         }
@@ -262,7 +283,7 @@ export const downloadDocument = async (req, res) => {
         const document = inquiry.documents[docIdx];
         
         // Try to resolve the file path - handle both absolute and relative paths
-        const fileUrl = buildPublicUrl(SUPABASE_BUCKET, document.path);
+        const fileUrl = document.url || buildPublicUrl(SUPABASE_BUCKET, document.path);
 
         console.log("Document to download:", {
             filename: document.filename,
@@ -310,8 +331,9 @@ export const deleteDocument = async (req, res) => {
         }
 
         const document = inquiry.documents[docIdx];
+        const objectPath = document.path || getObjectPathFromUrl(document.url || "");
 
-        await deleteFileFromSupabase(document.path);
+        await deleteFileFromSupabase(objectPath);
 
         // Remove document from array
         inquiry.documents.splice(docIdx, 1);

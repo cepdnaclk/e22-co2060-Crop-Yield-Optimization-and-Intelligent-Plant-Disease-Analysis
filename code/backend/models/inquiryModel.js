@@ -43,6 +43,10 @@ const inquirySchema = new mongoose.Schema(
                     type: String,
                     required: true,
                 },
+                url: {
+                    type: String,
+                    required: false,
+                },
                 uploadedAt: {
                     type: Date,
                     default: Date.now,
