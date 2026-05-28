@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { Lock, Mail, ChevronDown } from 'lucide-react';
 import { useNavigate } from 'react-router';
@@ -16,6 +16,12 @@ export function LoginPage({ onLogin }: LoginPageProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // Clear any stale auth data when component mounts
+  useEffect(() => {
+    localStorage.removeItem('agriconnect_auth');
+    localStorage.removeItem('lastActivityTime');
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

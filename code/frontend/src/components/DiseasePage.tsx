@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Upload, MapPin, Loader2, CheckCircle, AlertCircle, Send } from 'lucide-react';
+import { Upload, MapPin, Loader2, CheckCircle, AlertCircle, Send, Microscope, FileText, Shield, Leaf } from 'lucide-react';
 import uploadfile from '../utils/mediaUpload';
+import { DiseaseLocationPicker } from './DiseaseLocationPicker';
 
 type PredictionResult = {
   class_id: number;
@@ -70,6 +71,8 @@ export function DiseasePage() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisResult, setAnalysisResult] = useState<PredictionResult | null>(null);
   const [location, setLocation] = useState('');
+  const [locationLat, setLocationLat] = useState<number | null>(null);
+  const [locationLng, setLocationLng] = useState<number | null>(null);
   const [notes, setNotes] = useState('');
   const [reportSent, setReportSent] = useState(false);
   const [analysisError, setAnalysisError] = useState('');
@@ -152,24 +155,28 @@ export function DiseasePage() {
     }, 1500);
   };
 
-  // Frequency scale data for heat map
-  const tempScale = [
-    { temp: 'None', color: 'bg-green-200' },
-    { temp: 'Very Low', color: 'bg-green-300' },
-    { temp: 'Low', color: 'bg-yellow-200' },
-    { temp: 'Warning', color: 'bg-yellow-300' },
-    { temp: 'Alert', color: 'bg-yellow-400' },
-    { temp: 'Moderate', color: 'bg-orange-400' },
-    { temp: 'Elevated', color: 'bg-orange-500' },
-    { temp: 'High', color: 'bg-red-500' },
-    { temp: 'Very High', color: 'bg-red-700' },
-    { temp: 'Critical', color: 'bg-red-900' },
-  ];
+
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-      {/* Left Column - Disease Report Form */}
-      <div className="lg:col-span-2 space-y-4 md:space-y-6">
+    <div className="space-y-6">
+      {/* Hero Header */}
+      <div style={{ background: 'linear-gradient(135deg, #065F46 0%, #047857 50%, #059669 100%)', borderRadius: '16px', padding: '28px 32px', color: 'white', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', top: '-20px', right: '-20px', width: '120px', height: '120px', background: 'rgba(255,255,255,0.08)', borderRadius: '50%' }} />
+        <div style={{ position: 'absolute', bottom: '-30px', right: '80px', width: '80px', height: '80px', background: 'rgba(255,255,255,0.05)', borderRadius: '50%' }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', position: 'relative', zIndex: 1 }}>
+          <div style={{ width: '48px', height: '48px', background: 'rgba(255,255,255,0.15)', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)' }}>
+            <Microscope style={{ width: '26px', height: '26px' }} />
+          </div>
+          <div>
+            <h2 style={{ fontSize: '22px', fontWeight: '700', margin: 0 }}>Disease Detection & Analysis</h2>
+            <p style={{ fontSize: '13px', opacity: 0.85, margin: '2px 0 0' }}>Upload a leaf image for AI-powered disease identification</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* Left Column */}
+      <div className="space-y-5">
         {/* Image Upload */}
         <div className="bg-white rounded-xl border border-gray-200 p-4 md:p-6">
           {!selectedImage ? (
@@ -214,27 +221,31 @@ export function DiseasePage() {
           )}
         </div>
 
-        {/* Location Input */}
+        {/* Location Picker with Map */}
         <div className="bg-white rounded-xl border border-gray-200 p-4 md:p-6">
-          <label className="block mb-3">
-            <span className="text-gray-700 font-medium mb-2 block text-sm md:text-base">Location / Plot Details</span>
-            <div className="relative">
-              <MapPin className="absolute left-3 top-2.5 md:top-3 w-4 h-4 md:w-5 md:h-5 text-gray-400" />
-              <input
-                type="text"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                placeholder="e.g., Plot A - Section 2"
-                className="w-full pl-9 md:pl-11 pr-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm md:text-base"
-              />
-            </div>
-          </label>
+          <DiseaseLocationPicker
+            location={location}
+            onLocationChange={setLocation}
+            onLocationSelect={(data) => {
+              setLocation(data.address);
+              setLocationLat(data.latitude);
+              setLocationLng(data.longitude);
+            }}
+            latitude={locationLat}
+            longitude={locationLng}
+          />
         </div>
 
+
+
+      </div>
+
+      {/* Right Column */}
+      <div className="space-y-5">
         {/* Additional Notes */}
         <div className="bg-white rounded-xl border border-gray-200 p-4 md:p-6">
           <label className="block">
-            <span className="text-gray-700 font-medium mb-2 block text-sm md:text-base">Additional Notes (Optional)</span>
+            <span className="text-gray-700 font-medium mb-2 block text-sm md:text-base flex items-center gap-2"><FileText className="w-4 h-4 text-green-600" />Additional Notes (Optional)</span>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
@@ -245,22 +256,28 @@ export function DiseasePage() {
           </label>
         </div>
 
+        {/* Advisory Tips */}
+        <div className="bg-white rounded-xl border border-gray-200 p-4 md:p-6">
+          <h3 className="font-semibold text-gray-800 mb-3 text-sm md:text-base flex items-center gap-2"><Shield className="w-4 h-4 text-green-600" />Quick Tips</h3>
+          <ul className="space-y-2.5 text-xs md:text-sm text-gray-700">
+            <li className="flex items-start gap-2"><Leaf className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" /><span>Take clear, well-lit photos of affected leaves</span></li>
+            <li className="flex items-start gap-2"><Leaf className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" /><span>Include both close-up and wide shots</span></li>
+            <li className="flex items-start gap-2"><Leaf className="w-4 h-4 text-teal-500 mt-0.5 flex-shrink-0" /><span>Mark exact location for field officer visits</span></li>
+            <li className="flex items-start gap-2"><Leaf className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" /><span>Note when symptoms first appeared</span></li>
+          </ul>
+        </div>
+
         {/* Analyze Button */}
         <button
           onClick={handleAnalyze}
           disabled={!selectedImage || !selectedFile || isAnalyzing}
-          className="w-full py-3 md:py-4 bg-orange-400 hover:bg-orange-500 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-xl font-medium flex items-center justify-center gap-3 transition-all text-sm md:text-base"
+          style={{ background: (!selectedImage || !selectedFile || isAnalyzing) ? '#D1D5DB' : 'linear-gradient(135deg, #D97706 0%, #F59E0B 100%)', boxShadow: (!selectedImage || !selectedFile || isAnalyzing) ? 'none' : '0 4px 14px rgba(217,119,6,0.35)' }}
+          className="w-full py-3 md:py-4 disabled:cursor-not-allowed text-white rounded-xl font-medium flex items-center justify-center gap-3 transition-all text-sm md:text-base"
         >
           {isAnalyzing ? (
-            <>
-              <Loader2 className="w-4 h-4 md:w-5 md:h-5 animate-spin" />
-              Uploading and Analyzing...
-            </>
+            <><Loader2 className="w-4 h-4 md:w-5 md:h-5 animate-spin" />Uploading and Analyzing...</>
           ) : (
-            <>
-              <AlertCircle className="w-4 h-4 md:w-5 md:h-5" />
-              Analyze Disease
-            </>
+            <><Microscope className="w-4 h-4 md:w-5 md:h-5" />Analyze Disease</>
           )}
         </button>
 
@@ -366,49 +383,6 @@ export function DiseasePage() {
           </div>
         )}
       </div>
-
-      {/* Right Column - Heat Map */}
-      <div className="space-y-4 md:space-y-6">
-        {/* Temperature Scale */}
-        <div className="bg-white rounded-xl border border-gray-200 p-3 md:p-4">
-          <h3 className="text-sm md:text-base font-semibold text-gray-800 mb-3">Report Frequency</h3>
-          <div className="space-y-2">
-            {tempScale.map((item, index) => (
-              <div key={index} className="flex items-center gap-2 md:gap-3">
-                <div className={`w-6 h-4 md:w-8 md:h-5 ${item.color} rounded`}></div>
-                <span className="text-xs md:text-sm text-gray-700">{item.temp}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Heat Map Visualization */}
-        <div className="bg-white rounded-xl border border-gray-200 p-4 md:p-6">
-          <h3 className="text-sm md:text-base font-semibold text-gray-800 mb-3">Disease Heat Map</h3>
-          <div className="relative flex items-center justify-center min-h-[300px] bg-gray-50 rounded-lg">
-            {/* Generated Map Heat Map */}
-            <img src="/src/assets/sri_lanka_heatmap.png" alt="Sri Lanka Disease Heatmap" className="w-full h-full object-contain mix-blend-multiply opacity-90 p-4" />
-          </div>
-        </div>
-
-        {/* Advisory */}
-        <div className="bg-white rounded-xl border border-gray-200 p-4 md:p-6">
-          <h3 className="font-semibold text-gray-800 mb-3 text-sm md:text-base">Advisory & Tips</h3>
-          <ul className="space-y-2 text-xs md:text-sm text-gray-700">
-            <li className="flex items-start gap-2">
-              <span className="text-orange-500 mt-1">•</span>
-              <span>High disease risk in northern plots</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-yellow-500 mt-1">•</span>
-              <span>Regular monitoring recommended</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-green-500 mt-1">•</span>
-              <span>Southern area showing improvement</span>
-            </li>
-          </ul>
-        </div>
       </div>
     </div>
   );

@@ -69,6 +69,13 @@ export async function loginUser(req, res) {
             })
         }
 
+        // Check if user is blocked
+        if (user.isBlocked) {
+            return res.status(403).json({
+                message: "Your account has been blocked. Please contact support."
+            })
+        }
+
         // Verify password asynchronously
         const isPasswordCorrect = await bcrypt.compare(password, user.password)
 
@@ -117,7 +124,7 @@ export async function loginUser(req, res) {
                 }
             })
         } else {
-            res.status(401).json({
+            return res.status(401).json({
                 message: "Incorrect Password"
             })
         }

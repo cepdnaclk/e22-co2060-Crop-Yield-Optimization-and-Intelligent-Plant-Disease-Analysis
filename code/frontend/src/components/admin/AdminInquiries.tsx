@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Mail, Clock, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
+import { Mail, Clock, CheckCircle2, AlertCircle, Loader2, Download, File } from 'lucide-react';
 import { toast } from 'sonner';
 import { inquiryAPI } from '../../services/api';
 
@@ -16,6 +16,8 @@ export function AdminInquiries() {
     const fetchInquiries = async () => {
         try {
             const data = await inquiryAPI.getAllInquiries();
+            console.log("Inquiries data received:", data);
+            console.log("Inquiries array:", data.inquiries);
             setInquiries(data.inquiries || []);
         } catch (error) {
             console.error("Failed to fetch inquiries", error);
@@ -39,6 +41,36 @@ export function AdminInquiries() {
         } finally {
             setResolvingId(null);
         }
+    };
+
+    const handleDownloadDocument = async (inquiryId: string, documentIndex: number, filename: string) => {
+        try {
+            const response = await inquiryAPI.downloadDocument(inquiryId, documentIndex);
+            
+            // response.data is already a Blob when responseType is 'blob'
+            const blob = response.data instanceof Blob ? response.data : new Blob([response.data]);
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', filename);
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode?.removeChild(link);
+            window.URL.revokeObjectURL(url);
+            
+            toast.success(`Downloaded ${filename}`);
+        } catch (error: any) {
+            console.error("Failed to download document", error);
+            console.error("Error details:", error.response?.data || error.message);
+            const errorMsg = error.response?.data?.message || "Failed to download document";
+            toast.error(errorMsg);
+        }
+    };
+
+    const [expandedDocuments, setExpandedDocuments] = useState<string | null>(null);
+
+    const toggleDocumentExpand = (inquiryId: string) => {
+        setExpandedDocuments(expandedDocuments === inquiryId ? null : inquiryId);
     };
 
     const getStatusColor = (status: string) => {
@@ -496,7 +528,7 @@ export function AdminInquiries() {
                                     </div>
 
                                     {/* Status + Action Row */}
-                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '14px' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '14px', gap: '12px', flexWrap: 'wrap' }}>
                                         <div>
                                             {inq.status === 'Resolved' ? (
                                                 <div style={{
@@ -532,6 +564,43 @@ export function AdminInquiries() {
                                                 </div>
                                             )}
                                         </div>
+                                        
+                                        {/* Download Button - Always Visible */}
+                                            <button
+                                                onClick={() => toggleDocumentExpand(inq._id)}
+                                                disabled={!inq.documents || inq.documents.length === 0}
+                                                style={{
+                                                    display: 'inline-flex',
+                                                    alignItems: 'center',
+                                                    gap: '6px',
+                                                    background: (inq.documents && inq.documents.length > 0) ? '#DBEAFE' : '#E5E7EB',
+                                                    color: (inq.documents && inq.documents.length > 0) ? '#1E40AF' : '#9CA3AF',
+                                                    border: '1px solid ' + ((inq.documents && inq.documents.length > 0) ? '#93C5FD' : '#D1D5DB'),
+                                                    padding: '6px 14px',
+                                                    borderRadius: '6px',
+                                                    fontSize: '12px',
+                                                    fontWeight: '600',
+                                                    cursor: (inq.documents && inq.documents.length > 0) ? 'pointer' : 'not-allowed',
+                                                    transition: 'all 0.2s ease',
+                                                    opacity: (inq.documents && inq.documents.length > 0) ? 1 : 0.6,
+                                                }}
+                                                onMouseEnter={(e) => {
+                                                    if (inq.documents && inq.documents.length > 0) {
+                                                        e.currentTarget.style.background = '#BFDBFE';
+                                                        e.currentTarget.style.borderColor = '#60A5FA';
+                                                    }
+                                                }}
+                                                onMouseLeave={(e) => {
+                                                    if (inq.documents && inq.documents.length > 0) {
+                                                        e.currentTarget.style.background = '#DBEAFE';
+                                                        e.currentTarget.style.borderColor = '#93C5FD';
+                                                    }
+                                                }}
+                                            >
+                                                <Download size={14} />
+                                                Documents {inq.documents && inq.documents.length > 0 ? `(${inq.documents.length})` : '(0)'}
+                                            </button>
+
                                         <select
                                             value={inq.status}
                                             onChange={(e) => handleStatusUpdate(inq._id, e.target.value)}
@@ -544,7 +613,8 @@ export function AdminInquiries() {
                                                 fontSize: '13px',
                                                 color: '#374151',
                                                 cursor: resolvingId === inq._id ? 'not-allowed' : 'pointer',
-                                                transition: 'all 0.2s ease'
+                                                transition: 'all 0.2s ease',
+                                                marginLeft: 'auto'
                                             }}
                                             onMouseEnter={(e) => {
                                                 if (resolvingId !== inq._id) {
@@ -578,6 +648,68 @@ export function AdminInquiries() {
                                     }}>
                                         {inq.message}
                                     </div>
+
+                                    {/* Supporting Documents Section */}
+                                    {inq.documents && inq.documents.length > 0 && expandedDocuments === inq._id && (
+                                        <div style={{
+                                            marginTop: '16px',
+                                            padding: '12px 16px',
+                                            background: '#F0F9FF',
+                                            border: '1px solid #BFDBFE',
+                                            borderRadius: '8px'
+                                        }}>
+                                            <h5 style={{
+                                                fontSize: '12px',
+                                                fontWeight: '600',
+                                                color: '#1E40AF',
+                                                marginBottom: '10px',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '6px'
+                                            }}>
+                                                <File size={14} />
+                                                Supporting Documents ({inq.documents.length})
+                                            </h5>
+                                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '8px' }}>
+                                                {inq.documents.map((doc: any, docIndex: number) => (
+                                                    <button
+                                                        key={docIndex}
+                                                        onClick={() => handleDownloadDocument(inq._id, docIndex, doc.originalname)}
+                                                        style={{
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            gap: '8px',
+                                                            padding: '8px 12px',
+                                                            background: 'white',
+                                                            border: '1px solid #DBEAFE',
+                                                            borderRadius: '6px',
+                                                            fontSize: '12px',
+                                                            color: '#1E40AF',
+                                                            cursor: 'pointer',
+                                                            transition: 'all 0.2s ease',
+                                                            textAlign: 'left'
+                                                        }}
+                                                        onMouseEnter={(e) => {
+                                                            e.currentTarget.style.background = '#EFF6FF';
+                                                            e.currentTarget.style.borderColor = '#3B82F6';
+                                                        }}
+                                                        onMouseLeave={(e) => {
+                                                            e.currentTarget.style.background = 'white';
+                                                            e.currentTarget.style.borderColor = '#DBEAFE';
+                                                        }}
+                                                    >
+                                                        <Download size={14} />
+                                                        <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                                            <div style={{ fontWeight: '500' }}>{doc.originalname}</div>
+                                                            <div style={{ fontSize: '11px', color: '#6B7280' }}>
+                                                                {(doc.size / 1024).toFixed(2)} KB
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             );
                         })

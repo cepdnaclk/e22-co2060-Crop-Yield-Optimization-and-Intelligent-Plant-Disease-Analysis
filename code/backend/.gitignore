@@ -5,3 +5,4 @@ dist/
 .env
 .env.*
 admin_access/
+uploads/

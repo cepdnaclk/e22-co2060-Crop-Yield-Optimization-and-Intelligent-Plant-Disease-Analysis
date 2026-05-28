@@ -9,17 +9,23 @@ import mongoose from "mongoose"
 import dotenv from "dotenv"
 import bodyParser from "body-parser"
 import cors from "cors"
+import path from "path"
+import { fileURLToPath } from "url"
 import axios from "axios"
 import userRouter from "./routers/userRouter.js"
 import farmRouter from "./routers/farmRouter.js"
 import jwt from "jsonwebtoken"
 import avgYieldRouter from "./routers/avgYieldRouter.js"
 import inquiryRouter from "./routers/inquiryRouter.js"
+import geocodeRouter from "./routers/geocodeRouter.js"
 
 import dns from "node:dns"
 dns.setServers(['1.1.1.1', '8.8.8.8'])
 
 dotenv.config()
+
+// Get __dirname equivalent in ES6 modules
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const CHATBOT_WEBHOOK_URL = process.env.CHATBOT_WEBHOOK_URL || 'https://n8n-opvk.onrender.com/webhook/246e550d-c772-4fcb-bae5-e847e8c632ce/chat'
 const CHATBOT_WEBHOOK_TEST_URL = process.env.CHATBOT_WEBHOOK_TEST_URL || ''
@@ -46,10 +52,18 @@ app.use(express.json())
  * Global Authentication Middleware
  * Validates 'Authorization: Bearer <token>' headers on incoming requests.
  * If present and valid, decodes the token and attaches `req.user`.
- * Note: If no token is provided, it currently falls through (open by default).
+ * Skips token verification for public endpoints (login, register).
  */
 app.use(
     (req, res, next) => {
+        // Public endpoints that don't require authentication
+        const publicEndpoints = ['/api/users/login', '/api/users']
+        
+        // Skip token verification for public endpoints (including geocode proxy)
+        if (publicEndpoints.some(endpoint => req.path === endpoint) || req.path.startsWith('/api/geocode')) {
+            return next()
+        }
+
         const value = req.header("Authorization")
         if (value != null) {
             const token = value.replace("Bearer ", "")
@@ -57,10 +71,14 @@ app.use(
             jwt.verify(token, process.env.JWT_SECRET,
                 (err, decoded) => {
                     if (decoded == null) {
-                        res.status(403).json({
+                        return res.status(403).json({
                             message: "unauthorized"
                         })
                     } else {
+                        // Normalize token payload: ensure `_id` is available for code expecting it
+                        if (decoded.id && !decoded._id) {
+                            decoded._id = decoded.id
+                        }
                         req.user = decoded
                         next()
                     }
@@ -74,6 +92,9 @@ app.use(
 
     }
 )
+
+// Serve static files from uploads directory
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
 /**
  * Initialize MongoDB Connection and start the server.
@@ -95,6 +116,7 @@ app.use("/api/users", userRouter)
 app.use("/api/farms", farmRouter)
 app.use("/api/avgYields", avgYieldRouter)
 app.use("/api/inquiries", inquiryRouter)
+app.use("/api/geocode", geocodeRouter)
 
 app.post('/api/chatbot', async (req, res) => {
     try {

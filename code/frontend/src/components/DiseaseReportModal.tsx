@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { X, Upload, Camera, CheckCircle, Loader2 } from 'lucide-react';
+import { X, Upload, Camera, CheckCircle, Loader2, File, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { inquiryAPI } from '../services/api';
+import { getAuthData } from '../utils/authUtils';
 
 interface DiseaseReportModalProps {
   isOpen: boolean;
@@ -12,6 +14,8 @@ export function DiseaseReportModal({ isOpen, onClose }: DiseaseReportModalProps)
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisResult, setAnalysisResult] = useState<any>(null);
   const [notes, setNotes] = useState('');
+  const [supportingDocuments, setSupportingDocuments] = useState<File[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -41,13 +45,55 @@ export function DiseaseReportModal({ isOpen, onClose }: DiseaseReportModalProps)
     }, 2000);
   };
 
-  const handleSubmit = () => {
-    // In real app, this would submit to backend
-    toast.success('Disease report submitted successfully! Your district officer will review it shortly.');
-    onClose();
-    setSelectedImage(null);
-    setAnalysisResult(null);
-    setNotes('');
+  const handleDocumentUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      const newFiles = Array.from(files);
+      setSupportingDocuments((prev) => [...prev, ...newFiles]);
+    }
+  };
+
+  const removeDocument = (index: number) => {
+    setSupportingDocuments((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleSubmit = async () => {
+    try {
+      setIsSubmitting(true);
+      const authData = getAuthData();
+
+      if (!authData?.user?._id) {
+        toast.error('User not authenticated');
+        return;
+      }
+
+      // Create inquiry
+      const inquiryData = {
+        subject: `[Disease Report] ${analysisResult?.disease || 'Crop Disease'}`,
+        message: `Disease: ${analysisResult?.disease || 'Unknown'}\nConfidence: ${analysisResult?.confidence || 'N/A'}%\nSeverity: ${analysisResult?.severity || 'N/A'}\n\nAdditional Notes:\n${notes}`,
+        farmerId: authData.user._id,
+      };
+
+      const inquiry = await inquiryAPI.createInquiry(inquiryData);
+
+      // Upload supporting documents if any
+      if (supportingDocuments.length > 0) {
+        const uploadResponse = await inquiryAPI.uploadDocuments(inquiry._id, supportingDocuments);
+        // Use the updated inquiry from response which includes documents
+      }
+
+      toast.success('Disease report submitted successfully! Your district officer will review it shortly.');
+      onClose();
+      setSelectedImage(null);
+      setAnalysisResult(null);
+      setNotes('');
+      setSupportingDocuments([]);
+    } catch (error: any) {
+      console.error('Error submitting report:', error);
+      toast.error(error.response?.data?.message || 'Failed to submit report');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -191,6 +237,54 @@ export function DiseaseReportModal({ isOpen, onClose }: DiseaseReportModalProps)
             />
           </div>
 
+          {/* Supporting Documents */}
+          <div>
+            <label className="block text-gray-700 font-medium mb-3">Supporting Documents (Optional)</label>
+            <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50/50 transition-all">
+              <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                <Upload className="w-12 h-12 text-gray-400 mb-2" />
+                <p className="mb-2 text-sm text-gray-600">
+                  <span className="font-semibold">Click to upload</span> or drag and drop
+                </p>
+                <p className="text-xs text-gray-500">PDF, PNG, JPG (MAX 10MB each, up to 5 files)</p>
+              </div>
+              <input
+                type="file"
+                className="hidden"
+                multiple
+                accept=".pdf,.png,.jpg,.jpeg"
+                onChange={handleDocumentUpload}
+              />
+            </label>
+
+            {/* Uploaded Documents List */}
+            {supportingDocuments.length > 0 && (
+              <div className="mt-4 space-y-2">
+                <h4 className="text-sm font-medium text-gray-700">Uploaded Files:</h4>
+                {supportingDocuments.map((doc, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between bg-gray-50 p-3 rounded-lg border border-gray-200"
+                  >
+                    <div className="flex items-center gap-2 flex-1">
+                      <File className="w-4 h-4 text-gray-400" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-gray-700 truncate">{doc.name}</p>
+                        <p className="text-xs text-gray-500">{(doc.size / 1024).toFixed(2)} KB</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => removeDocument(index)}
+                      className="text-red-500 hover:text-red-700 transition-colors"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
           {/* Info */}
           <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
             <p className="text-yellow-800 text-sm">
@@ -203,16 +297,24 @@ export function DiseaseReportModal({ isOpen, onClose }: DiseaseReportModalProps)
           <div className="flex gap-4">
             <button
               onClick={onClose}
-              className="flex-1 py-3 px-6 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 font-medium transition-colors"
+              disabled={isSubmitting}
+              className="flex-1 py-3 px-6 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 disabled:bg-gray-100 disabled:cursor-not-allowed font-medium transition-colors"
             >
               Cancel
             </button>
             <button
               onClick={handleSubmit}
-              disabled={!selectedImage || !analysisResult}
-              className="flex-1 py-3 px-6 bg-green-600 hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-xl font-medium transition-colors"
+              disabled={!selectedImage || !analysisResult || isSubmitting}
+              className="flex-1 py-3 px-6 bg-green-600 hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-xl font-medium transition-colors flex items-center justify-center gap-2"
             >
-              Submit Report
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Submitting...
+                </>
+              ) : (
+                'Submit Report'
+              )}
             </button>
           </div>
         </div>

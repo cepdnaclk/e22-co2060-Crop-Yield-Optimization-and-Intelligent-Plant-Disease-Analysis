@@ -15,11 +15,11 @@ const API_BASE_URL = import.meta.env.PROD
 // Create axios instance with default config
 const api = axios.create({
   baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
   timeout: 10000, // 10 seconds timeout
 });
+
+// Set default JSON content type (will be overridden for FormData)
+api.defaults.headers.common['Content-Type'] = 'application/json';
 
 const extractChatbotReply = (payload: any): string => {
   if (typeof payload === 'string') {
@@ -59,6 +59,11 @@ const extractChatbotReply = (payload: any): string => {
 // Request interceptor to add auth token
 api.interceptors.request.use(
   (config) => {
+    // Don't override Content-Type if FormData is being sent
+    if (config.data instanceof FormData) {
+      delete config.headers['Content-Type'];
+    }
+    
     const authData = localStorage.getItem('agriconnect_auth');
     if (authData) {
       const { token } = JSON.parse(authData);
@@ -105,6 +110,9 @@ export const userAPI = {
     district: string;
     role: 'farmer' | 'admin';
     isBlocked?: boolean;
+    image?: string;
+    latitude?: number | null;
+    longitude?: number | null;
   }) => {
     const response = await api.post('/api/users', userData);
     return response.data;
@@ -255,7 +263,31 @@ export const inquiryAPI = {
   updateStatus: async (inquiryId: string, status: string) => {
     const response = await api.put(`/api/inquiries/${inquiryId}/status`, { status });
     return response.data;
-  }
+  },
+
+  uploadDocuments: async (inquiryId: string, files: FileList | File[]) => {
+    const formData = new FormData();
+    
+    // Handle both FileList and File array
+    for (let i = 0; i < files.length; i++) {
+      formData.append('documents', files[i]);
+    }
+
+    const response = await api.post(`/api/inquiries/${inquiryId}/documents`, formData);
+    return response.data;
+  },
+
+  downloadDocument: async (inquiryId: string, documentIndex: number) => {
+    const response = await api.get(`/api/inquiries/${inquiryId}/documents/${documentIndex}`, {
+      responseType: 'blob',
+    });
+    return response;
+  },
+
+  deleteDocument: async (inquiryId: string, documentIndex: number) => {
+    const response = await api.delete(`/api/inquiries/${inquiryId}/documents/${documentIndex}`);
+    return response.data;
+  },
 };
 
 export const chatbotAPI = {
