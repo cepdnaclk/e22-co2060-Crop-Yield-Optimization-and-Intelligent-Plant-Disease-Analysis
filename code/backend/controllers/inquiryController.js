@@ -183,8 +183,7 @@ export const uploadDocuments = async (req, res) => {
 
         const uploadedDocs = [];
         for (const file of req.files) {
-            const safeName = file.originalname.replace(/[^a-zA-Z0-9._-]/g, "_");
-            const objectPath = `inquiries/${inquiryId}/${Date.now()}-${safeName}`;
+            const objectPath = `inquiries/${inquiryId}/${Date.now()}_${file.originalname}`;
             console.log("Uploading document to Supabase:", objectPath);
 
             const storageResult = await uploadFileToSupabase(file, objectPath);

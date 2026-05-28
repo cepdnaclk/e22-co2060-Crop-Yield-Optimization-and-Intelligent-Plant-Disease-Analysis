@@ -14,7 +14,7 @@ export default function uploadfile(file){
 
            } 
            const timeStamp = new Date().getTime()
-           const fileName = timeStamp+"-"+file.name
+           const fileName = timeStamp+"_"+file.name
 
             supabase.storage.from("images").upload(fileName,file,{
                 cacheControl: "3600",
