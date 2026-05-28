@@ -9,6 +9,7 @@
  */
 
 import express from 'express'
+import axios from 'axios'
 
 const router = express.Router()
 
@@ -31,13 +32,22 @@ router.get('/reverse', async (req, res) => {
     }
 
     try {
-        const url = `${GEOAPIFY_BASE}/reverse?lat=${lat}&lon=${lon}&apiKey=${apiKey}`
-        const response = await fetch(url)
-        const data = await response.json()
-        return res.json(data)
+        const response = await axios.get(`${GEOAPIFY_BASE}/reverse`, {
+            params: {
+                lat,
+                lon,
+                apiKey,
+            },
+            timeout: 10000,
+        })
+
+        return res.json(response.data)
     } catch (err) {
         console.error('Geoapify reverse geocode error:', err)
-        return res.status(502).json({ message: 'Geocoding service unavailable' })
+        return res.status(502).json({
+            message: 'Geocoding service unavailable',
+            details: err?.response?.data || err?.message,
+        })
     }
 })
 
@@ -58,13 +68,23 @@ router.get('/autocomplete', async (req, res) => {
     }
 
     try {
-        const url = `${GEOAPIFY_BASE}/autocomplete?text=${encodeURIComponent(text)}&filter=countrycode:lk&limit=${limit}&apiKey=${apiKey}`
-        const response = await fetch(url)
-        const data = await response.json()
-        return res.json(data)
+        const response = await axios.get(`${GEOAPIFY_BASE}/autocomplete`, {
+            params: {
+                text,
+                filter: 'countrycode:lk',
+                limit,
+                apiKey,
+            },
+            timeout: 10000,
+        })
+
+        return res.json(response.data)
     } catch (err) {
         console.error('Geoapify autocomplete error:', err)
-        return res.status(502).json({ message: 'Geocoding service unavailable' })
+        return res.status(502).json({
+            message: 'Geocoding service unavailable',
+            details: err?.response?.data || err?.message,
+        })
     }
 })
 

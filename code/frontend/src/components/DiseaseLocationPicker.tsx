@@ -3,6 +3,10 @@ import { MapPin, Search, X, Navigation, Loader2, MousePointer } from 'lucide-rea
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
+const API_BASE_URL = import.meta.env.PROD
+  ? (import.meta.env.VITE_API_URL || '')
+  : '';
+
 
 const defaultIcon = L.icon({
   iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
@@ -67,7 +71,7 @@ export function DiseaseLocationPicker({ location, onLocationChange, onLocationSe
       if (markerRef.current) markerRef.current.setLatLng([lat, lng]).setPopupContent('Loading...').openPopup();
       else { const m = L.marker([lat, lng], { icon: defaultIcon }).addTo(map); m.bindPopup('Loading...').openPopup(); markerRef.current = m; }
       try {
-        const res = await fetch(`/api/geocode/reverse?lat=${lat}&lon=${lng}`);
+        const res = await fetch(`${API_BASE_URL}/api/geocode/reverse?lat=${lat}&lon=${lng}`);
         const data = await res.json();
         let addr = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
         if (data.features?.[0]) addr = data.features[0].properties.formatted || addr;
@@ -86,7 +90,7 @@ export function DiseaseLocationPicker({ location, onLocationChange, onLocationSe
     if (text.length < 3) { setSuggestions([]); setShowSuggestions(false); return; }
     setSearching(true);
     try {
-      const res = await fetch(`/api/geocode/autocomplete?text=${encodeURIComponent(text)}&limit=5`);
+      const res = await fetch(`${API_BASE_URL}/api/geocode/autocomplete?text=${encodeURIComponent(text)}&limit=5`);
       const data = await res.json();
       const r: Suggestion[] = (data.features || []).map((f: any) => ({ formatted: f.properties.formatted, lat: f.properties.lat, lon: f.properties.lon, address_line1: f.properties.address_line1 }));
       setSuggestions(r); setShowSuggestions(r.length > 0);
