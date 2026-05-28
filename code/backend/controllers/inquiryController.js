@@ -1,17 +1,64 @@
 import Inquiry from "../models/inquiryModel.js";
 import { isAdmin } from "./userController.js";
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
 
-// Get __dirname equivalent in ES6 modules
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const uploadsDir = path.join(__dirname, "../uploads/inquiries");
+const SUPABASE_URL = process.env.SUPABASE_URL || "https://lqiytbcuhhezawsxgoxl.supabase.co";
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || "sb_publishable_Lp5Zrzxu21uFkLtCLMr6sQ_YdFiQdrF";
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+const SUPABASE_BUCKET = process.env.SUPABASE_BUCKET || "images";
 
-// Ensure uploads directory exists
-if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir, { recursive: true });
-}
+const getSupabaseKey = () => SUPABASE_SERVICE_ROLE_KEY || SUPABASE_ANON_KEY;
+
+const buildStorageUrl = (bucket, objectPath) => {
+    const encodedPath = objectPath.split("/").map(segment => encodeURIComponent(segment)).join("/");
+    return `${SUPABASE_URL}/storage/v1/object/${bucket}/${encodedPath}`;
+};
+
+const buildPublicUrl = (bucket, objectPath) => {
+    const encodedPath = objectPath.split("/").map(segment => encodeURIComponent(segment)).join("/");
+    return `${SUPABASE_URL}/storage/v1/object/public/${bucket}/${encodedPath}`;
+};
+
+const getSupabaseHeaders = () => {
+    const key = getSupabaseKey();
+    return {
+        apikey: key,
+        Authorization: `Bearer ${key}`,
+    };
+};
+
+const uploadFileToSupabase = async (file, objectPath) => {
+    const response = await fetch(buildStorageUrl(SUPABASE_BUCKET, objectPath), {
+        method: "POST",
+        headers: {
+            ...getSupabaseHeaders(),
+            "content-type": file.mimetype,
+            "x-upsert": "false",
+        },
+        body: file.buffer,
+    });
+
+    if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Supabase upload failed: ${response.status} ${errorText}`);
+    }
+
+    return {
+        path: objectPath,
+        publicUrl: buildPublicUrl(SUPABASE_BUCKET, objectPath),
+    };
+};
+
+const deleteFileFromSupabase = async (objectPath) => {
+    const response = await fetch(buildStorageUrl(SUPABASE_BUCKET, objectPath), {
+        method: "DELETE",
+        headers: getSupabaseHeaders(),
+    });
+
+    if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Supabase delete failed: ${response.status} ${errorText}`);
+    }
+};
 
 // @desc    Submit a new inquiry (Farmer)
 // @route   POST /api/inquiries
@@ -115,7 +162,7 @@ export const uploadDocuments = async (req, res) => {
         console.log("=== Upload Documents Debug ===");
         console.log("Inquiry ID:", inquiryId);
         console.log("Files received:", req.files?.length || 0);
-        console.log("Files:", req.files?.map(f => ({ name: f.originalname, path: f.path })));
+        console.log("Files:", req.files?.map(f => ({ name: f.originalname, size: f.size })));
 
         // Check if inquiry exists and belongs to the user (or user is admin)
         const inquiry = await Inquiry.findById(inquiryId);
@@ -134,23 +181,22 @@ export const uploadDocuments = async (req, res) => {
 
         console.log("Processing files:", req.files.map(f => ({ name: f.originalname, size: f.size })));
 
-        // Add documents to inquiry - ensure absolute paths
-        const uploadedDocs = req.files.map((file) => {
-            // Ensure path is absolute
-            let filePath = file.path;
-            if (!path.isAbsolute(filePath)) {
-                filePath = path.join(uploadsDir, path.basename(filePath));
-            }
-            console.log("Storing document with path:", filePath);
-            return {
-                filename: file.filename,
+        const uploadedDocs = [];
+        for (const file of req.files) {
+            const safeName = file.originalname.replace(/[^a-zA-Z0-9._-]/g, "_");
+            const objectPath = `inquiries/${inquiryId}/${Date.now()}-${safeName}`;
+            console.log("Uploading document to Supabase:", objectPath);
+
+            const storageResult = await uploadFileToSupabase(file, objectPath);
+            uploadedDocs.push({
+                filename: objectPath.split("/").pop(),
                 originalname: file.originalname,
                 mimetype: file.mimetype,
                 size: file.size,
-                path: filePath,
+                path: storageResult.path,
                 uploadedAt: new Date(),
-            };
-        });
+            });
+        }
 
         console.log("Docs to add:", uploadedDocs);
 
@@ -217,32 +263,25 @@ export const downloadDocument = async (req, res) => {
         const document = inquiry.documents[docIdx];
         
         // Try to resolve the file path - handle both absolute and relative paths
-        let filePath = document.path;
-        
-        // If path is relative, convert to absolute
-        if (!path.isAbsolute(filePath)) {
-            filePath = path.join(uploadsDir, path.basename(filePath));
-            console.log("Path was relative, converted to:", filePath);
-        }
-        
+        const fileUrl = buildPublicUrl(SUPABASE_BUCKET, document.path);
+
         console.log("Document to download:", {
             filename: document.filename,
             originalname: document.originalname,
             storedPath: document.path,
-            resolvedPath: filePath,
-            exists: fs.existsSync(filePath)
+            resolvedUrl: fileUrl
         });
 
-        // Check if file exists
-        if (!filePath || !fs.existsSync(filePath)) {
-            console.log("File not found at resolved path:", filePath);
-            console.log("Current working directory:", process.cwd());
-            return res.status(404).json({ message: `File not found. Path: ${filePath}` });
+        const response = await fetch(fileUrl);
+        if (!response.ok) {
+            return res.status(404).json({ message: `File not found. Path: ${document.path}` });
         }
 
         console.log("Sending file:", document.originalname);
-        // Send the file
-        res.download(filePath, document.originalname);
+        const buffer = Buffer.from(await response.arrayBuffer());
+        res.setHeader("Content-Type", document.mimetype || response.headers.get("content-type") || "application/pdf");
+        res.setHeader("Content-Disposition", `attachment; filename="${document.originalname.replace(/\"/g, "\\\"")}"`);
+        res.send(buffer);
     } catch (error) {
         console.error("Error downloading document:", error);
         res.status(500).json({ message: "Failed to download document", error: error.message });
@@ -273,10 +312,7 @@ export const deleteDocument = async (req, res) => {
 
         const document = inquiry.documents[docIdx];
 
-        // Delete file from filesystem
-        if (fs.existsSync(document.path)) {
-            fs.unlinkSync(document.path);
-        }
+        await deleteFileFromSupabase(document.path);
 
         // Remove document from array
         inquiry.documents.splice(docIdx, 1);

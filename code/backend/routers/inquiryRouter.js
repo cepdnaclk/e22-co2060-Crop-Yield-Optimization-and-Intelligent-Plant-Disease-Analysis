@@ -1,33 +1,12 @@
 import express from "express";
 import multer from "multer";
-import path from "path";
-import { fileURLToPath } from "url";
-import fs from "fs";
 import { createInquiry, getInquiries, updateInquiryStatus, uploadDocuments, downloadDocument, deleteDocument } from "../controllers/inquiryController.js";
 import { requireAuth } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// Get __dirname equivalent in ES6 modules
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const uploadsDir = path.join(__dirname, "../uploads/inquiries");
-
-// Ensure uploads directory exists
-if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir, { recursive: true });
-}
-
 // Configure multer for document uploads
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, uploadsDir);
-    },
-    filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-        const ext = file.originalname.split(".").pop();
-        cb(null, `${file.fieldname}-${uniqueSuffix}.${ext}`);
-    },
-});
+const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
     // Allow only PDF and image files (PNG, JPG, JPEG)
