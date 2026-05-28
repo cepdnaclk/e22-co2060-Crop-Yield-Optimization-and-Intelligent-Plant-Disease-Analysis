@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js tests --runInBand"
   },
   "author": "",
   "license": "ISC",
@@ -21,5 +21,10 @@
     "mongoose": "^9.2.1",
     "multer": "^2.1.1",
     "nodemon": "^3.1.11"
+  }
+  ,
+  "devDependencies": {
+    "jest": "^30.4.2",
+    "supertest": "^7.2.2"
   }
 }

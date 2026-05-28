@@ -11,6 +11,7 @@ import bodyParser from "body-parser"
 import cors from "cors"
 import path from "path"
 import { fileURLToPath } from "url"
+import axios from "axios"
 import userRouter from "./routers/userRouter.js"
 import farmRouter from "./routers/farmRouter.js"
 import jwt from "jsonwebtoken"
@@ -25,6 +26,10 @@ dotenv.config()
 
 // Get __dirname equivalent in ES6 modules
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
+const CHATBOT_WEBHOOK_URL = process.env.CHATBOT_WEBHOOK_URL || 'https://n8n-opvk.onrender.com/webhook/246e550d-c772-4fcb-bae5-e847e8c632ce/chat'
+const CHATBOT_WEBHOOK_TEST_URL = process.env.CHATBOT_WEBHOOK_TEST_URL || ''
+
 
 const app = express()
 
@@ -112,6 +117,50 @@ app.use("/api/farms", farmRouter)
 app.use("/api/avgYields", avgYieldRouter)
 app.use("/api/inquiries", inquiryRouter)
 app.use("/api/geocode", geocodeRouter)
+
+app.post('/api/chatbot', async (req, res) => {
+    try {
+        const response = await axios.post(CHATBOT_WEBHOOK_URL, req.body, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            timeout: 30000
+        })
+
+        res.status(response.status).json(response.data)
+    } catch (error) {
+        const firstStatus = error.response?.status || 502
+        const firstData = error.response?.data
+
+        if (firstStatus === 404 && CHATBOT_WEBHOOK_TEST_URL && CHATBOT_WEBHOOK_TEST_URL !== CHATBOT_WEBHOOK_URL) {
+            try {
+                const retryResponse = await axios.post(CHATBOT_WEBHOOK_TEST_URL, req.body, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    timeout: 30000
+                })
+
+                return res.status(retryResponse.status).json(retryResponse.data)
+            } catch (retryError) {
+                const retryStatus = retryError.response?.status || 502
+                const retryData = retryError.response?.data
+
+                return res.status(retryStatus).json({
+                    message: retryData?.message || firstData?.message || 'The n8n webhook is not registered or the workflow is inactive.',
+                    hint: retryData?.hint || firstData?.hint || 'Activate the workflow in n8n, or set CHATBOT_WEBHOOK_TEST_URL if you are using a test webhook.',
+                    raw: retryData || firstData
+                })
+            }
+        }
+
+        res.status(firstStatus).json({
+            message: firstData?.message || 'The n8n webhook is not registered or the workflow is inactive.',
+            hint: firstData?.hint || 'Activate the workflow in n8n, or set CHATBOT_WEBHOOK_TEST_URL if you are using a test webhook.',
+            raw: firstData
+        })
+    }
+})
 
 
 
