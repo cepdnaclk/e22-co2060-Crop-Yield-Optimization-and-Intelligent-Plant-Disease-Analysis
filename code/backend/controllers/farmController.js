@@ -2,6 +2,7 @@ import Farm from "../models/farm.js";
 import User from "../models/user.js";
 import { isAdmin } from "./userController.js";
 import AvgYield from "../models/avgYield.js";
+import { sendPointsAwardedEmail } from "../services/emailService.js";
 
 function normalizeText(value) {
   return (value || "").trim().toLowerCase();
@@ -256,10 +257,31 @@ export const addHarvestAndPoints = async (req, res) => {
     const delta = nextPoints - previousPoints;
 
     // Update farmer points by delta to keep totals accurate on edits/retries.
+    let updatedFarmer = null;
     if (delta !== 0) {
-      await User.findByIdAndUpdate(farm.farmer, {
-        $inc: { points: delta },
-      });
+      updatedFarmer = await User.findByIdAndUpdate(
+        farm.farmer,
+        { $inc: { points: delta } },
+        { new: true }   // Return the updated document so we have the new total
+      );
+    }
+
+    // Send points notification email (fire-and-forget — never blocks the response)
+    if (!pointsPending && delta > 0 && updatedFarmer) {
+      sendPointsAwardedEmail({
+        farmerEmail:  updatedFarmer.email,
+        farmerName:   `${updatedFarmer.firstName} ${updatedFarmer.lastName}`,
+        farmName:     farm.farmName,
+        farmId:       farm.farmId,
+        season,
+        year:         yearNum,
+        pointsEarned: Math.round(pointsEarned),
+        totalPoints:  Math.round(updatedFarmer.points),
+        harvestQty:   harvestQtyNum,
+        crop:         farm.crop,
+      }).catch((err) =>
+        console.error("[EmailService] Unhandled error in points email:", err.message)
+      );
     }
 
     res.json({
@@ -341,10 +363,35 @@ export async function recalculatePendingPointsForAverage({ district, crop, seaso
     farmsUpdated += 1;
 
     if (farmerDelta !== 0) {
-      await User.findByIdAndUpdate(farm.farmer, {
-        $inc: { points: farmerDelta },
-      });
+      const updatedFarmer = await User.findByIdAndUpdate(
+        farm.farmer,
+        { $inc: { points: farmerDelta } },
+        { new: true }   // Return updated document for email
+      );
       pointsApplied += farmerDelta;
+
+      // Notify farmer by email for each pending harvest that just received points.
+      // One email per farm (summarises the delta awarded across all resolved harvests).
+      if (updatedFarmer && farmerDelta > 0) {
+        // Use the first resolved harvest on this farm for context
+        const resolvedHarvest = farm.harvests.find(
+          (h) => h.season === season && Number(h.year) === yearNum && h.pointsEarned !== null
+        );
+        sendPointsAwardedEmail({
+          farmerEmail:  updatedFarmer.email,
+          farmerName:   `${updatedFarmer.firstName} ${updatedFarmer.lastName}`,
+          farmName:     farm.farmName,
+          farmId:       farm.farmId,
+          season,
+          year:         yearNum,
+          pointsEarned: Math.round(farmerDelta),
+          totalPoints:  Math.round(updatedFarmer.points),
+          harvestQty:   resolvedHarvest ? resolvedHarvest.harvestQty : 0,
+          crop:         farm.crop,
+        }).catch((err) =>
+          console.error("[EmailService] Unhandled error in pending-points email:", err.message)
+        );
+      }
     }
   }
 
