@@ -160,11 +160,11 @@ export function EmailVerificationModal({ email: initialEmail, firstName, onVerif
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
       <div 
-        className="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden"
+        className="w-full max-w-md bg-white rounded-2xl shadow-xl flex flex-col max-h-[90vh]"
         onClick={e => e.stopPropagation()}
       >
         {/* ── Header ── */}
-        <div className="px-6 pt-8 pb-6 text-center border-b border-gray-100">
+        <div className="px-6 pt-8 pb-6 text-center border-b border-gray-100 flex-shrink-0">
           <div className="mx-auto w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mb-4">
             {isVerified
               ? <CheckCircle2 className="w-7 h-7 text-green-600" />
@@ -186,7 +186,7 @@ export function EmailVerificationModal({ email: initialEmail, firstName, onVerif
         </div>
 
         {/* ── Body ── */}
-        <div className="px-6 py-6 bg-gray-50/50">
+        <div className="px-6 py-6 bg-gray-50/50 overflow-y-auto flex-1">
 
           {/* ════════════════════════ VERIFY PANEL ════════════════════════ */}
           {panel === 'verify' && (
@@ -335,7 +335,7 @@ export function EmailVerificationModal({ email: initialEmail, firstName, onVerif
                   className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold text-white bg-green-600 hover:bg-green-700 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed transition-colors shadow-sm hover:shadow"
                 >
                   {changeStatus === 'loading' ? <Loader2 className="w-5 h-5 animate-spin" /> : <Mail className="w-5 h-5" />}
-                  {changeStatus === 'loading' ? 'Updating...' : 'Update & Send Code'}
+                  {changeStatus === 'loading' ? 'Updating...' : 'Update email'}
                 </button>
 
                 <button 
