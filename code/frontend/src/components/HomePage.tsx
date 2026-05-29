@@ -3,13 +3,14 @@
  * Displays a personalized greeting, points summary, disease heat map,
  * and a dashboard summary.
  */
-import { Star, HandIcon, SearchIcon, FileText, AlertTriangle, MapPin } from 'lucide-react';
+import { Star, HandIcon, SearchIcon, FileText, AlertTriangle, MapPin, ShieldCheck, Loader2, Map } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router';
-import { userAPI, farmAPI } from '../services/api';
+import { userAPI, farmAPI, floodAPI } from '../services/api';
 import { SummaryCard } from './SummaryCard';
 import farmerImage from 'figma:asset/8d18ad2077654c1f65710d650ff192f7ba499f8c.png';
 import { formatNumber } from '../utils/numberUtils';
+import { FloodMapModal } from './ui/FloodMapModal';
 
 // Hook used by Home dashboard (and others) to load summary metrics.
 export function useHomeDashboardData() {
@@ -73,9 +74,45 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
   // Dynamic User State
   const [userProfile, setUserProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [floodData, setFloodData] = useState<any>(null);
+  const [floodLoading, setFloodLoading] = useState<boolean>(true);
+  const [showMapModal, setShowMapModal] = useState<boolean>(false);
 
   const outletContext = useOutletContext<{ onNavigate: (page: string) => void }>();
   const onNavigate = onNavigateProp || outletContext?.onNavigate || (() => { });
+
+  const fetchFloodForecast = async () => {
+    try {
+      setFloodLoading(true);
+      const data = await floodAPI.getNearbyFloods();
+      setFloodData(data);
+    } catch (err) {
+      console.error("Failed to load flood forecast:", err);
+    } finally {
+      setFloodLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchFloodForecast();
+  }, []);
+
+  const handleLocationSelect = async (lat: number, lng: number, address: string) => {
+    try {
+      await userAPI.updateProfile({
+        floodLatitude: lat,
+        floodLongitude: lng,
+        floodLocationName: address
+      });
+      const data = await userAPI.fetchProfile();
+      if (data && data.user) {
+        setUserProfile(data.user);
+      }
+      await fetchFloodForecast();
+    } catch (err) {
+      console.error("Error updating tracking location:", err);
+    }
+  };
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -161,11 +198,67 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
         <div className="bg-white rounded-2xl p-4 md:p-6 border border-gray-200">
           <h3 className="text-base md:text-lg font-semibold text-gray-800 mb-4">Alerts & Warnings</h3>
           <div className="space-y-3 md:space-y-4">
-            <div className="bg-gradient-to-br from-green-700 to-green-800 rounded-xl p-3 md:p-4 text-white">
-              <HandIcon className="w-6 h-6 md:w-8 md:h-8 mb-2" />
-              <p className="text-xs md:text-sm font-medium">Flood Risk Expected In</p>
-              <p className="text-xs md:text-sm">in Your Area</p>
-            </div>
+            {/* Dynamic Flood Forecasting Widget */}
+            {floodLoading ? (
+              <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 flex items-center justify-center min-h-[110px] animate-pulse">
+                <div className="flex flex-col items-center gap-2">
+                  <Loader2 className="w-5 h-5 text-green-600 animate-spin" />
+                  <p className="text-xs text-gray-500">Checking flood gauges...</p>
+                </div>
+              </div>
+            ) : !floodData?.locationConfigured ? (
+              <div className="bg-slate-800 bg-linear-to-br from-slate-700 to-slate-800 rounded-2xl p-4 text-white border border-slate-600 shadow-lg">
+                <Map className="w-6 h-6 md:w-8 md:h-8 mb-2 text-green-400" />
+                <p className="text-xs md:text-sm font-bold tracking-wide mb-1 uppercase">Flood Alerts Offline</p>
+                <p className="text-[11px] text-gray-300 mb-4 leading-normal">Set your coordinates to enable active localized flood tracking within a 10 km zone.</p>
+                <button
+                  onClick={() => setShowMapModal(true)}
+                  className="w-full py-2.5 px-4 text-xs font-bold bg-white text-gray-800 hover:bg-green-50 active:scale-95 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 border border-white cursor-pointer hover:shadow-lg"
+                >
+                  <MapPin className="w-4 h-4 text-green-600 animate-bounce" />
+                  <span>Pin Map Location</span>
+                </button>
+              </div>
+            ) : floodData?.highestAlert ? (
+              <div className={`relative p-4 text-white rounded-2xl shadow-lg border ${
+                floodData.highestAlert.severity === 'EXTREME' || floodData.highestAlert.severity === 'SEVERE'
+                  ? 'bg-red-800 bg-linear-to-br from-red-600 to-red-750 border-red-500 animate-pulse'
+                  : 'bg-amber-600 bg-linear-to-br from-amber-500 to-amber-650 border-amber-500'
+              }`}>
+                <AlertTriangle className="w-6 h-6 md:w-8 md:h-8 mb-2" />
+                <p className="text-xs md:text-sm font-bold tracking-wide uppercase">
+                  🚨 {floodData.highestAlert.severity} FLOOD THREAT
+                </p>
+                <p className="text-xs font-medium mt-1 leading-tight">{floodData.highestAlert.gaugeName}</p>
+                <p className="text-[11px] text-gray-100 mt-1 font-semibold">
+                  Distance: {floodData.highestAlert.distance} km away • Trend: {floodData.highestAlert.forecastTrend}
+                </p>
+                <button
+                  onClick={() => setShowMapModal(true)}
+                  className="mt-4 w-full py-2 px-3 bg-white/10 hover:bg-white/20 active:scale-95 rounded-xl text-[11px] text-white flex items-center justify-center gap-1.5 transition-all font-semibold border border-white/15 cursor-pointer shadow-sm"
+                >
+                  <Map className="w-3.5 h-3.5" />
+                  Change Location
+                </button>
+              </div>
+            ) : (
+              <div className="bg-emerald-850 bg-linear-to-br from-emerald-800 to-emerald-900 rounded-2xl p-4 text-white border border-emerald-700 shadow-lg">
+                <ShieldCheck className="w-6 h-6 md:w-8 md:h-8 mb-2 text-green-300 animate-pulse" />
+                <p className="text-xs md:text-sm font-semibold flex items-center gap-1.5">
+                  🟢 Safe: No Floods Nearby
+                </p>
+                <p className="text-[11px] text-green-100 mt-1 leading-tight">
+                  No active flood threats detected within 10 km of your selected tracking zone.
+                </p>
+                <button
+                  onClick={() => setShowMapModal(true)}
+                  className="mt-4 w-full py-2 px-3 bg-white/10 hover:bg-white/20 active:scale-95 rounded-xl text-[11px] text-white flex items-center justify-center gap-1.5 truncate transition-all font-semibold border border-white/15 cursor-pointer shadow-sm"
+                >
+                  <MapPin className="w-3.5 h-3.5 text-green-200" />
+                  <span className="truncate">Change location ({floodData.locationName || `${floodData.latitude.toFixed(3)}, ${floodData.longitude.toFixed(3)}`})</span>
+                </button>
+              </div>
+            )}
             <div className="bg-gradient-to-br from-green-700 to-green-800 rounded-xl p-3 md:p-4 text-white relative">
               <div className="absolute top-2 right-2 w-4 h-4 md:w-5 md:h-5 bg-red-500 rounded-full flex items-center justify-center">
                 <span className="text-xs">1</span>
@@ -246,6 +339,13 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
         </div>
       </div>
 
+      <FloodMapModal
+        isOpen={showMapModal}
+        onClose={() => setShowMapModal(false)}
+        onLocationSelect={handleLocationSelect}
+        initialLatitude={userProfile?.floodLatitude}
+        initialLongitude={userProfile?.floodLongitude}
+      />
     </div>
   );
 }
