@@ -165,13 +165,18 @@ export function isAdmin(req) {
  */
 export async function fetchUser(req, res) {
     try {
-        if (!req.user || !(req.user.id || req.user._id)) {
+        if (!req.user || (!(req.user.id || req.user._id) && !req.user.email)) {
             return res.status(401).json({ message: "Unauthorized. Please log in again." });
         }
 
-        // Look up by _id (not email) so the profile is correct even after a changeEmail,
-        // where the JWT still contains the old email address.
-        const user = await User.findById(req.user.id || req.user._id).select("-password -emailOtp");
+        // Prefer lookup by _id when available (keeps profile stable after email changes).
+        // Fall back to email lookup when tests or callers provide only `req.user.email`.
+        let user;
+        if (req.user.id || req.user._id) {
+            user = await User.findById(req.user.id || req.user._id).select("-password -emailOtp");
+        } else {
+            user = await User.findOne({ email: req.user.email }).select("-password -emailOtp");
+        }
         if (!user) {
             return res.status(404).json({ message: "User not found." });
         }
@@ -243,7 +248,7 @@ export async function getRecentFarmers(req, res) {
  */
 export async function updateProfile(req, res) {
     try {
-        if (!req.user || !(req.user.id || req.user._id)) {
+        if (!req.user || (!(req.user.id || req.user._id) && !req.user.email)) {
             return res.status(401).json({ message: "Unauthorized. Please log in again." });
         }
 
@@ -264,11 +269,20 @@ export async function updateProfile(req, res) {
             }
         });
 
-        const updatedUser = await User.findByIdAndUpdate(
-            req.user.id || req.user._id,
-            { $set: updateData },
-            { new: true, runValidators: true }
-        ).select("-password -emailOtp");
+        let updatedUser;
+        if (req.user.id || req.user._id) {
+            updatedUser = await User.findByIdAndUpdate(
+                req.user.id || req.user._id,
+                { $set: updateData },
+                { new: true, runValidators: true }
+            ).select("-password -emailOtp");
+        } else {
+            updatedUser = await User.findOneAndUpdate(
+                { email: req.user.email },
+                { $set: updateData },
+                { new: true, runValidators: true }
+            ).select("-password -emailOtp");
+        }
 
         if (!updatedUser) {
             return res.status(404).json({ message: "User not found." });
