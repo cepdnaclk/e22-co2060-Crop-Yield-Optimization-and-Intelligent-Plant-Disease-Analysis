@@ -10,16 +10,17 @@ const OTP_VALIDITY_MINUTES = 15;
  * Uses App Password authentication for security (not plain Gmail password).
  */
 function createTransporter() {
+  const gmailUser = process.env.GMAIL_USER?.trim();
+  const gmailAppPassword = process.env.GMAIL_APP_PASSWORD?.replace(/\s+/g, "").trim();
+
   return nodemailer.createTransport({
-    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
     auth: {
-      user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_APP_PASSWORD,
+      user: gmailUser,
+      pass: gmailAppPassword,
     },
-    pool: true,          // Use persistent connections
-    maxConnections: 5,
-    rateDelta: 1000,     // Throttle sends to avoid rate-limiting
-    rateLimit: 5,
   });
 }
 
@@ -314,7 +315,10 @@ export async function sendPointsAwardedEmail(params) {
  * @returns {Promise<void>}
  */
 export async function sendOtpEmail({ email, code, firstName = "there" }) {
-  if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
+  const gmailUser = process.env.GMAIL_USER?.trim();
+  const gmailAppPassword = process.env.GMAIL_APP_PASSWORD?.replace(/\s+/g, "").trim();
+
+  if (!gmailUser || !gmailAppPassword) {
     console.warn("[EmailService] GMAIL credentials not configured. Skipping OTP email.");
     return;
   }
@@ -455,9 +459,9 @@ Department of Agriculture – Sri Lanka
     const mailOptions = {
       from: {
         name: "AgriConnect Notifications",
-        address: process.env.GMAIL_USER,
+        address: gmailUser,
       },
-      replyTo: process.env.GMAIL_USER,
+      replyTo: gmailUser,
       to: email,
       subject: `${code} is your AgriConnect verification code`,
       text,
@@ -471,6 +475,9 @@ Department of Agriculture – Sri Lanka
     const info = await transporter.sendMail(mailOptions);
     console.log(`[EmailService] OTP email sent to ${email}. MessageId: ${info.messageId}`);
   } catch (error) {
-    console.error(`[EmailService] Failed to send OTP email to ${email}:`, error.message);
+    console.error(`[EmailService] Failed to send OTP email to ${email}:`, error.message, error.code || "");
+    if (error.response) {
+      console.error(`[EmailService] SMTP response for ${email}:`, error.response);
+    }
   }
 }
