@@ -8,8 +8,11 @@ import {
   XCircle,
   RefreshCw,
   Pencil,
-  AlertCircle
+  AlertCircle,
+  LogOut
 } from 'lucide-react';
+import { useNavigate } from 'react-router';
+import { clearAuthData } from '../../utils/authUtils';
 import { userAPI } from '../../services/api';
 
 // ── Constants ──────────────────────────────────────────────────────────────────
@@ -29,6 +32,8 @@ interface Props {
 
 // ── Component ──────────────────────────────────────────────────────────────────
 export function EmailVerificationModal({ email: initialEmail, firstName, onVerified }: Props) {
+  const navigate = useNavigate();
+
   // Active email (updated after successful change)
   const [activeEmail, setActiveEmail] = useState(initialEmail);
   const [panel, setPanel] = useState<Panel>('verify');
@@ -144,6 +149,12 @@ export function EmailVerificationModal({ email: initialEmail, firstName, onVerif
       setChangeStatus('error');
       setChangeMsg(err?.response?.data?.message || 'Failed to update email. Please try again.');
     }
+  };
+
+  // ── Logout ─────────────────────────────────────────────────────────────────
+  const handleLogout = () => {
+    clearAuthData();
+    navigate('/', { replace: true });
   };
 
   // ── Helpers ────────────────────────────────────────────────────────────────
@@ -277,6 +288,18 @@ export function EmailVerificationModal({ email: initialEmail, firstName, onVerif
                       </div>
                     </div>
                   )}
+
+                  {/* Logout Button */}
+                  <div className="text-center pt-2">
+                    <button 
+                      type="button" 
+                      onClick={handleLogout}
+                      className="text-sm font-medium text-red-500 hover:text-red-700 transition-colors inline-flex items-center gap-1.5"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      Logout
+                    </button>
+                  </div>
                 </div>
               )}
 
