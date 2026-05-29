@@ -10,6 +10,7 @@ import { userAPI, farmAPI } from '../services/api';
 import { SummaryCard } from './SummaryCard';
 import farmerImage from 'figma:asset/8d18ad2077654c1f65710d650ff192f7ba499f8c.png';
 import { formatNumber } from '../utils/numberUtils';
+import { EmailVerificationModal } from './ui/EmailVerificationModal';
 
 // Hook used by Home dashboard (and others) to load summary metrics.
 export function useHomeDashboardData() {
@@ -73,6 +74,7 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
   // Dynamic User State
   const [userProfile, setUserProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [showVerificationModal, setShowVerificationModal] = useState(false);
 
   const outletContext = useOutletContext<{ onNavigate: (page: string) => void }>();
   const onNavigate = onNavigateProp || outletContext?.onNavigate || (() => { });
@@ -83,9 +85,22 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
         const data = await userAPI.fetchProfile();
         if (data && data.user) {
           setUserProfile(data.user);
+          // Show verification modal if email is not verified
+          if (data.user.emailVerified === false) {
+            setShowVerificationModal(true);
+          }
         }
-      } catch (error) {
-        console.error("Failed to load user profile:", error);
+      } catch (error: any) {
+        // Backend returned 403 emailUnverified (session consistency check)
+        if (error?.response?.status === 403 && error?.response?.data?.emailUnverified) {
+          setShowVerificationModal(true);
+          // Store what the backend told us about the email if available
+          if (error.response.data.email) {
+            setUserProfile((prev: any) => ({ ...prev, email: error.response.data.email }));
+          }
+        } else {
+          console.error("Failed to load user profile:", error);
+        }
       } finally {
         setLoading(false);
       }
@@ -100,6 +115,15 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
 
   return (
     <div className="space-y-4 md:space-y-6 pb-20">
+      {/* Email Verification Modal — blocks access for unverified farmers */}
+      {showVerificationModal && (
+        <EmailVerificationModal
+          email={userProfile?.email || ''}
+          firstName={userProfile?.firstName}
+          onVerified={() => setShowVerificationModal(false)}
+        />
+      )}
+
       {/* Top Section - Welcome & Points */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
         {/* Welcome Card */}

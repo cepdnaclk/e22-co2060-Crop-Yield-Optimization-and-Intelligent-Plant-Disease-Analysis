@@ -5,12 +5,14 @@
  */
 import express from "express";
 import { addHarvestAndPoints, recalculateAllPoints, createFarm, getAllFarms, getFarmById, updateFarm, deleteFarm, getHarvestHistory, getFarmerReport, getAllCrops } from "../controllers/farmController.js";
-import { requireAuth } from "../middleware/authMiddleware.js";
+import { requireAuth, requireEmailVerified } from "../middleware/authMiddleware.js";
 
 const farmRouter = express.Router()
 
-// Apply authentication middleware to all farm routes
+// All farm routes require authentication AND email verification.
+// Admins are exempt from the email verification check (see middleware).
 farmRouter.use(requireAuth);
+farmRouter.use(requireEmailVerified);
 
 // GET endpoints
 farmRouter.get("/", getAllFarms)

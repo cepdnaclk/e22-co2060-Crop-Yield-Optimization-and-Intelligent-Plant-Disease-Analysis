@@ -122,7 +122,7 @@ export function HarvestHistory() {
     ].join('\n');
   };
 
-  const downloadFile = (content: string | Uint8Array, fileName: string, mimeType: string) => {
+  const downloadFile = (content: any, fileName: string, mimeType: string) => {
     const blob = new Blob([content], { type: mimeType });
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);

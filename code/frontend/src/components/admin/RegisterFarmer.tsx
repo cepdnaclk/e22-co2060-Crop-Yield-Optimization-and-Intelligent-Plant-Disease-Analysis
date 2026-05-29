@@ -4,6 +4,7 @@ import { userAPI, farmAPI } from '../../services/api';
 import uploadfile from '../../utils/mediaUpload';
 import { toast } from 'sonner';
 import { AddressLocationPicker } from './AddressLocationPicker';
+import { EmailVerificationWidget } from '../ui/EmailVerificationWidget';
 
 interface FarmData {
   farmName: string;
@@ -46,6 +47,7 @@ export function RegisterFarmer() {
   const [profileImage, setProfileImage] = useState(null as File | null);
   const [profileImagePreview, setProfileImagePreview] = useState(null as string | null);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [emailVerified, setEmailVerified] = useState(false);
 
   // For existing farmer mode
   const [existingFarmers, setExistingFarmers] = useState<ExistingFarmer[]>([]);
@@ -782,6 +784,16 @@ export function RegisterFarmer() {
                 </div>
               </div>
             </div>
+
+            {/* Email Verification Widget — shown when email field has a value */}
+            {farmerData.email && farmerData.email.includes('@') && (
+              <EmailVerificationWidget
+                email={farmerData.email}
+                firstName={farmerData.firstName || undefined}
+                onVerified={() => setEmailVerified(true)}
+                compact={false}
+              />
+            )}
 
             {/* Location Information */}
             <div>

@@ -2,6 +2,9 @@ import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 dotenv.config();
 
+// OTP email validity in minutes (for display in email body only — enforcement is on the backend)
+const OTP_VALIDITY_MINUTES = 15;
+
 /**
  * Creates and returns a configured Nodemailer transporter using Gmail SMTP.
  * Uses App Password authentication for security (not plain Gmail password).
@@ -297,5 +300,177 @@ export async function sendPointsAwardedEmail(params) {
   } catch (error) {
     // Log the error but DO NOT re-throw — email failure must not break point assignment
     console.error(`[EmailService] Failed to send points email to ${params.farmerEmail}:`, error.message);
+  }
+}
+
+/**
+ * Sends a one-time verification code (OTP) email to a recipient.
+ * This function is designed to NEVER throw — failures are logged silently.
+ *
+ * @param {Object}  params
+ * @param {string}  params.email       - Recipient email address.
+ * @param {string}  params.code        - The 6-digit OTP code (plain, NOT hashed).
+ * @param {string}  [params.firstName] - Recipient's first name (optional, for personalisation).
+ * @returns {Promise<void>}
+ */
+export async function sendOtpEmail({ email, code, firstName = "there" }) {
+  if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
+    console.warn("[EmailService] GMAIL credentials not configured. Skipping OTP email.");
+    return;
+  }
+  if (!email || !code) {
+    console.warn("[EmailService] Missing email or OTP code. Skipping OTP email.");
+    return;
+  }
+
+  const html = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>AgriConnect – Email Verification Code</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f4f6f3;font-family:Arial,Helvetica,sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+    style="background-color:#f4f6f3;padding:32px 16px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0"
+          style="max-width:600px;width:100%;background-color:#ffffff;border-radius:12px;
+                 overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.08);">
+
+          <!-- Header -->
+          <tr>
+            <td style="background:linear-gradient(135deg,#2d6a4f 0%,#40916c 100%);
+                       padding:36px 40px;text-align:center;">
+              <p style="margin:0 0 8px 0;font-size:13px;color:#b7e4c7;letter-spacing:2px;
+                         text-transform:uppercase;font-weight:600;">AgriConnect Platform</p>
+              <h1 style="margin:0;font-size:26px;color:#ffffff;font-weight:700;line-height:1.3;">
+                Email Verification
+              </h1>
+              <p style="margin:10px 0 0 0;font-size:14px;color:#d8f3dc;">
+                Use the code below to verify your email address.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="padding:36px 40px;">
+              <p style="margin:0 0 20px 0;font-size:16px;color:#1b4332;font-weight:600;">
+                Hi ${firstName},
+              </p>
+              <p style="margin:0 0 28px 0;font-size:15px;color:#374151;line-height:1.7;">
+                Your verification code for AgriConnect is:
+              </p>
+
+              <!-- OTP Code Box -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+                style="background-color:#f0fdf4;border:2px solid #86efac;border-radius:10px;
+                       margin-bottom:28px;">
+                <tr>
+                  <td style="padding:28px;text-align:center;">
+                    <p style="margin:0 0 8px 0;font-size:13px;color:#166534;
+                               text-transform:uppercase;letter-spacing:2px;font-weight:600;">
+                      Verification Code
+                    </p>
+                    <p style="margin:0;font-size:52px;font-weight:700;color:#15803d;
+                               letter-spacing:12px;line-height:1.1;font-family:monospace;">
+                      ${code}
+                    </p>
+                    <p style="margin:12px 0 0 0;font-size:13px;color:#4b5563;">
+                      This code is valid for
+                      <strong style="color:#1b4332;">${OTP_VALIDITY_MINUTES} minutes</strong>.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Warning -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+                style="background-color:#fffbeb;border-left:4px solid #f59e0b;
+                       border-radius:4px;margin-bottom:28px;">
+                <tr>
+                  <td style="padding:14px 18px;font-size:14px;color:#78350f;line-height:1.6;">
+                    <strong>Did not request this code?</strong><br/>
+                    If you did not request an AgriConnect verification code, you can safely
+                    ignore this email. Your account will not be affected.
+                  </td>
+                </tr>
+              </table>
+
+              <p style="margin:0;font-size:15px;color:#1b4332;font-weight:600;">
+                Warm regards,<br/>
+                <span style="font-weight:400;color:#374151;">The AgriConnect Team</span>
+              </p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="background-color:#f9fafb;border-top:1px solid #e5e7eb;
+                       padding:20px 40px;text-align:center;">
+              <p style="margin:0 0 6px 0;font-size:12px;color:#9ca3af;">
+                This is an automated message from the AgriConnect platform.
+                Please do not reply to this email.
+              </p>
+              <p style="margin:0;font-size:12px;color:#9ca3af;">
+                Department of Agriculture – Sri Lanka
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+`;
+
+  const text = `
+AgriConnect – Email Verification Code
+
+Hi ${firstName},
+
+Your verification code for AgriConnect is:
+
+  ${code}
+
+This code is valid for ${OTP_VALIDITY_MINUTES} minutes.
+
+If you did not request this code, you can safely ignore this email.
+
+Warm regards,
+The AgriConnect Team
+
+---
+This is an automated message from the AgriConnect platform. Please do not reply.
+Department of Agriculture – Sri Lanka
+`;
+
+  try {
+    const transporter = createTransporter();
+    const mailOptions = {
+      from: {
+        name: "AgriConnect Notifications",
+        address: process.env.GMAIL_USER,
+      },
+      replyTo: process.env.GMAIL_USER,
+      to: email,
+      subject: `${code} is your AgriConnect verification code`,
+      text,
+      html,
+      headers: {
+        "Precedence":              "transactional",
+        "X-Auto-Response-Suppress": "All",
+      },
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log(`[EmailService] OTP email sent to ${email}. MessageId: ${info.messageId}`);
+  } catch (error) {
+    console.error(`[EmailService] Failed to send OTP email to ${email}:`, error.message);
   }
 }

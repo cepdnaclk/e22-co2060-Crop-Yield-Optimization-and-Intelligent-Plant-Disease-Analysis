@@ -68,6 +68,15 @@ const userSchema = new mongoose.Schema(
         points: {
             type: Number,
             default: 0
+        },
+        emailVerified: {
+            type: Boolean,
+            default: false
+        },
+        emailOtp: {
+            code:          { type: String, default: null },
+            expiresAt:     { type: Date,   default: null },
+            cooldownUntil: { type: Date,   default: null },
         }
     },
     {
