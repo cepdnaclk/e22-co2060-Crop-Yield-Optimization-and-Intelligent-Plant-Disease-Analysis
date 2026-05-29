@@ -19,6 +19,7 @@
  */
 
 import bcrypt from "bcrypt";
+import { randomInt } from "node:crypto";
 import User from "../models/user.js";
 import { sendOtpEmail } from "../services/emailService.js";
 
@@ -41,9 +42,7 @@ const pendingOtps = new Map();
  * @returns {string}
  */
 function generateOtpCode() {
-  const array = new Uint32Array(1);
-  crypto.getRandomValues(array);
-  return String(array[0] % 1_000_000).padStart(6, "0");
+  return String(randomInt(0, 1_000_000)).padStart(6, "0");
 }
 
 /**
