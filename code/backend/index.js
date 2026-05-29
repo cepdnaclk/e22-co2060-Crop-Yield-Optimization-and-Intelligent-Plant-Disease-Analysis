@@ -57,7 +57,12 @@ app.use(express.json())
 app.use(
     (req, res, next) => {
         // Public endpoints that don't require authentication
-        const publicEndpoints = ['/api/users/login', '/api/users']
+        const publicEndpoints = [
+            '/api/users/login',
+            '/api/users',
+            '/api/users/send-otp',
+            '/api/users/verify-otp',
+        ]
         
         // Skip token verification for public endpoints (including geocode proxy)
         if (publicEndpoints.some(endpoint => req.path === endpoint) || req.path.startsWith('/api/geocode')) {

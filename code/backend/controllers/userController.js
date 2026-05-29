@@ -2,6 +2,7 @@ import User from "../models/user.js";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
+import { consumePendingVerification } from "./otpController.js"
 dotenv.config()
 
 /**
@@ -16,6 +17,13 @@ export async function createUser(req, res) {
         // Hash the password asynchronously to avoid Node event loop blocking
         const password = await bcrypt.hash(req.body.password, 10)
 
+        // Determine emailVerified:
+        //   1. Check if the admin explicitly verified via OTP before registration (Option A).
+        //   2. Fall back to whatever value was sent in the request body.
+        //   3. Default to false.
+        const emailVerifiedByOtp = consumePendingVerification(req.body.email || "");
+        const emailVerified = emailVerifiedByOtp || req.body.emailVerified === true;
+
         const userData = {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
@@ -29,7 +37,8 @@ export async function createUser(req, res) {
             address: req.body.address,
             division: req.body.division,
             district: req.body.district,
-            points: req.body.points
+            points: req.body.points,
+            emailVerified,
         };
 
         const user = new User(userData)
@@ -99,7 +108,7 @@ export async function loginUser(req, res) {
                     lastName: user.lastName,
                     role: user.role,
                     isBlocked: user.isBlocked,
-                    isEmailVerified: user.isEmailVerified,
+                    emailVerified: user.emailVerified,
                     Image: user.image,
                     points: normalizedPoints
                 },
@@ -156,11 +165,13 @@ export function isAdmin(req) {
  */
 export async function fetchUser(req, res) {
     try {
-        if (!req.user || !req.user.email) {
+        if (!req.user || !(req.user.id || req.user._id)) {
             return res.status(401).json({ message: "Unauthorized. Please log in again." });
         }
 
-        const user = await User.findOne({ email: req.user.email }).select("-password");
+        // Look up by _id (not email) so the profile is correct even after a changeEmail,
+        // where the JWT still contains the old email address.
+        const user = await User.findById(req.user.id || req.user._id).select("-password -emailOtp");
         if (!user) {
             return res.status(404).json({ message: "User not found." });
         }
@@ -232,7 +243,7 @@ export async function getRecentFarmers(req, res) {
  */
 export async function updateProfile(req, res) {
     try {
-        if (!req.user || !req.user.email) {
+        if (!req.user || !(req.user.id || req.user._id)) {
             return res.status(401).json({ message: "Unauthorized. Please log in again." });
         }
 
@@ -253,11 +264,11 @@ export async function updateProfile(req, res) {
             }
         });
 
-        const updatedUser = await User.findOneAndUpdate(
-            { email: req.user.email },
+        const updatedUser = await User.findByIdAndUpdate(
+            req.user.id || req.user._id,
             { $set: updateData },
             { new: true, runValidators: true }
-        ).select("-password");
+        ).select("-password -emailOtp");
 
         if (!updatedUser) {
             return res.status(404).json({ message: "User not found." });

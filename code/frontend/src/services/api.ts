@@ -87,6 +87,11 @@ api.interceptors.response.use(
       return Promise.reject(error);
     }
 
+    // 403 with emailUnverified flag — let the page/component handle showing the modal
+    if (error.response?.status === 403 && error.response?.data?.emailUnverified) {
+      return Promise.reject(error);
+    }
+
     if (error.response?.status === 403 || error.response?.status === 401) {
       // Token expired or invalid - clear auth and redirect to root login page
       clearAuthData();
@@ -150,6 +155,21 @@ export const userAPI = {
     const response = await api.get(`/api/users/recent-farmers`, {
       params: limit ? { limit } : {}
     });
+    return response.data;
+  },
+
+  sendOtp: async (email: string, firstName?: string) => {
+    const response = await api.post('/api/users/send-otp', { email, firstName });
+    return response.data;
+  },
+
+  verifyOtp: async (email: string, code: string) => {
+    const response = await api.post('/api/users/verify-otp', { email, code });
+    return response.data;
+  },
+
+  changeEmail: async (newEmail: string) => {
+    const response = await api.post('/api/users/change-email', { newEmail });
     return response.data;
   },
 };

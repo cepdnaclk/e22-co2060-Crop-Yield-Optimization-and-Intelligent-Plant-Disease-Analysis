@@ -15,7 +15,7 @@ import { GlassStatCard } from './GlassStatCard';
 function useCountUp(endValue: number, duration: number = 2500) {
   const [count, setCount] = useState(0);
   const startTimeRef = useRef<number | null>(null);
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number>(0);
   const hasAnimatedRef = useRef(false);
   const initialLoadRef = useRef(true);
 
