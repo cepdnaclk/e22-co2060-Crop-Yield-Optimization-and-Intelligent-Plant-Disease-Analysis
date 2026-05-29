@@ -6,21 +6,30 @@ dotenv.config();
 const OTP_VALIDITY_MINUTES = 15;
 
 /**
- * Creates and returns a configured Nodemailer transporter using Gmail SMTP.
- * Uses App Password authentication for security (not plain Gmail password).
+ * Creates and returns a configured Nodemailer transporter using SMTP2GO.
+ * Reads credentials from environment variables:
+ * - SMTP2GO_USER
+ * - SMTP2GO_PASS
+ * - SMTP_HOST (optional, defaults to mail.smtp2go.com)
+ * - SMTP_PORT (optional, defaults to 2525)
  */
 function createTransporter() {
-  const gmailUser = process.env.GMAIL_USER?.trim();
-  const gmailAppPassword = process.env.GMAIL_APP_PASSWORD?.replace(/\s+/g, "").trim();
+  const smtpUser = process.env.SMTP2GO_USER?.trim();
+  const smtpPass = process.env.SMTP2GO_PASS?.trim();
+  const smtpHost = process.env.SMTP_HOST || "mail.smtp2go.com";
+  const smtpPort = Number(process.env.SMTP_PORT || 2525);
 
   return nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
-    requireTLS: true,
+    host: smtpHost,
+    port: smtpPort,
+    secure: false, // smtp2go uses STARTTLS on 2525
     auth: {
-      user: gmailUser,
-      pass: gmailAppPassword,
+      user: smtpUser,
+      pass: smtpPass,
+    },
+    tls: {
+      // Enforce modern TLS versions where available
+      ciphers: "TLSv1.2",
     },
   });
 }
@@ -266,8 +275,9 @@ If you believe you received this email in error, please contact support.
  */
 export async function sendPointsAwardedEmail(params) {
   // Validate required environment variables before attempting to send
-  if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
-    console.warn("[EmailService] GMAIL_USER or GMAIL_APP_PASSWORD not configured. Skipping email.");
+  const smtpFrom = process.env.SMTP_FROM_ADDRESS?.trim();
+  if (!process.env.SMTP2GO_USER || !process.env.SMTP2GO_PASS || !smtpFrom) {
+    console.warn("[EmailService] SMTP2GO credentials or SMTP_FROM_ADDRESS not configured. Skipping email.");
     return;
   }
 
@@ -283,9 +293,9 @@ export async function sendPointsAwardedEmail(params) {
     const mailOptions = {
       from: {
         name: "AgriConnect Notifications",
-        address: process.env.GMAIL_USER,
+        address: smtpFrom,
       },
-      replyTo: process.env.GMAIL_USER,
+      replyTo: smtpFrom,
       to: params.farmerEmail,
       subject: `Your harvest points have been updated – AgriConnect`,
       text,   // Plain-text fallback (critical for spam score)
@@ -297,8 +307,19 @@ export async function sendPointsAwardedEmail(params) {
       },
     };
 
+    // verify connection configuration before sending (helps diagnose auth/connectivity)
+    try {
+      await transporter.verify();
+    } catch (vErr) {
+      console.error("[EmailService] SMTP verification failed:", vErr && vErr.message ? vErr.message : vErr);
+    }
+
+    // Ensure envelope uses the configured SMTP FROM address to avoid provider rejections
+    mailOptions.envelope = { from: smtpFrom, to: params.farmerEmail };
+
     const info = await transporter.sendMail(mailOptions);
     console.log(`[EmailService] Points email sent to ${params.farmerEmail}. MessageId: ${info.messageId}`);
+    console.log(`[EmailService] SMTP send result: accepted=${JSON.stringify(info.accepted)}, rejected=${JSON.stringify(info.rejected)}, response=${info.response}`);
   } catch (error) {
     // Log the error but DO NOT re-throw — email failure must not break point assignment
     console.error(`[EmailService] Failed to send points email to ${params.farmerEmail}:`, error.message);
@@ -316,11 +337,9 @@ export async function sendPointsAwardedEmail(params) {
  * @returns {Promise<void>}
  */
 export async function sendOtpEmail({ email, code, firstName = "there" }) {
-  const gmailUser = process.env.GMAIL_USER?.trim();
-  const gmailAppPassword = process.env.GMAIL_APP_PASSWORD?.replace(/\s+/g, "").trim();
-
-  if (!gmailUser || !gmailAppPassword) {
-    console.warn("[EmailService] GMAIL credentials not configured. Skipping OTP email.");
+  const smtpFrom = process.env.SMTP_FROM_ADDRESS?.trim();
+  if (!process.env.SMTP2GO_USER || !process.env.SMTP2GO_PASS || !smtpFrom) {
+    console.warn("[EmailService] SMTP2GO credentials or SMTP_FROM_ADDRESS not configured. Skipping OTP email.");
     return;
   }
   if (!email || !code) {
@@ -460,9 +479,9 @@ Department of Agriculture – Sri Lanka
     const mailOptions = {
       from: {
         name: "AgriConnect Notifications",
-        address: gmailUser,
+        address: smtpFrom,
       },
-      replyTo: gmailUser,
+      replyTo: smtpFrom,
       to: email,
       subject: `${code} is your AgriConnect verification code`,
       text,
@@ -473,8 +492,18 @@ Department of Agriculture – Sri Lanka
       },
     };
 
+    // verify connection configuration before sending
+    try {
+      await transporter.verify();
+    } catch (vErr) {
+      console.error("[EmailService] SMTP verification failed:", vErr && vErr.message ? vErr.message : vErr);
+    }
+
+    mailOptions.envelope = { from: smtpFrom, to: email };
+
     const info = await transporter.sendMail(mailOptions);
     console.log(`[EmailService] OTP email sent to ${email}. MessageId: ${info.messageId}`);
+    console.log(`[EmailService] SMTP send result: accepted=${JSON.stringify(info.accepted)}, rejected=${JSON.stringify(info.rejected)}, response=${info.response}`);
   } catch (error) {
     console.error(`[EmailService] Failed to send OTP email to ${email}:`, error.message, error.code || "");
     if (error.response) {
