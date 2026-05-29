@@ -244,6 +244,9 @@ export async function updateProfile(req, res) {
             district: req.body.district,
             division: req.body.division,
             image: req.body.image,
+            floodLatitude: req.body.floodLatitude,
+            floodLongitude: req.body.floodLongitude,
+            floodLocationName: req.body.floodLocationName,
         };
 
         // Remove undefined fields so we don't accidentally overwrite with null

@@ -18,6 +18,7 @@ import jwt from "jsonwebtoken"
 import avgYieldRouter from "./routers/avgYieldRouter.js"
 import inquiryRouter from "./routers/inquiryRouter.js"
 import geocodeRouter from "./routers/geocodeRouter.js"
+import floodRouter from "./routers/floodRouter.js"
 
 import dns from "node:dns"
 dns.setServers(['1.1.1.1', '8.8.8.8'])
@@ -117,6 +118,7 @@ app.use("/api/farms", farmRouter)
 app.use("/api/avgYields", avgYieldRouter)
 app.use("/api/inquiries", inquiryRouter)
 app.use("/api/geocode", geocodeRouter)
+app.use("/api/flood", floodRouter)
 
 app.post('/api/chatbot', async (req, res) => {
     try {

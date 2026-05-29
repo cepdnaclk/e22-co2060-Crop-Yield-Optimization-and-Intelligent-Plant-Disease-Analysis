@@ -65,6 +65,18 @@ const userSchema = new mongoose.Schema(
             type: Number,
             default: null
         },
+        floodLatitude: {
+            type: Number,
+            default: null
+        },
+        floodLongitude: {
+            type: Number,
+            default: null
+        },
+        floodLocationName: {
+            type: String,
+            default: null
+        },
         points: {
             type: Number,
             default: 0
