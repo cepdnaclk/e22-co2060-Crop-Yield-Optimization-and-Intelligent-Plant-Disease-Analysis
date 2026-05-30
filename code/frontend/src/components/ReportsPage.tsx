@@ -186,7 +186,7 @@ export function ReportsPage() {
       />
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-6">
         {/* Total Points Card */}
         <div
           style={{
@@ -398,17 +398,17 @@ export function ReportsPage() {
             <table className="w-full">
               <thead className="bg-white border-b border-gray-200">
                 <tr>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Variety</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Acres</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Percentage</th>
+                  <th className="px-3 md:px-6 py-2 md:py-3 text-left text-xs md:text-sm font-medium text-gray-700">Variety</th>
+                  <th className="px-3 md:px-6 py-2 md:py-3 text-left text-xs md:text-sm font-medium text-gray-700">Acres</th>
+                  <th className="px-3 md:px-6 py-2 md:py-3 text-left text-xs md:text-sm font-medium text-gray-700">Percentage</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
                 {cropVarietyData.map((variety) => (
                   <tr key={variety.name} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 text-sm text-gray-800">{variety.name}</td>
-                    <td className="px-6 py-4 text-sm text-gray-800">{variety.acres}</td>
-                    <td className="px-6 py-4 text-sm">
+                    <td className="px-3 md:px-6 py-2 md:py-4 text-xs md:text-sm text-gray-800">{variety.name}</td>
+                    <td className="px-3 md:px-6 py-2 md:py-4 text-xs md:text-sm text-gray-800">{variety.acres}</td>
+                    <td className="px-3 md:px-6 py-2 md:py-4 text-xs md:text-sm">
                       <div className="flex items-center gap-2">
                         <div className="flex-1 bg-gray-200 rounded-full h-2 max-w-[100px]">
                           <div
@@ -435,15 +435,15 @@ export function ReportsPage() {
             <table className="w-full">
               <thead className="bg-white border-b border-gray-200">
                 <tr>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Disease Type</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Percentage</th>
+                  <th className="px-3 md:px-6 py-2 md:py-3 text-left text-xs md:text-sm font-medium text-gray-700">Disease Type</th>
+                  <th className="px-3 md:px-6 py-2 md:py-3 text-left text-xs md:text-sm font-medium text-gray-700">Percentage</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
                 {diseaseData.map((disease) => (
                   <tr key={disease.name} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 text-sm text-gray-800">{disease.name}</td>
-                    <td className="px-6 py-4 text-sm">
+                    <td className="px-3 md:px-6 py-2 md:py-4 text-xs md:text-sm text-gray-800">{disease.name}</td>
+                    <td className="px-3 md:px-6 py-2 md:py-4 text-xs md:text-sm">
                       <div className="flex items-center gap-2">
                         <div className="flex-1 bg-gray-200 rounded-full h-2 max-w-[100px]">
                           <div

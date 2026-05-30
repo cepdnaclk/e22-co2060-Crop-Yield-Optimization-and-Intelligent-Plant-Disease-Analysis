@@ -160,15 +160,15 @@ export function DiseasePage() {
   return (
     <div className="space-y-6">
       {/* Hero Header */}
-      <div style={{ background: 'linear-gradient(135deg, #065F46 0%, #047857 50%, #059669 100%)', borderRadius: '16px', padding: '28px 32px', color: 'white', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ background: 'linear-gradient(135deg, #065F46 0%, #047857 50%, #059669 100%)', borderRadius: '16px', padding: 'clamp(14px,4vw,28px) clamp(14px,5vw,32px)', color: 'white', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: '-20px', right: '-20px', width: '120px', height: '120px', background: 'rgba(255,255,255,0.08)', borderRadius: '50%' }} />
         <div style={{ position: 'absolute', bottom: '-30px', right: '80px', width: '80px', height: '80px', background: 'rgba(255,255,255,0.05)', borderRadius: '50%' }} />
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', position: 'relative', zIndex: 1 }}>
-          <div style={{ width: '48px', height: '48px', background: 'rgba(255,255,255,0.15)', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)' }}>
-            <Microscope style={{ width: '26px', height: '26px' }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', position: 'relative', zIndex: 1, flexWrap: 'wrap' }}>
+          <div style={{ width: '44px', height: '44px', background: 'rgba(255,255,255,0.15)', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)', flexShrink: 0 }}>
+            <Microscope style={{ width: '24px', height: '24px' }} />
           </div>
           <div>
-            <h2 style={{ fontSize: '22px', fontWeight: '700', margin: 0 }}>Disease Detection & Analysis</h2>
+            <h2 style={{ fontSize: 'clamp(16px,4vw,22px)', fontWeight: '700', margin: 0 }}>Disease Detection &amp; Analysis</h2>
             <p style={{ fontSize: '13px', opacity: 0.85, margin: '2px 0 0' }}>Upload a leaf image for AI-powered disease identification</p>
           </div>
         </div>

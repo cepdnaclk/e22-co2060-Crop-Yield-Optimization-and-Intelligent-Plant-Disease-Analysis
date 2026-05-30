@@ -215,7 +215,7 @@ export function CropDataPage() {
   return (
     <div className="space-y-5">
       {/* Hero Header */}
-      <div style={{ background: 'linear-gradient(135deg, #065F46 0%, #047857 50%, #059669 100%)', borderRadius: '16px', padding: '26px 30px', color: 'white', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ background: 'linear-gradient(135deg, #065F46 0%, #047857 50%, #059669 100%)', borderRadius: '16px', padding: 'clamp(14px,4vw,26px) clamp(14px,5vw,30px)', color: 'white', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: '-30px', right: '-30px', width: '140px', height: '140px', background: 'rgba(255,255,255,0.07)', borderRadius: '50%' }} />
         <div style={{ position: 'absolute', bottom: '-20px', right: '100px', width: '80px', height: '80px', background: 'rgba(255,255,255,0.04)', borderRadius: '50%' }} />
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '14px', position: 'relative', zIndex: 1 }}>
@@ -242,22 +242,24 @@ export function CropDataPage() {
       </div>
 
       {/* Filter Toolbar */}
-      <div style={{ background: 'white', border: '1px solid #E5E7EB', borderRadius: '14px', padding: '16px 20px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
-        <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
-          <BarChart3 style={{ width: '18px', height: '18px', color: '#6B7280' }} />
+      <div style={{ background: 'white', border: '1px solid #E5E7EB', borderRadius: '14px', padding: 'clamp(12px,3vw,16px) clamp(12px,4vw,20px)', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
+          <BarChart3 style={{ width: '18px', height: '18px', color: '#6B7280', flexShrink: 0 }} />
           <span style={{ fontSize: '13px', fontWeight: 600, color: '#374151', marginRight: '4px' }}>Filters</span>
-          <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)} style={filterSelectStyle}>
-            <option value="">All Years</option>
-            {filterOptions.years.map((y) => <option key={y} value={y}>{y}</option>)}
-          </select>
-          <select value={selectedSeason} onChange={(e) => setSelectedSeason(e.target.value)} style={filterSelectStyle}>
-            <option value="">All Seasons</option>
-            {filterOptions.seasons.map((s) => <option key={s} value={s}>{s}</option>)}
-          </select>
-          <select value={selectedCrop} onChange={(e) => setSelectedCrop(e.target.value)} style={filterSelectStyle}>
-            <option value="">All Crops</option>
-            {filterOptions.crops.map((c) => <option key={c} value={c}>{c}</option>)}
-          </select>
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', flex: 1, minWidth: 0 }}>
+            <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)} style={{ ...filterSelectStyle, flex: '1 1 110px', minWidth: '100px' }}>
+              <option value="">All Years</option>
+              {filterOptions.years.map((y) => <option key={y} value={y}>{y}</option>)}
+            </select>
+            <select value={selectedSeason} onChange={(e) => setSelectedSeason(e.target.value)} style={{ ...filterSelectStyle, flex: '1 1 120px', minWidth: '100px' }}>
+              <option value="">All Seasons</option>
+              {filterOptions.seasons.map((s) => <option key={s} value={s}>{s}</option>)}
+            </select>
+            <select value={selectedCrop} onChange={(e) => setSelectedCrop(e.target.value)} style={{ ...filterSelectStyle, flex: '1 1 120px', minWidth: '100px' }}>
+              <option value="">All Crops</option>
+              {filterOptions.crops.map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+          </div>
         </div>
       </div>
 
