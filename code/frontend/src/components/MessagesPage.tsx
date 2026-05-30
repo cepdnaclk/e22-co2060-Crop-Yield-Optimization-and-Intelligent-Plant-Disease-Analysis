@@ -106,10 +106,9 @@ export function MessagesPage() {
   return (
     <div style={{ maxWidth: '900px', margin: '0 auto' }}>
       {/* Hero Header */}
-      <div style={{
+      <div className="rounded-2xl mb-5 relative overflow-hidden" style={{
         background: 'linear-gradient(135deg, #065F46 0%, #047857 40%, #10B981 100%)',
-        borderRadius: '20px', padding: '28px 32px', marginBottom: '24px',
-        position: 'relative', overflow: 'hidden',
+        padding: 'clamp(16px, 4vw, 28px) clamp(16px, 5vw, 32px)',
       }}>
         <div style={{
           position: 'absolute', top: '-40px', right: '-40px', width: '180px', height: '180px',
@@ -123,29 +122,30 @@ export function MessagesPage() {
           <div style={{
             background: 'rgba(255,255,255,0.15)', borderRadius: '12px',
             width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            flexShrink: 0,
           }}>
             <Shield style={{ width: '24px', height: '24px', color: 'white' }} />
           </div>
           <div>
-            <h2 style={{ color: 'white', fontSize: '22px', fontWeight: '700', margin: 0 }}>Contact Admin</h2>
+            <h2 style={{ color: 'white', fontSize: 'clamp(16px, 4vw, 22px)', fontWeight: '700', margin: 0 }}>Contact Admin</h2>
             <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '13px', margin: 0 }}>
               Report issues, request support, or submit inquiries
             </p>
           </div>
         </div>
         {/* Mini Stats */}
-        <div style={{ display: 'flex', gap: '12px', marginTop: '20px', position: 'relative' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '16px', position: 'relative' }}>
           {[
             { label: 'Total', value: totalCount, bg: 'rgba(255,255,255,0.12)' },
             { label: 'Pending', value: pendingCount, bg: 'rgba(251,191,36,0.2)' },
             { label: 'Resolved', value: resolvedCount, bg: 'rgba(52,211,153,0.2)' },
           ].map(s => (
             <div key={s.label} style={{
-              background: s.bg, borderRadius: '12px', padding: '10px 18px',
+              background: s.bg, borderRadius: '12px', padding: '8px 14px',
               backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.1)',
-              minWidth: '80px', textAlign: 'center',
+              minWidth: '70px', textAlign: 'center',
             }}>
-              <p style={{ color: 'white', fontSize: '20px', fontWeight: '700', margin: 0 }}>{s.value}</p>
+              <p style={{ color: 'white', fontSize: '18px', fontWeight: '700', margin: 0 }}>{s.value}</p>
               <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '11px', margin: 0 }}>{s.label}</p>
             </div>
           ))}
@@ -153,9 +153,10 @@ export function MessagesPage() {
       </div>
 
       {/* Form Section */}
-      <div style={{
-        background: 'white', borderRadius: '20px', border: '1px solid #E5E7EB',
-        boxShadow: '0 4px 24px rgba(0,0,0,0.06)', padding: '28px 32px', marginBottom: '24px',
+      <div className="rounded-2xl mb-5" style={{
+        background: 'white', border: '1px solid #E5E7EB',
+        boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
+        padding: 'clamp(16px, 4vw, 28px) clamp(16px, 5vw, 32px)',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '24px' }}>
           <Sparkles style={{ width: '20px', height: '20px', color: '#10B981' }} />
@@ -322,7 +323,8 @@ export function MessagesPage() {
         boxShadow: '0 4px 24px rgba(0,0,0,0.06)', overflow: 'hidden',
       }}>
         <div style={{
-          padding: '20px 32px', borderBottom: '1px solid #F3F4F6',
+          padding: 'clamp(14px, 3vw, 20px) clamp(16px, 5vw, 32px)',
+          borderBottom: '1px solid #F3F4F6',
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -334,7 +336,7 @@ export function MessagesPage() {
           </div>
         </div>
 
-        <div style={{ padding: '20px 32px' }}>
+        <div style={{ padding: 'clamp(14px, 3vw, 20px) clamp(16px, 5vw, 32px)' }}>
           {loading ? (
             <div style={{ textAlign: 'center', padding: '48px 0' }}>
               <Loader2 style={{ width: '36px', height: '36px', color: '#10B981', margin: '0 auto', animation: 'spin 1s linear infinite' }} />

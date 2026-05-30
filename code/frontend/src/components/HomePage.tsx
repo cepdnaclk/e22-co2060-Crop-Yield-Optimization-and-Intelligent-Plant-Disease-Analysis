@@ -200,71 +200,73 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
             </div>
           </div>
         </div>
-
         {/* Disease Heat Map */}
         <div className="bg-white rounded-2xl p-4 md:p-6 border border-gray-200 lg:col-span-2">
           <h3 className="text-base md:text-lg font-semibold text-gray-800 mb-4">Disease Heat Map</h3>
-          <div className="flex gap-2 md:gap-4 overflow-x-auto">
+
+          {/* Desktop layout: legend | map | advisory side by side */}
+          <div className="hidden sm:flex gap-4">
             {/* Activity Scale */}
-            <div className="flex flex-col justify-between text-xs text-gray-600 w-16 md:w-24 flex-shrink-0">
-              <div>
-                <p className="text-gray-700 font-medium mb-2">Report Frequency</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-3 bg-red-900 rounded"></div>
-                <span>Critical</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-3 bg-red-700 rounded"></div>
-                <span>Very High</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-3 bg-red-500 rounded"></div>
-                <span>High</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-3 bg-orange-500 rounded"></div>
-                <span>Elevated</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-3 bg-orange-400 rounded"></div>
-                <span>Moderate</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-3 bg-yellow-400 rounded"></div>
-                <span>Alert</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-3 bg-yellow-300 rounded"></div>
-                <span>Warning</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-3 bg-yellow-200 rounded"></div>
-                <span>Low</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-3 bg-green-300 rounded"></div>
-                <span>Very Low</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-3 bg-green-200 rounded"></div>
-                <span>None</span>
-              </div>
+            <div className="flex flex-col justify-between text-xs text-gray-600 w-24 flex-shrink-0">
+              <p className="text-gray-700 font-medium mb-2">Report Frequency</p>
+              {[
+                { color: 'bg-red-900', label: 'Critical' },
+                { color: 'bg-red-700', label: 'Very High' },
+                { color: 'bg-red-500', label: 'High' },
+                { color: 'bg-orange-500', label: 'Elevated' },
+                { color: 'bg-orange-400', label: 'Moderate' },
+                { color: 'bg-yellow-400', label: 'Alert' },
+                { color: 'bg-yellow-300', label: 'Warning' },
+                { color: 'bg-yellow-200', label: 'Low' },
+                { color: 'bg-green-300', label: 'Very Low' },
+                { color: 'bg-green-200', label: 'None' },
+              ].map(({ color, label }) => (
+                <div key={label} className="flex items-center gap-2">
+                  <div className={`w-6 h-3 ${color} rounded flex-shrink-0`}></div>
+                  <span>{label}</span>
+                </div>
+              ))}
             </div>
 
-            {/* Map Visualization */}
+            {/* Map */}
             <div className="flex-1 relative bg-gray-50 rounded-lg overflow-hidden min-h-[280px] flex items-center justify-center">
               <img src="/src/assets/sri_lanka_heatmap.png" alt="Sri Lanka Disease Heatmap" className="w-full h-full object-contain mix-blend-multiply opacity-90" />
             </div>
 
             {/* Advisory */}
-            <div className="w-32 text-xs">
+            <div className="w-32 text-xs flex-shrink-0">
               <h4 className="font-semibold text-gray-800 mb-3">Advisory & Tips</h4>
               <ul className="space-y-2 text-gray-600">
                 <li>Nearthy Leaf Blast</li>
                 <li>Early morning humidity</li>
                 <li>High Risk Zone</li>
               </ul>
+            </div>
+          </div>
+
+          {/* Mobile layout: map full-width, compact legend below */}
+          <div className="sm:hidden space-y-3">
+            <div className="relative bg-gray-50 rounded-lg overflow-hidden" style={{ minHeight: '220px' }}>
+              <img src="/src/assets/sri_lanka_heatmap.png" alt="Sri Lanka Disease Heatmap" className="w-full h-full object-contain mix-blend-multiply opacity-90" />
+            </div>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-gray-600">
+              {[
+                { color: 'bg-red-900', label: 'Critical' },
+                { color: 'bg-red-700', label: 'Very High' },
+                { color: 'bg-red-500', label: 'High' },
+                { color: 'bg-orange-500', label: 'Elevated' },
+                { color: 'bg-orange-400', label: 'Moderate' },
+                { color: 'bg-yellow-400', label: 'Alert' },
+                { color: 'bg-yellow-300', label: 'Warning' },
+                { color: 'bg-yellow-200', label: 'Low' },
+                { color: 'bg-green-300', label: 'Very Low' },
+                { color: 'bg-green-200', label: 'None' },
+              ].map(({ color, label }) => (
+                <div key={label} className="flex items-center gap-1.5">
+                  <div className={`w-5 h-2.5 ${color} rounded flex-shrink-0`}></div>
+                  <span>{label}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
