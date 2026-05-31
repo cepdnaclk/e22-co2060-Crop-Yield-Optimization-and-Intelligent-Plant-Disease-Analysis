@@ -101,6 +101,12 @@ export function FloodMapModal({
       center: [initialLat, initialLng],
       zoom: initialZoom,
       doubleClickZoom: false,
+      maxBounds: [
+        [5.8, 79.5], // South-West
+        [9.9, 82.0], // North-East
+      ],
+      maxBoundsViscosity: 1.0, // Solid bounds, no bouncing outside
+      minZoom: 7, // Prevent zooming out to see the whole world
     });
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -111,6 +117,13 @@ export function FloodMapModal({
     // Click handler to drop pin
     map.on('click', async (e: L.LeafletMouseEvent) => {
       const { lat, lng } = e.latlng;
+      
+      // Prevent selecting locations outside Sri Lanka
+      if (lat < 5.8 || lat > 9.9 || lng < 79.5 || lng > 82.0) {
+        alert("Please select a location within Sri Lanka.");
+        return;
+      }
+
       setSelectedCoords({ lat, lng });
 
       if (markerRef.current) {
