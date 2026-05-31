@@ -204,6 +204,27 @@ export function DiseasePage() {
         all_probabilities: prediction.all_probabilities,
         imageUrl,
       });
+      // Save the highest-confidence disease report to backend when a farm is selected
+      try {
+        if (myFarms.length === 0) {
+          // No farms to attach to
+        } else if (!selectedFarmId) {
+          // No farm selected — skip saving
+        } else {
+          await farmAPI.reportDisease({
+            farmId: selectedFarmId,
+            // send full probabilities so backend can store multiple detections
+            all_probabilities: prediction.all_probabilities,
+            imageUrl,
+            location: location || undefined,
+            notes: notes || undefined,
+          });
+        }
+      } catch (err: any) {
+        // Non-fatal: show console and set analysisError for visibility
+        console.error('Failed saving disease report:', err?.response?.data || err?.message || err);
+        setAnalysisError((err?.response?.data?.message) || 'Analyzed but failed to save report');
+      }
       setIsAnalyzing(false);
     } catch (error: any) {
       setAnalysisError(error?.message || 'Failed to analyze the image');

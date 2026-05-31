@@ -211,6 +211,11 @@ export const farmAPI = {
     return response.data;
   },
 
+  reportDisease: async (payload: any) => {
+    const response = await api.post('/api/farms/report-disease', payload);
+    return response.data;
+  },
+
   getFarmById: async (farmId: string) => {
     const response = await api.get(`/api/farms/${farmId}`);
     return response.data;

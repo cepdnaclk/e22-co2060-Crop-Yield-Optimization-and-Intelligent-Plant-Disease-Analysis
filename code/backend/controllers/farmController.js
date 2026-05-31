@@ -1,8 +1,10 @@
 import Farm from "../models/farm.js";
+import mongoose from 'mongoose';
 import User from "../models/user.js";
 import { isAdmin } from "./userController.js";
 import AvgYield from "../models/avgYield.js";
 import { sendPointsAwardedEmail } from "../services/emailService.js";
+import DiseaseReport from "../models/diseaseReport.js";
 
 function normalizeText(value) {
   return (value || "").trim().toLowerCase();
@@ -176,6 +178,99 @@ export async function createFarm(req, res) {
     return res.json({ message: "Farm created successfully", farm: savedFarm });
   } else {
     return res.status(500).json({ message: "Failed to generate a unique Farm ID due to high traffic. Please try again." });
+  }
+}
+
+/**
+ * Report a disease analysis tied to a farm. Expects: farmId (farm._id or farmId), disease, confidence, imageUrl, location, notes
+ */
+export async function reportDisease(req, res) {
+  try {
+    const { farmId, disease, confidence, detections, all_probabilities, imageUrl, location, notes } = req.body;
+
+    if (!farmId) {
+      return res.status(400).json({ message: 'farmId is required' });
+    }
+
+    // Find farm by farmId or by MongoDB _id (only include _id when it's a valid ObjectId)
+    let farm = null;
+    if (mongoose.Types.ObjectId.isValid(String(farmId))) {
+      farm = await Farm.findOne({ $or: [{ _id: farmId }, { farmId: farmId }] });
+    } else {
+      farm = await Farm.findOne({ farmId: farmId });
+    }
+    if (!farm) {
+      return res.status(404).json({ message: 'Farm not found' });
+    }
+
+    // Ensure the requesting user is the farmer or admin
+    const requester = req.user; // set by requireAuth middleware
+    if (!requester) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    // If not admin, ensure this farm belongs to the user
+    if (!isAdmin(req) && String(farm.farmer) !== String(requester._id)) {
+      return res.status(403).json({ message: 'Access denied. You can only report for your own farms.' });
+    }
+
+    // Build a highest-confidence detection entry (backwards compatible)
+    let candidateDetections = [];
+
+    if (Array.isArray(detections) && detections.length > 0) {
+      candidateDetections = detections.map((d) => ({ disease: String(d.disease), confidence: Number(d.confidence) }));
+    } else if (all_probabilities && typeof all_probabilities === 'object') {
+      candidateDetections = Object.entries(all_probabilities).map(([label, conf]) => ({ disease: String(label), confidence: Number(conf) }));
+    } else if (disease && typeof confidence !== 'undefined') {
+      candidateDetections = [{ disease: String(disease), confidence: Number(confidence) }];
+    } else {
+      return res.status(400).json({ message: 'No detections provided. Provide detections, all_probabilities, or disease+confidence.' });
+    }
+
+    const validDetections = candidateDetections
+      .map((d) => ({ disease: String(d.disease).trim(), confidence: Number(d.confidence) }))
+      .filter((d) => d.disease && Number.isFinite(d.confidence));
+
+    if (validDetections.length === 0) {
+      return res.status(400).json({ message: 'No valid detections found (confidence must be a number).' });
+    }
+
+    validDetections.sort((a, b) => b.confidence - a.confidence);
+    const highestDetection = validDetections[0];
+
+    const reportEntry = {
+      imageUrl: imageUrl || null,
+      disease: highestDetection.disease,
+      confidence: highestDetection.confidence,
+      location: location || null,
+      notes: notes || null,
+      createdDate: new Date(),
+    };
+
+    let report = await DiseaseReport.findOne({ farm: farm._id, farmer: farm.farmer });
+    if (!report) {
+      report = new DiseaseReport({
+        farm: farm._id,
+        farmer: farm.farmer,
+        diseases: [reportEntry],
+      });
+    } else {
+      report.diseases = Array.isArray(report.diseases) ? report.diseases : [];
+      report.diseases.push(reportEntry);
+      report.createdDate = new Date();
+    }
+
+    const saved = await report.save();
+
+    return res.json({ message: 'Disease report saved', report: saved, highestDetection });
+  } catch (error) {
+    console.error('Error saving disease report:', {
+      message: error?.message || error,
+      stack: error?.stack,
+      body: req.body,
+      user: req.user && (req.user._id || req.user.id) ? (req.user._id || req.user.id) : undefined,
+    });
+    return res.status(500).json({ message: 'Failed to save disease report', error: error?.message || 'Internal Server Error' });
   }
 }
 
