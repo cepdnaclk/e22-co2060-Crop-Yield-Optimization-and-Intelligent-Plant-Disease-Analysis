@@ -8,6 +8,12 @@ function normalizeText(value) {
   return (value || "").trim().toLowerCase();
 }
 
+const ALLOWED_DISTRICTS = [
+  'Ampara','Anuradhapura','Badulla','Batticaloa','Colombo','Galle','Gampaha','Hambantota',
+  'Jaffna','Kalutara','Kandy','Kegalle','Kilinochchi','Kurunegala','Mannar','Matale',
+  'Matara','Monaragala','Nuwara Eliya','Polonnaruwa','Puttalam','Ratnapura','Trincomalee','Vavuniya'
+];
+
 async function computePointsFromAverageYield(farm, season, yearNum, harvestQtyNum) {
   const farmYield = harvestQtyNum / farm.sizeInAcres;
 
@@ -79,6 +85,11 @@ export async function createFarm(req, res) {
   }
 
   const { farmerNIC, ...farmData } = req.body;
+
+  // Validate district presence and value
+  if (!farmData.district || !ALLOWED_DISTRICTS.includes(String(farmData.district))) {
+    return res.status(400).json({ message: "Invalid or missing district. Please provide one of the allowed districts.", allowedDistricts: ALLOWED_DISTRICTS });
+  }
 
   // Find the farmer by NIC
   const farmer = await User.findOne({ nic: farmerNIC });

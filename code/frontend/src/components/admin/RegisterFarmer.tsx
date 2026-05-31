@@ -11,6 +11,7 @@ interface FarmData {
   crop: string;
   sizeInAcres: number | string;
   location: string;
+  district?: string;
 }
 
 interface FarmerFormData {
@@ -77,16 +78,15 @@ export function RegisterFarmer() {
   } as FarmerFormData);
 
   const [farms, setFarms] = useState([
-    { farmName: '', crop: '', sizeInAcres: '', location: '' }
+    { farmName: '', crop: '', sizeInAcres: '', location: '', district: '' }
   ] as FarmData[]);
 
   const [registeredFarmerId, setRegisteredFarmerId] = useState(null as string | null);
 
   const districts = [
-    'Ampara', 'Anuradhapura', 'Badulla', 'Batticaloa', 'Colombo', 'Galle', 'Gampaha', 'Hambantota',
-    'Jaffna', 'Kalutara', 'Kandy', 'Kegalle', 'Kilinochchi', 'Kurunegala', 'Mannar', 'Matale',
-    'Matara', 'Monaragala', 'Mullaitivu', 'Nuwara Eliya', 'Polonnaruwa', 'Puttalam', 'Ratnapura',
-    'Trincomalee', 'Vavuniya'
+    'Ampara','Anuradhapura','Badulla','Batticaloa','Colombo','Galle','Gampaha','Hambantota',
+    'Jaffna','Kalutara','Kandy','Kegalle','Kilinochchi','Kurunegala','Mannar','Matale',
+    'Matara','Monaragala','Nuwara Eliya','Polonnaruwa','Puttalam','Ratnapura','Trincomalee','Vavuniya'
   ];
 
   const isValidNIC = (nic: string) => {
@@ -348,7 +348,7 @@ export function RegisterFarmer() {
           sizeInAcres: Number(farm.sizeInAcres),
           location: farm.location,
           farmerNIC: farmerNIC,
-          district: district,
+          district: farm.district || district,
           status: 'active',
         });
 
@@ -971,6 +971,20 @@ export function RegisterFarmer() {
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                       required
                     />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">District *</label>
+                    <select
+                      value={farm.district || farmerData.district}
+                      onChange={(e) => handleFarmChange(index, 'district', e.target.value)}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                      required
+                    >
+                      <option value="">Select District</option>
+                      {districts.map(d => (
+                        <option key={d} value={d}>{d}</option>
+                      ))}
+                    </select>
                   </div>
                 </div>
               </div>
