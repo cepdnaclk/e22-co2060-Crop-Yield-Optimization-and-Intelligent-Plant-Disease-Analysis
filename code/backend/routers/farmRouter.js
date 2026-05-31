@@ -5,6 +5,7 @@
  */
 import express from "express";
 import { addHarvestAndPoints, recalculateAllPoints, createFarm, getAllFarms, getFarmById, updateFarm, deleteFarm, getHarvestHistory, getFarmerReport, getAllCrops } from "../controllers/farmController.js";
+import { reportDisease } from "../controllers/farmController.js";
 import { requireAuth, requireEmailVerified } from "../middleware/authMiddleware.js";
 
 const farmRouter = express.Router()
@@ -26,6 +27,7 @@ farmRouter.get("/:farmId", getFarmById)
 farmRouter.post("/", createFarm)
 farmRouter.post("/addharvestandpoints", addHarvestAndPoints)
 farmRouter.post("/recalculate-points", recalculateAllPoints)
+farmRouter.post('/report-disease', reportDisease)
 
 // PUT/PATCH endpoints
 farmRouter.put("/:farmId", updateFarm)

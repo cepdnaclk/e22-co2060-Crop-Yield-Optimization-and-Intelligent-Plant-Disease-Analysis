@@ -176,27 +176,12 @@ export const userAPI = {
 
 // Farm API endpoints
 export const farmAPI = {
-  createFarm: async (farmData: {
-    farmName: string;
-    location: string;
-    crop: string;
-    sizeInAcres: number;
-    farmerNIC: string;
-    district: string;
-    status?: string;
-  }) => {
+  createFarm: async (farmData: any) => {
     const response = await api.post('/api/farms', farmData);
     return response.data;
   },
 
-  updateFarm: async (farmId: string, farmData: {
-    farmName?: string;
-    location?: string;
-    crop?: string;
-    sizeInAcres?: number;
-    district?: string;
-    status?: string;
-  }) => {
+  updateFarm: async (farmId: string, farmData: any) => {
     const response = await api.put(`/api/farms/${farmId}`, farmData);
     return response.data;
   },
@@ -223,6 +208,11 @@ export const farmAPI = {
 
   getAllFarms: async () => {
     const response = await api.get('/api/farms');
+    return response.data;
+  },
+
+  reportDisease: async (payload: any) => {
+    const response = await api.post('/api/farms/report-disease', payload);
     return response.data;
   },
 
