@@ -146,6 +146,9 @@ export const userAPI = {
     district?: string;
     division?: string;
     image?: string;
+    floodLatitude?: number | null;
+    floodLongitude?: number | null;
+    floodLocationName?: string | null;
   }) => {
     const response = await api.put('/api/users/profile', userData);
     return response.data;
@@ -315,6 +318,13 @@ export const chatbotAPI = {
       reply: extractChatbotReply(response.data),
     };
   },
+};
+
+export const floodAPI = {
+  getNearbyFloods: async () => {
+    const response = await api.get('/api/flood/nearby');
+    return response.data;
+  }
 };
 
 // Export the axios instance for custom requests

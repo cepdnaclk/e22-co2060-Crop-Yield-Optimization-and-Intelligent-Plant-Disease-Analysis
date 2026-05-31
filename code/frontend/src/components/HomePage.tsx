@@ -3,14 +3,15 @@
  * Displays a personalized greeting, points summary, disease heat map,
  * and a dashboard summary.
  */
-import { Star, HandIcon, SearchIcon, FileText, AlertTriangle, MapPin } from 'lucide-react';
+import { Star, HandIcon, SearchIcon, FileText, AlertTriangle, MapPin, ShieldCheck, Loader2, Map } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router';
-import { userAPI, farmAPI } from '../services/api';
+import { userAPI, farmAPI, floodAPI } from '../services/api';
 import { SummaryCard } from './SummaryCard';
 import farmerImage from 'figma:asset/8d18ad2077654c1f65710d650ff192f7ba499f8c.png';
 import { formatNumber } from '../utils/numberUtils';
 import { EmailVerificationModal } from './ui/EmailVerificationModal';
+import { FloodMapModal } from './ui/FloodMapModal';
 
 // Hook used by Home dashboard (and others) to load summary metrics.
 export function useHomeDashboardData() {
@@ -75,9 +76,45 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
   const [userProfile, setUserProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [showVerificationModal, setShowVerificationModal] = useState(false);
+  const [floodData, setFloodData] = useState<any>(null);
+  const [floodLoading, setFloodLoading] = useState<boolean>(true);
+  const [showMapModal, setShowMapModal] = useState<boolean>(false);
 
   const outletContext = useOutletContext<{ onNavigate: (page: string) => void }>();
   const onNavigate = onNavigateProp || outletContext?.onNavigate || (() => { });
+
+  const fetchFloodForecast = async () => {
+    try {
+      setFloodLoading(true);
+      const data = await floodAPI.getNearbyFloods();
+      setFloodData(data);
+    } catch (err) {
+      console.error("Failed to load flood forecast:", err);
+    } finally {
+      setFloodLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchFloodForecast();
+  }, []);
+
+  const handleLocationSelect = async (lat: number, lng: number, address: string) => {
+    try {
+      await userAPI.updateProfile({
+        floodLatitude: lat,
+        floodLongitude: lng,
+        floodLocationName: address
+      });
+      const data = await userAPI.fetchProfile();
+      if (data && data.user) {
+        setUserProfile(data.user);
+      }
+      await fetchFloodForecast();
+    } catch (err) {
+      console.error("Error updating tracking location:", err);
+    }
+  };
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -185,18 +222,80 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
         <div className="bg-white rounded-2xl p-4 md:p-6 border border-gray-200">
           <h3 className="text-base md:text-lg font-semibold text-gray-800 mb-4">Alerts & Warnings</h3>
           <div className="space-y-3 md:space-y-4">
-            <div className="bg-gradient-to-br from-green-700 to-green-800 rounded-xl p-3 md:p-4 text-white">
-              <HandIcon className="w-6 h-6 md:w-8 md:h-8 mb-2" />
-              <p className="text-xs md:text-sm font-medium">Flood Risk Expected In</p>
-              <p className="text-xs md:text-sm">in Your Area</p>
-            </div>
-            <div className="bg-gradient-to-br from-green-700 to-green-800 rounded-xl p-3 md:p-4 text-white relative">
-              <div className="absolute top-2 right-2 w-4 h-4 md:w-5 md:h-5 bg-red-500 rounded-full flex items-center justify-center">
-                <span className="text-xs">1</span>
+            {/* Dynamic Flood Forecasting Widget */}
+            {floodLoading ? (
+              <div className="bg-gray-50 border border-gray-100 rounded-xl flex items-center justify-center animate-pulse" style={{ padding: '16px', minHeight: '100px' }}>
+                <div className="flex flex-col items-center gap-2">
+                  <Loader2 className="w-5 h-5 text-green-600 animate-spin" />
+                  <p className="text-xs text-gray-500">Checking flood gauges...</p>
+                </div>
               </div>
-              <AlertTriangle className="w-6 h-6 md:w-8 md:h-8 mb-2" />
-              <p className="text-xs md:text-sm font-medium">Possible Disease</p>
-              <p className="text-xs md:text-sm">Outbreak Nearby</p>
+            ) : !floodData?.locationConfigured ? (
+              <div className="rounded-xl text-white border border-slate-700 shadow-lg overflow-hidden" style={{ background: 'linear-gradient(to bottom right, #334155, #0f172a)', padding: '14px' }}>
+                <Map className="w-6 h-6 mb-2 text-green-400" />
+                <p className="font-bold tracking-wide uppercase" style={{ fontSize: '12px', marginBottom: '4px' }}>Flood Alerts Offline</p>
+                <p className="text-gray-300" style={{ fontSize: '11px', lineHeight: '1.4', marginBottom: '12px' }}>Set your coordinates to enable active localized flood tracking within a 10 km zone.</p>
+                <button
+                  onClick={() => setShowMapModal(true)}
+                  className="w-full text-xs font-bold bg-white text-gray-800 hover:bg-green-50 active:scale-95 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 border border-white cursor-pointer"
+                  style={{ padding: '10px 14px' }}
+                >
+                  <MapPin className="w-4 h-4 text-green-600 animate-bounce" />
+                  <span>Pin Map Location</span>
+                </button>
+              </div>
+            ) : floodData?.highestAlert ? (
+              <div className={`relative text-white rounded-xl shadow-lg border overflow-hidden ${floodData.highestAlert.severity === 'EXTREME' || floodData.highestAlert.severity === 'SEVERE' ? 'border-red-500 animate-pulse' : 'border-amber-600'}`}
+                style={{
+                  background: floodData.highestAlert.severity === 'EXTREME' || floodData.highestAlert.severity === 'SEVERE'
+                    ? 'linear-gradient(to bottom right, #dc2626, #7f1d1d)'
+                    : 'linear-gradient(to bottom right, #f59e0b, #b45309)',
+                  padding: '14px'
+                }}
+              >
+                <AlertTriangle className="w-6 h-6 mb-1" />
+                <p className="font-bold tracking-wide uppercase" style={{ fontSize: '12px' }}>
+                  🚨 {floodData.highestAlert.severity} FLOOD THREAT
+                </p>
+                <p className="font-medium truncate" style={{ fontSize: '12px', marginTop: '4px', lineHeight: '1.3' }}>{floodData.highestAlert.gaugeName}</p>
+                <p className="font-semibold" style={{ fontSize: '11px', marginTop: '4px', color: 'rgba(255,255,255,0.85)' }}>
+                  {floodData.highestAlert.distance} km away · Trend: {floodData.highestAlert.forecastTrend}
+                </p>
+                <button
+                  onClick={() => setShowMapModal(true)}
+                  className="w-full bg-white/10 hover:bg-white/20 active:scale-95 rounded-xl text-white flex items-center justify-center gap-1.5 transition-all font-semibold border border-white/15 cursor-pointer"
+                  style={{ marginTop: '12px', padding: '8px', fontSize: '11px' }}
+                >
+                  <Map className="w-3.5 h-3.5" />
+                  Change Location
+                </button>
+              </div>
+            ) : (
+              <div className="rounded-xl text-white border border-emerald-800 shadow-lg overflow-hidden" style={{ background: 'linear-gradient(to bottom right, #047857, #022c22)', padding: '14px' }}>
+                <ShieldCheck className="w-6 h-6 mb-1 text-green-300 animate-pulse" />
+                <p className="font-semibold flex items-center gap-1.5" style={{ fontSize: '12px' }}>
+                  🟢 Safe: No Floods Nearby
+                </p>
+                <p className="text-green-100" style={{ fontSize: '11px', marginTop: '4px', lineHeight: '1.4' }}>
+                  No active flood threats within 10 km of your tracking zone.
+                </p>
+                <button
+                  onClick={() => setShowMapModal(true)}
+                  className="w-full bg-white/10 hover:bg-white/20 active:scale-95 rounded-xl text-white flex items-center justify-center gap-1.5 transition-all font-semibold border border-white/15 cursor-pointer"
+                  style={{ marginTop: '12px', padding: '8px', fontSize: '11px' }}
+                >
+                  <MapPin className="w-3.5 h-3.5 text-green-200 flex-shrink-0" />
+                  <span>Change Location</span>
+                </button>
+              </div>
+            )}
+            <div className="rounded-xl text-white relative" style={{ background: 'linear-gradient(to bottom right, #15803d, #166534)', padding: '12px 14px' }}>
+              <div className="absolute top-2 right-2 bg-red-500 rounded-full flex items-center justify-center" style={{ width: '18px', height: '18px' }}>
+                <span style={{ fontSize: '10px' }}>1</span>
+              </div>
+              <AlertTriangle className="w-6 h-6 mb-1" />
+              <p className="font-medium" style={{ fontSize: '13px' }}>Possible Disease</p>
+              <p style={{ fontSize: '13px' }}>Outbreak Nearby</p>
             </div>
           </div>
         </div>
@@ -272,6 +371,13 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
         </div>
       </div>
 
+      <FloodMapModal
+        isOpen={showMapModal}
+        onClose={() => setShowMapModal(false)}
+        onLocationSelect={handleLocationSelect}
+        initialLatitude={userProfile?.floodLatitude}
+        initialLongitude={userProfile?.floodLongitude}
+      />
     </div>
   );
 }
