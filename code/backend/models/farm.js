@@ -31,6 +31,10 @@ const farmSchema = new mongoose.Schema({
             'Matara','Monaragala','Nuwara Eliya','Polonnaruwa','Puttalam','Ratnapura','Trincomalee','Vavuniya'
         ],
     },
+    division: {
+        type: String,
+        required: true
+    },
 
     sizeInAcres: {
         type: Number,

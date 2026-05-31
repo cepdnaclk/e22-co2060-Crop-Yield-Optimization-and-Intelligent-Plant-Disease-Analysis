@@ -14,6 +14,34 @@ const ALLOWED_DISTRICTS = [
   'Matara','Monaragala','Nuwara Eliya','Polonnaruwa','Puttalam','Ratnapura','Trincomalee','Vavuniya'
 ];
 
+const ALLOWED_DIVISIONS = {
+  'Ampara': ['Ampara', 'Kalmunai', 'Samanturai'],
+  'Anuradhapura': ['Anuradhapura City', 'Anuradhapura South', 'Embbekke', 'Galnewa', 'Habarana', 'Ipalogama', 'Kekirawa', 'Madawachchiya', 'Mihintale', 'Nuwara Wewa', 'Rajarata', 'Tambuttegama', 'Thalwella', 'Wilgamuwa'],
+  'Badulla': ['Badulla', 'Bandarawela', 'Haputale', 'Kandaketiya', 'Passara', 'Welimada'],
+  'Batticaloa': ['Batticaloa', 'Chavakachcheri', 'Eravur', 'Kaluwanchikudi', 'Kattankudy', 'Manmunai North', 'Manmunai South', 'Porativu'],
+  'Colombo': ['Colombo', 'Borella', 'Colombo South', 'Dehiwala', 'Kaduwela', 'Kelaniya', 'Kolonnawa', 'Maharagama', 'Minuwangoda', 'Moratuwa', 'Nugegoda', 'Padukka', 'Piliyandala'],
+  'Galle': ['Galle', 'Ambalangoda', 'Benthota', 'Buwanekande', 'Habaraduwa', 'Imaduwa', 'Koggala', 'Mirissa', 'Unawatuna', 'Weligama'],
+  'Gampaha': ['Gampaha', 'Attanagalla', 'Biyagama', 'Ganemulla', 'Heiyanthuduwa', 'Katunayake', 'Kelaniya', 'Minuwangoda', 'Negombo', 'Seeduwa', 'Wattala', 'Yakmulla'],
+  'Hambantota': ['Hambantota', 'Mirissa', 'Tangalla', 'Tissamaharama', 'Walasmulla', 'Wellawaththu', 'Yakkalamulla'],
+  'Jaffna': ['Jaffna', 'Chavakacheri', 'Chulipuram', 'Delft', 'Jaffna North', 'Jaffna West', 'Kayts', 'Kopay', 'Nallur', 'Nanthottam', 'Point Pedro', 'Sandilipay', 'Valigamam'],
+  'Kalutara': ['Kalutara', 'Bandaragama', 'Beruwala', 'Matugama', 'Millaniya', 'Panadura', 'Wadduwa'],
+  'Kandy': ['Kandy', 'Akurana', 'Asgiriya', 'Dambulla', 'Gampola', 'Getambe', 'Harispattuwa', 'Katugastota', 'Kundasale', 'Nawalapitiya', 'Poojapitiya', 'Wattegama', 'Yatinuwara'],
+  'Kegalle': ['Kegalle', 'Dedigama', 'Deraniyagala', 'Galigamuwa', 'Hewessa', 'Kitulgala', 'Ruwanwella', 'Warakapola', 'Yatiyanthota'],
+  'Kilinochchi': ['Akkaraipattu', 'Chavakachcheri', 'Jaffna', 'Kilinochchi', 'Pulmoddai', 'Vembadi'],
+  'Kurunegala': ['Kurunegala', 'Attanagalla', 'Bingiriya', 'Dambadeniya', 'Galgamuwa', 'Hakgala', 'Ibbagamuwa', 'Kurunegala North', 'Kurunegala South', 'Madampe', 'Mawathagama', 'Narammala', 'Nikaweratota', 'Polgahawela', 'Wariyapola', 'Yapahuwa'],
+  'Mannar': ['Mannar', 'Arippu', 'Balapitiya', 'Medawachchiya', 'Talaimannar'],
+  'Matale': ['Matale', 'Dambulla', 'Galewela', 'Hilakotte', 'Matale North', 'Matale South', 'Naula', 'Rattota', 'Thalawa'],
+  'Matara': ['Matara', 'Attalbage', 'Devinuwara', 'Kamburupitiya', 'Morawaka', 'Nilwala', 'Pasgoda', 'Weligama'],
+  'Monaragala': ['Monaragala', 'Badalla', 'Bibile', 'Buttala', 'Hakmana', 'Kataragama', 'Medagama', 'Ruwanwella', 'Wellawaya'],
+  'Mullaitivu': ['Mullaitivu', 'Akkaraipattu', 'Batticaloa East', 'Kantale', 'Kirati', 'Kuchchaveli', 'Oddusuddan', 'Sampur', 'Valaichenai'],
+  'Nuwara Eliya': ['Nuwara Eliya', 'Ambewela', 'Bogawantalawa', 'Ginigathena', 'Hanguranketha', 'Kundasale', 'Madulsima', 'Talawakelle', 'Walapane', 'Welimada'],
+  'Polonnaruwa': ['Polonnaruwa', 'Habarana', 'Hingurakgoda', 'Kaduruwela', 'Minipe', 'Seruwavila', 'Thalawa'],
+  'Puttalam': ['Puttalam', 'Alutnuwara', 'Anamaduwa', 'Chilaw', 'Habaraduwa', 'Nattandiya', 'Puttalam North', 'Puttalam South', 'Wacchasbadda', 'Wilwatta'],
+  'Ratnapura': ['Ratnapura', 'Balangoda', 'Bulathkohupelella', 'Eheliyagoda', 'Kalawana', 'Opanayaka', 'Pelmadulla', 'Weligallela'],
+  'Trincomalee': ['Trincomalee', 'Habarana', 'Kantale', 'Kuchchaveli', 'Muttur', 'Nilaveli', 'Seruwavila', 'Trincomalee North', 'Trincomalee South', 'Verugal'],
+  'Vavuniya': ['Vavuniya', 'Cheddikulam', 'Eluthumadduval', 'Vengalacheddikulam']
+};
+
 async function computePointsFromAverageYield(farm, season, yearNum, harvestQtyNum) {
   const farmYield = harvestQtyNum / farm.sizeInAcres;
 
@@ -89,6 +117,12 @@ export async function createFarm(req, res) {
   // Validate district presence and value
   if (!farmData.district || !ALLOWED_DISTRICTS.includes(String(farmData.district))) {
     return res.status(400).json({ message: "Invalid or missing district. Please provide one of the allowed districts.", allowedDistricts: ALLOWED_DISTRICTS });
+  }
+
+  // Validate division presence and that it belongs to the provided district
+  const districtKey = String(farmData.district);
+  if (!farmData.division || !ALLOWED_DIVISIONS[districtKey] || !ALLOWED_DIVISIONS[districtKey].includes(String(farmData.division))) {
+    return res.status(400).json({ message: "Invalid or missing DS division for the selected district.", allowedDivisions: ALLOWED_DIVISIONS[districtKey] || [] });
   }
 
   // Find the farmer by NIC

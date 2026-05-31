@@ -12,6 +12,7 @@ interface FarmData {
   sizeInAcres: number | string;
   location: string;
   district?: string;
+  division?: string;
 }
 
 interface FarmerFormData {
@@ -78,7 +79,7 @@ export function RegisterFarmer() {
   } as FarmerFormData);
 
   const [farms, setFarms] = useState([
-    { farmName: '', crop: '', sizeInAcres: '', location: '', district: '' }
+    { farmName: '', crop: '', sizeInAcres: '', location: '', district: '', division: '' }
   ] as FarmData[]);
 
   const [registeredFarmerId, setRegisteredFarmerId] = useState(null as string | null);
@@ -297,7 +298,7 @@ export function RegisterFarmer() {
 
   // Add another farm
   const addFarm = () => {
-    setFarms([...farms, { farmName: '', crop: '', sizeInAcres: '', location: '' }]);
+    setFarms([...farms, { farmName: '', crop: '', sizeInAcres: '', location: '', district: '', division: '' }]);
   };
 
   // Remove farm
@@ -349,6 +350,7 @@ export function RegisterFarmer() {
           location: farm.location,
           farmerNIC: farmerNIC,
           district: farm.district || district,
+          division: farm.division || farmerData.division || '',
           status: 'active',
         });
 
@@ -363,7 +365,7 @@ export function RegisterFarmer() {
       setSuccess(true);
       setTimeout(() => {
         // Reset form based on mode
-        setFarms([{ farmName: '', crop: '', sizeInAcres: '', location: '' }]);
+        setFarms([{ farmName: '', crop: '', sizeInAcres: '', location: '', district: '', division: '' }]);
         setSuccess(false);
         setError(null);
         setCreatedFarmIds([]);
@@ -912,7 +914,7 @@ export function RegisterFarmer() {
                   )}
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Farm Name *
@@ -983,6 +985,21 @@ export function RegisterFarmer() {
                       <option value="">Select District</option>
                       {districts.map(d => (
                         <option key={d} value={d}>{d}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">DS Division *</label>
+                    <select
+                      value={farm.division || ''}
+                      onChange={(e) => handleFarmChange(index, 'division', e.target.value)}
+                      disabled={!((farm.district || farmerData.district) && dsDivisions[farm.district || farmerData.district])}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                      required
+                    >
+                      <option value="">{(farm.district || farmerData.district) ? 'Select DS Division' : 'Select a district first'}</option>
+                      {(dsDivisions[farm.district || farmerData.district] || []).map(div => (
+                        <option key={div} value={div}>{div}</option>
                       ))}
                     </select>
                   </div>
