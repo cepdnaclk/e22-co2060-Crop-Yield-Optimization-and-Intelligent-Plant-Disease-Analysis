@@ -219,58 +219,72 @@ export function FloodMapModal({
   return createPortal(
     <div
       style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 100000 }}
-      className="flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in"
+      className="flex items-center justify-center p-2 bg-black/60 backdrop-blur-sm animate-fade-in"
     >
-      <div className="relative bg-white w-full max-w-2xl rounded-2xl shadow-2xl border border-gray-100 flex flex-col" style={{ maxHeight: '90vh' }}>
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 md:p-6 border-b border-gray-100">
+      {/* Modal card — takes up to 95vh on mobile, 85vh on desktop */}
+      <div
+        className="relative bg-white w-full rounded-2xl shadow-2xl border border-gray-100 flex flex-col overflow-hidden"
+        style={{ maxWidth: '640px', maxHeight: '95vh' }}
+      >
+        {/* ── Header ── */}
+        <div
+          className="flex items-center justify-between border-b border-gray-100 flex-shrink-0"
+          style={{ padding: '12px 16px' }}
+        >
           <div className="flex items-center gap-2">
             <MapPin className="w-5 h-5 text-green-600" />
-            <h3 className="text-lg font-semibold text-gray-800">Select Tracking Location</h3>
+            <h3 className="text-sm font-semibold text-gray-800" style={{ fontSize: '15px' }}>
+              Set Tracking Location
+            </h3>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 hover:bg-gray-100 rounded-full transition-colors text-gray-500 hover:text-gray-700"
+            className="p-1.5 hover:bg-gray-100 rounded-full transition-colors text-gray-500 hover:text-gray-700 cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Content */}
-        <div className="p-4 md:p-6 overflow-y-auto space-y-4 flex-1 flex flex-col" ref={wrapperRef}>
-          <p className="text-xs md:text-sm text-gray-600">
-            Search for an area or click directly on the map to set coordinates. You will receive real-time flood forecasting alerts for any gauge within <strong>10 km</strong> of this point.
-          </p>
-
-          {/* Autocomplete Input */}
-          <div className="relative z-[10001]">
-            <Search className="absolute left-3.5 top-3.5 w-4 h-4 text-gray-400" />
+        {/* ── Body ── */}
+        <div
+          className="flex-1 flex flex-col"
+          style={{ padding: '12px 16px', gap: '10px', overflowY: 'auto' }}
+          ref={wrapperRef}
+        >
+          {/* Search bar */}
+          <div className="relative flex-shrink-0" style={{ zIndex: 10001 }}>
+            <Search className="absolute left-3 top-1/2 w-4 h-4 text-gray-400" style={{ transform: 'translateY(-50%)' }} />
             <input
               type="text"
               value={query}
               onChange={(e) => handleInput(e.target.value)}
               onFocus={() => { if (suggestions.length > 0) setShowSuggestions(true); }}
-              placeholder="Search cities, districts, or landmarks in Sri Lanka..."
-              className="w-full pl-10 pr-10 py-3 border border-gray-200 rounded-xl text-sm focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all outline-none"
+              placeholder="Search cities, districts, or landmarks..."
+              className="w-full border border-gray-200 rounded-xl text-sm focus:border-green-500 transition-all outline-none"
+              style={{ paddingLeft: '36px', paddingRight: '36px', paddingTop: '10px', paddingBottom: '10px', fontSize: '13px' }}
             />
             {searching && (
-              <div className="absolute right-3.5 top-3.5">
+              <div className="absolute right-3 top-1/2" style={{ transform: 'translateY(-50%)' }}>
                 <Loader2 className="w-4 h-4 text-gray-400 animate-spin" />
               </div>
             )}
 
             {showSuggestions && suggestions.length > 0 && (
-              <div className="absolute left-0 right-0 mt-1.5 bg-white border border-gray-100 rounded-xl shadow-xl max-h-[180px] overflow-y-auto z-[10002]">
+              <div
+                className="absolute left-0 right-0 bg-white border border-gray-100 rounded-xl shadow-xl overflow-y-auto"
+                style={{ marginTop: '6px', maxHeight: '160px', zIndex: 10002 }}
+              >
                 {suggestions.map((s, i) => (
                   <button
                     key={i}
                     onClick={() => handleSelectSuggestion(s)}
-                    className="w-full flex items-start gap-2.5 px-4 py-2.5 text-left text-xs md:text-sm hover:bg-green-50 border-b border-gray-50 last:border-b-0 transition-colors"
+                    className="w-full flex items-start gap-2.5 text-left hover:bg-green-50 border-b border-gray-50 transition-colors cursor-pointer"
+                    style={{ padding: '8px 14px', fontSize: '13px' }}
                   >
-                    <Navigation className="w-3.5 h-3.5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <Navigation className="w-3.5 h-3.5 text-green-600 flex-shrink-0" style={{ marginTop: '2px' }} />
                     <div className="min-w-0 flex-1">
                       <p className="font-medium text-gray-800 truncate">{s.address_line1 || s.formatted.split(',')[0]}</p>
-                      <p className="text-gray-500 text-[10px] md:text-xs truncate">{s.formatted}</p>
+                      <p className="text-gray-500 truncate" style={{ fontSize: '11px' }}>{s.formatted}</p>
                     </div>
                   </button>
                 ))}
@@ -278,74 +292,67 @@ export function FloodMapModal({
             )}
           </div>
 
-          <p className="text-[11px] text-gray-500 flex items-center gap-1">
-            <MousePointer className="w-3.5 h-3.5 text-gray-400" />
-            Drop a pin by clicking anywhere on the map.
+          {/* Hint text */}
+          <p className="text-gray-500 flex items-center gap-1 flex-shrink-0" style={{ fontSize: '11px' }}>
+            <MousePointer className="w-3 h-3 text-gray-400 flex-shrink-0" />
+            Tap or click anywhere on the map to drop a pin.
           </p>
 
-          {/* Leaflet Container */}
-          <div className="relative mx-auto rounded-xl overflow-hidden border border-gray-200 shadow-sm z-[1000] flood-map-wrapper">
+          {/* ── Map container — explicit height so Leaflet can render ── */}
+          <div
+            className="relative rounded-xl overflow-hidden border border-gray-200 shadow-sm"
+            style={{ height: 'clamp(300px, 55vh, 500px)', flexShrink: 0, zIndex: 1000 }}
+          >
             <style>{`
-              .flood-map-wrapper {
-                width: 280px;
-                height: 280px;
-              }
-              @media (min-width: 640px) {
-                .flood-map-wrapper {
-                  width: 360px;
-                  height: 360px;
-                }
-              }
-              @media (min-width: 768px) {
-                .flood-map-wrapper {
-                  width: 400px;
-                  height: 400px;
-                }
-              }
               .flood-modal-map img { max-width: none !important; height: auto !important; }
               .flood-modal-map .leaflet-control-zoom a {
-                width: 28px !important;
-                height: 28px !important;
-                line-height: 28px !important;
-                font-size: 14px !important;
-                display: flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-                background: white !important;
-                color: #333 !important;
-                border-radius: 4px !important;
+                width: 28px !important; height: 28px !important;
+                line-height: 28px !important; font-size: 14px !important;
+                display: flex !important; align-items: center !important;
+                justify-content: center !important; background: white !important;
+                color: #333 !important; border-radius: 4px !important;
               }
             `}</style>
             <div className="flood-modal-map" style={{ width: '100%', height: '100%' }} ref={mapContainerRef} />
           </div>
 
+          {/* Selected coords badge */}
           {selectedCoords && (
-            <div className="p-3 bg-green-50/60 border border-green-200 rounded-xl flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-green-600" />
-                <span className="text-xs md:text-sm text-green-800 truncate max-w-[340px] md:max-w-[480px]">
-                  <strong>Selected:</strong> {selectedCoords.lat.toFixed(5)}, {selectedCoords.lng.toFixed(5)}
-                </span>
-              </div>
-              <span className="text-[10px] md:text-xs bg-green-100 text-green-700 font-semibold px-2 py-0.5 rounded-full">
-                Active Zone
+            <div
+              className="bg-green-50 border border-green-200 rounded-xl flex items-center gap-2 flex-shrink-0 overflow-hidden"
+              style={{ padding: '8px 12px' }}
+            >
+              <MapPin className="w-4 h-4 text-green-600 flex-shrink-0" />
+              <span className="text-green-800 truncate flex-1" style={{ fontSize: '12px' }}>
+                <strong>Selected:</strong> {selectedCoords.lat.toFixed(5)}, {selectedCoords.lng.toFixed(5)}
+              </span>
+              <span
+                className="bg-green-100 text-green-700 font-semibold rounded-full flex-shrink-0"
+                style={{ fontSize: '10px', padding: '2px 8px' }}
+              >
+                Active
               </span>
             </div>
           )}
         </div>
 
-        {/* Footer */}
-        <div className="flex items-center justify-end gap-3 p-4 md:p-6 border-t border-gray-100">
+        {/* ── Footer ── */}
+        <div
+          className="flex items-center justify-end gap-3 border-t border-gray-100 flex-shrink-0"
+          style={{ padding: '12px 16px' }}
+        >
           <button
             onClick={onClose}
-            className="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-xl border border-gray-200 transition-colors"
+            className="text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-xl border border-gray-200 transition-colors cursor-pointer"
+            style={{ padding: '8px 16px' }}
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
             disabled={!selectedCoords || isSaving}
-            className="flex items-center gap-2 px-5 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 disabled:opacity-50 disabled:pointer-events-none rounded-xl shadow-md shadow-green-600/10 hover:shadow-green-600/20 transition-all"
+            className="flex items-center gap-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-xl shadow-md transition-all cursor-pointer"
+            style={{ padding: '8px 20px', opacity: !selectedCoords || isSaving ? 0.5 : 1 }}
           >
             {isSaving ? (
               <>
@@ -355,7 +362,7 @@ export function FloodMapModal({
             ) : (
               <>
                 <CheckCircle2 className="w-4 h-4" />
-                Confirm Location
+                Confirm
               </>
             )}
           </button>

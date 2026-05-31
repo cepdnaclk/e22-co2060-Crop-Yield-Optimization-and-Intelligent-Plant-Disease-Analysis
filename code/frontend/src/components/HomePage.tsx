@@ -200,70 +200,78 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
           <div className="space-y-3 md:space-y-4">
             {/* Dynamic Flood Forecasting Widget */}
             {floodLoading ? (
-              <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 flex items-center justify-center min-h-[110px] animate-pulse">
+              <div className="bg-gray-50 border border-gray-100 rounded-xl flex items-center justify-center animate-pulse" style={{ padding: '16px', minHeight: '100px' }}>
                 <div className="flex flex-col items-center gap-2">
                   <Loader2 className="w-5 h-5 text-green-600 animate-spin" />
                   <p className="text-xs text-gray-500">Checking flood gauges...</p>
                 </div>
               </div>
             ) : !floodData?.locationConfigured ? (
-              <div className="rounded-2xl p-4 text-white border border-slate-700 shadow-lg" style={{ background: 'linear-gradient(to bottom right, #334155, #0f172a)' }}>
-                <Map className="w-6 h-6 md:w-8 md:h-8 mb-2 text-green-400" />
-                <p className="text-xs md:text-sm font-bold tracking-wide mb-1 uppercase">Flood Alerts Offline</p>
-                <p className="text-[11px] text-gray-300 mb-4 leading-normal">Set your coordinates to enable active localized flood tracking within a 10 km zone.</p>
+              <div className="rounded-xl text-white border border-slate-700 shadow-lg overflow-hidden" style={{ background: 'linear-gradient(to bottom right, #334155, #0f172a)', padding: '14px' }}>
+                <Map className="w-6 h-6 mb-2 text-green-400" />
+                <p className="font-bold tracking-wide uppercase" style={{ fontSize: '12px', marginBottom: '4px' }}>Flood Alerts Offline</p>
+                <p className="text-gray-300" style={{ fontSize: '11px', lineHeight: '1.4', marginBottom: '12px' }}>Set your coordinates to enable active localized flood tracking within a 10 km zone.</p>
                 <button
                   onClick={() => setShowMapModal(true)}
-                  className="w-full py-2.5 px-4 text-xs font-bold bg-white text-gray-800 hover:bg-green-50 active:scale-95 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 border border-white cursor-pointer hover:shadow-lg"
+                  className="w-full text-xs font-bold bg-white text-gray-800 hover:bg-green-50 active:scale-95 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 border border-white cursor-pointer"
+                  style={{ padding: '10px 14px' }}
                 >
                   <MapPin className="w-4 h-4 text-green-600 animate-bounce" />
                   <span>Pin Map Location</span>
                 </button>
               </div>
             ) : floodData?.highestAlert ? (
-              <div className={`relative p-4 text-white rounded-2xl shadow-lg border ${floodData.highestAlert.severity === 'EXTREME' || floodData.highestAlert.severity === 'SEVERE' ? 'border-red-500 animate-pulse' : 'border-amber-600'}`}
-                style={{ background: floodData.highestAlert.severity === 'EXTREME' || floodData.highestAlert.severity === 'SEVERE' ? 'linear-gradient(to bottom right, #dc2626, #7f1d1d)' : 'linear-gradient(to bottom right, #f59e0b, #b45309)' }}
+              <div className={`relative text-white rounded-xl shadow-lg border overflow-hidden ${floodData.highestAlert.severity === 'EXTREME' || floodData.highestAlert.severity === 'SEVERE' ? 'border-red-500 animate-pulse' : 'border-amber-600'}`}
+                style={{
+                  background: floodData.highestAlert.severity === 'EXTREME' || floodData.highestAlert.severity === 'SEVERE'
+                    ? 'linear-gradient(to bottom right, #dc2626, #7f1d1d)'
+                    : 'linear-gradient(to bottom right, #f59e0b, #b45309)',
+                  padding: '14px'
+                }}
               >
-                <AlertTriangle className="w-6 h-6 md:w-8 md:h-8 mb-2" />
-                <p className="text-xs md:text-sm font-bold tracking-wide uppercase">
+                <AlertTriangle className="w-6 h-6 mb-1" />
+                <p className="font-bold tracking-wide uppercase" style={{ fontSize: '12px' }}>
                   🚨 {floodData.highestAlert.severity} FLOOD THREAT
                 </p>
-                <p className="text-xs font-medium mt-1 leading-tight">{floodData.highestAlert.gaugeName}</p>
-                <p className="text-[11px] text-gray-100 mt-1 font-semibold">
-                  Distance: {floodData.highestAlert.distance} km away • Trend: {floodData.highestAlert.forecastTrend}
+                <p className="font-medium truncate" style={{ fontSize: '12px', marginTop: '4px', lineHeight: '1.3' }}>{floodData.highestAlert.gaugeName}</p>
+                <p className="font-semibold" style={{ fontSize: '11px', marginTop: '4px', color: 'rgba(255,255,255,0.85)' }}>
+                  {floodData.highestAlert.distance} km away · Trend: {floodData.highestAlert.forecastTrend}
                 </p>
                 <button
                   onClick={() => setShowMapModal(true)}
-                  className="mt-4 w-full py-2 px-3 bg-white/10 hover:bg-white/20 active:scale-95 rounded-xl text-[11px] text-white flex items-center justify-center gap-1.5 transition-all font-semibold border border-white/15 cursor-pointer shadow-sm"
+                  className="w-full bg-white/10 hover:bg-white/20 active:scale-95 rounded-xl text-white flex items-center justify-center gap-1.5 transition-all font-semibold border border-white/15 cursor-pointer"
+                  style={{ marginTop: '12px', padding: '8px', fontSize: '11px' }}
                 >
                   <Map className="w-3.5 h-3.5" />
                   Change Location
                 </button>
               </div>
             ) : (
-              <div className="rounded-2xl p-4 text-white border border-emerald-800 shadow-lg" style={{ background: 'linear-gradient(to bottom right, #047857, #022c22)' }}>
-                <ShieldCheck className="w-6 h-6 md:w-8 md:h-8 mb-2 text-green-300 animate-pulse" />
-                <p className="text-xs md:text-sm font-semibold flex items-center gap-1.5">
+              <div className="rounded-xl text-white border border-emerald-800 shadow-lg overflow-hidden" style={{ background: 'linear-gradient(to bottom right, #047857, #022c22)', padding: '14px' }}>
+                <ShieldCheck className="w-6 h-6 mb-1 text-green-300 animate-pulse" />
+                <p className="font-semibold flex items-center gap-1.5" style={{ fontSize: '12px' }}>
                   🟢 Safe: No Floods Nearby
                 </p>
-                <p className="text-[11px] text-green-100 mt-1 leading-tight">
-                  No active flood threats detected within 10 km of your selected tracking zone.
+                <p className="text-green-100" style={{ fontSize: '11px', marginTop: '4px', lineHeight: '1.4' }}>
+                  No active flood threats within 10 km of your tracking zone.
                 </p>
                 <button
                   onClick={() => setShowMapModal(true)}
-                  className="mt-4 w-full py-2 px-3 bg-white/10 hover:bg-white/20 active:scale-95 rounded-xl text-[11px] text-white flex items-center justify-center gap-1.5 truncate transition-all font-semibold border border-white/15 cursor-pointer shadow-sm"
+                  className="w-full bg-white/10 hover:bg-white/20 active:scale-95 rounded-xl text-white flex items-center justify-center gap-1.5 transition-all font-semibold border border-white/15 cursor-pointer"
+                  style={{ marginTop: '12px', padding: '8px', fontSize: '11px' }}
                 >
-                  <MapPin className="w-3.5 h-3.5 text-green-200" />
-                  <span className="truncate">Change location ({floodData.locationName || `${floodData.latitude.toFixed(3)}, ${floodData.longitude.toFixed(3)}`})</span>
+                  <MapPin className="w-3.5 h-3.5 text-green-200 flex-shrink-0" />
+                  <span>Change Location</span>
                 </button>
               </div>
             )}
-            <div className="rounded-xl p-3 md:p-4 text-white relative" style={{ background: 'linear-gradient(to bottom right, #15803d, #166534)' }}>
-              <div className="absolute top-2 right-2 w-4 h-4 md:w-5 md:h-5 bg-red-500 rounded-full flex items-center justify-center">
-                <span className="text-xs">1</span>
+            <div className="rounded-xl text-white relative" style={{ background: 'linear-gradient(to bottom right, #15803d, #166534)', padding: '12px 14px' }}>
+              <div className="absolute top-2 right-2 bg-red-500 rounded-full flex items-center justify-center" style={{ width: '18px', height: '18px' }}>
+                <span style={{ fontSize: '10px' }}>1</span>
               </div>
-              <AlertTriangle className="w-6 h-6 md:w-8 md:h-8 mb-2" />
-              <p className="text-xs md:text-sm font-medium">Possible Disease</p>
-              <p className="text-xs md:text-sm">Outbreak Nearby</p>
+              <AlertTriangle className="w-6 h-6 mb-1" />
+              <p className="font-medium" style={{ fontSize: '13px' }}>Possible Disease</p>
+              <p style={{ fontSize: '13px' }}>Outbreak Nearby</p>
             </div>
           </div>
         </div>
