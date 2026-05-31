@@ -217,8 +217,11 @@ export function FloodMapModal({
   if (!isOpen) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-      <div className="relative bg-white w-full max-w-2xl rounded-2xl shadow-2xl border border-gray-100 flex flex-col max-h-[90vh]">
+    <div
+      style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 100000 }}
+      className="flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in"
+    >
+      <div className="relative bg-white w-full max-w-2xl rounded-2xl shadow-2xl border border-gray-100 flex flex-col" style={{ maxHeight: '90vh' }}>
         {/* Header */}
         <div className="flex items-center justify-between p-4 md:p-6 border-b border-gray-100">
           <div className="flex items-center gap-2">
@@ -281,8 +284,24 @@ export function FloodMapModal({
           </p>
 
           {/* Leaflet Container */}
-          <div className="relative w-full rounded-xl overflow-hidden border border-gray-200 shadow-sm z-[1000]" style={{ height: '320px' }}>
+          <div className="relative mx-auto rounded-xl overflow-hidden border border-gray-200 shadow-sm z-[1000] flood-map-wrapper">
             <style>{`
+              .flood-map-wrapper {
+                width: 280px;
+                height: 280px;
+              }
+              @media (min-width: 640px) {
+                .flood-map-wrapper {
+                  width: 360px;
+                  height: 360px;
+                }
+              }
+              @media (min-width: 768px) {
+                .flood-map-wrapper {
+                  width: 400px;
+                  height: 400px;
+                }
+              }
               .flood-modal-map img { max-width: none !important; height: auto !important; }
               .flood-modal-map .leaflet-control-zoom a {
                 width: 28px !important;

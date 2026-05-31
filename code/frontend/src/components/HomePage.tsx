@@ -207,7 +207,7 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
                 </div>
               </div>
             ) : !floodData?.locationConfigured ? (
-              <div className="bg-slate-800 bg-linear-to-br from-slate-700 to-slate-800 rounded-2xl p-4 text-white border border-slate-600 shadow-lg">
+              <div className="rounded-2xl p-4 text-white border border-slate-700 shadow-lg" style={{ background: 'linear-gradient(to bottom right, #334155, #0f172a)' }}>
                 <Map className="w-6 h-6 md:w-8 md:h-8 mb-2 text-green-400" />
                 <p className="text-xs md:text-sm font-bold tracking-wide mb-1 uppercase">Flood Alerts Offline</p>
                 <p className="text-[11px] text-gray-300 mb-4 leading-normal">Set your coordinates to enable active localized flood tracking within a 10 km zone.</p>
@@ -220,11 +220,9 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
                 </button>
               </div>
             ) : floodData?.highestAlert ? (
-              <div className={`relative p-4 text-white rounded-2xl shadow-lg border ${
-                floodData.highestAlert.severity === 'EXTREME' || floodData.highestAlert.severity === 'SEVERE'
-                  ? 'bg-red-800 bg-linear-to-br from-red-600 to-red-750 border-red-500 animate-pulse'
-                  : 'bg-amber-600 bg-linear-to-br from-amber-500 to-amber-650 border-amber-500'
-              }`}>
+              <div className={`relative p-4 text-white rounded-2xl shadow-lg border ${floodData.highestAlert.severity === 'EXTREME' || floodData.highestAlert.severity === 'SEVERE' ? 'border-red-500 animate-pulse' : 'border-amber-600'}`}
+                style={{ background: floodData.highestAlert.severity === 'EXTREME' || floodData.highestAlert.severity === 'SEVERE' ? 'linear-gradient(to bottom right, #dc2626, #7f1d1d)' : 'linear-gradient(to bottom right, #f59e0b, #b45309)' }}
+              >
                 <AlertTriangle className="w-6 h-6 md:w-8 md:h-8 mb-2" />
                 <p className="text-xs md:text-sm font-bold tracking-wide uppercase">
                   🚨 {floodData.highestAlert.severity} FLOOD THREAT
@@ -242,7 +240,7 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
                 </button>
               </div>
             ) : (
-              <div className="bg-emerald-850 bg-linear-to-br from-emerald-800 to-emerald-900 rounded-2xl p-4 text-white border border-emerald-700 shadow-lg">
+              <div className="rounded-2xl p-4 text-white border border-emerald-800 shadow-lg" style={{ background: 'linear-gradient(to bottom right, #047857, #022c22)' }}>
                 <ShieldCheck className="w-6 h-6 md:w-8 md:h-8 mb-2 text-green-300 animate-pulse" />
                 <p className="text-xs md:text-sm font-semibold flex items-center gap-1.5">
                   🟢 Safe: No Floods Nearby
@@ -259,7 +257,7 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
                 </button>
               </div>
             )}
-            <div className="bg-gradient-to-br from-green-700 to-green-800 rounded-xl p-3 md:p-4 text-white relative">
+            <div className="rounded-xl p-3 md:p-4 text-white relative" style={{ background: 'linear-gradient(to bottom right, #15803d, #166534)' }}>
               <div className="absolute top-2 right-2 w-4 h-4 md:w-5 md:h-5 bg-red-500 rounded-full flex items-center justify-center">
                 <span className="text-xs">1</span>
               </div>
