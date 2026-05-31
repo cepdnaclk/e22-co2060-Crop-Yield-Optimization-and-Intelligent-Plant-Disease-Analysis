@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Upload, Loader2, CheckCircle, Microscope, FileText, Shield, Leaf } from 'lucide-react';
+import { Upload, Loader2, CheckCircle, Microscope, FileText, Shield, Leaf, MapPin } from 'lucide-react';
 import uploadfile from '../utils/mediaUpload';
 import { DiseaseLocationPicker } from './DiseaseLocationPicker';
 import { farmAPI, userAPI } from '../services/api';
@@ -343,20 +343,23 @@ export function DiseasePage() {
         </div>
 
         {myFarms.length > 0 && (
-          <div className="rounded-xl border border-indigo-200 bg-gradient-to-br from-indigo-50 via-white to-sky-50 p-3 md:p-4 space-y-3">
-            <div className="flex items-center justify-between gap-2">
-              <h4 className="font-semibold text-gray-900 text-xs md:text-sm">Select Farm Before Analyze</h4>
-              <span className="text-[11px] md:text-xs text-indigo-700 bg-indigo-100 px-2 py-1 rounded-full">
+          <div className="bg-white rounded-xl border border-gray-200 p-4 md:p-6 space-y-4">
+            <div className="flex items-center justify-between gap-3 flex-wrap">
+              <h3 className="font-semibold text-gray-800 text-sm md:text-base flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-green-600" />
+                Select Farm Before Analyze
+              </h3>
+              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium text-green-700 bg-green-100">
                 {myFarms.length} Farm{myFarms.length > 1 ? 's' : ''}
               </span>
             </div>
 
             <div className="space-y-3">
-              <label className="block text-sm text-gray-700 font-medium">Choose a farm</label>
+              <label className="block text-sm font-medium text-gray-700">Choose a farm</label>
               <select
                 value={selectedFarmId}
                 onChange={(e) => setSelectedFarmId(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-sm"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 bg-white text-sm"
               >
                 {myFarms.map((farm) => {
                   const id = getFarmIdentifier(farm);
@@ -364,29 +367,46 @@ export function DiseasePage() {
                   const crop = farm.crop || 'N/A';
                   const district = (farm as any).district || 'N/A';
                   const division = (farm as any).division || (farm as any).dsDivision || 'N/A';
-                  const label = `${name} (${id}) — ${crop} — ${district}${division ? ' / ' + division : ''}`;
                   return (
-                    <option key={id} value={id}>{label}</option>
+                    <option key={id} value={id}>
+                      {`${name} (${id}) — ${crop} — ${district} / ${division}`}
+                    </option>
                   );
                 })}
               </select>
 
-              {/* Selected farm details */}
-              {myFarms.length > 0 && selectedFarmId && (
-                (() => {
-                  const sf = myFarms.find(f => getFarmIdentifier(f) === selectedFarmId);
-                  if (!sf) return null;
-                  return (
-                    <div className="mt-2 p-3 rounded-lg border bg-white/90">
-                      <div className="text-sm font-semibold text-gray-900">{sf.farmName || 'Unnamed Farm'}</div>
-                      <div className="text-xs text-gray-600 mt-1">Farm ID: <span className="font-mono">{getFarmIdentifier(sf)}</span></div>
-                      <div className="text-xs text-gray-600">Crop: {sf.crop || 'N/A'}</div>
-                      <div className="text-xs text-gray-600">District: {(sf as any).district || 'N/A'}</div>
-                      <div className="text-xs text-gray-600">DS Division: {(sf as any).division || (sf as any).dsDivision || 'N/A'}</div>
+              {selectedFarmId && (() => {
+                const sf = myFarms.find((f) => getFarmIdentifier(f) === selectedFarmId);
+                if (!sf) return null;
+                return (
+                  <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className="font-semibold text-gray-900 text-sm md:text-base">{sf.farmName || 'Unnamed Farm'}</p>
+                        <p className="text-xs md:text-sm text-gray-600 mt-1">Farm ID: <span className="font-mono">{getFarmIdentifier(sf)}</span></p>
+                      </div>
+                      <span className="text-[11px] md:text-xs font-medium text-indigo-700 bg-indigo-100 px-2 py-1 rounded-full">
+                        Selected
+                      </span>
                     </div>
-                  );
-                })()
-              )}
+
+                    <ul className="mt-3 space-y-2 text-xs md:text-sm text-gray-700">
+                      <li className="flex items-start gap-2">
+                        <Leaf className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                        <span><span className="font-medium text-gray-900">Crop:</span> {sf.crop || 'N/A'}</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <Leaf className="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" />
+                        <span><span className="font-medium text-gray-900">District:</span> {(sf as any).district || 'N/A'}</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <Leaf className="w-4 h-4 text-teal-600 mt-0.5 flex-shrink-0" />
+                        <span><span className="font-medium text-gray-900">DS Division:</span> {(sf as any).division || (sf as any).dsDivision || 'N/A'}</span>
+                      </li>
+                    </ul>
+                  </div>
+                );
+              })()}
             </div>
           </div>
         )}
