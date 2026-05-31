@@ -330,51 +330,43 @@ export function DiseasePage() {
               </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {(showAllFarms ? myFarms : myFarms.slice(0, 2)).map((farm) => {
-                const farmIdentifier = getFarmIdentifier(farm);
-                const isSelected = selectedFarmId === farmIdentifier;
-                return (
-                  <button
-                    key={farmIdentifier}
-                    type="button"
-                    onClick={() => setSelectedFarmId(farmIdentifier)}
-                    className={`text-left p-3.5 rounded-xl border transition-all duration-200 ${isSelected
-                      ? 'bg-gradient-to-r from-indigo-600 to-blue-600 border-indigo-700 text-white shadow-md scale-[1.01]'
-                      : 'bg-white/90 border-indigo-200 text-gray-800 hover:border-indigo-400 hover:bg-white hover:shadow-sm'
-                      }`}
-                  >
-                    <div className="flex items-start justify-between gap-2">
-                      <p className="text-xs md:text-sm font-semibold leading-tight pr-2">{farm.farmName || 'Unnamed Farm'}</p>
-                      {isSelected && (
-                        <span className="text-[10px] md:text-[11px] font-semibold bg-white/20 text-white px-2 py-0.5 rounded-full whitespace-nowrap">
-                          Selected
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="mt-2.5 space-y-1.5">
-                      <div className={`text-[11px] md:text-xs rounded-md px-2 py-1 ${isSelected ? 'bg-white/15 text-indigo-100' : 'bg-indigo-50 text-indigo-800'}`}>
-                        <span className="font-semibold">Farm ID:</span> {farmIdentifier || 'N/A'}
-                      </div>
-                      <div className={`text-[11px] md:text-xs rounded-md px-2 py-1 ${isSelected ? 'bg-white/15 text-indigo-100' : 'bg-sky-50 text-sky-900'}`}>
-                        <span className="font-semibold">Crop Type:</span> {farm.crop || 'N/A'}
-                      </div>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-
-            {myFarms.length > 2 && (
-              <button
-                type="button"
-                onClick={() => setShowAllFarms((prev) => !prev)}
-                className="text-xs md:text-sm font-medium text-indigo-700 hover:text-indigo-900 underline underline-offset-2"
+            <div className="space-y-3">
+              <label className="block text-sm text-gray-700 font-medium">Choose a farm</label>
+              <select
+                value={selectedFarmId}
+                onChange={(e) => setSelectedFarmId(e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-sm"
               >
-                {showAllFarms ? 'Show only first 2 farms' : `Show ${myFarms.length - 2} more farm${myFarms.length - 2 > 1 ? 's' : ''}`}
-              </button>
-            )}
+                {myFarms.map((farm) => {
+                  const id = getFarmIdentifier(farm);
+                  const name = farm.farmName || 'Unnamed Farm';
+                  const crop = farm.crop || 'N/A';
+                  const district = (farm as any).district || 'N/A';
+                  const division = (farm as any).division || (farm as any).dsDivision || 'N/A';
+                  const label = `${name} (${id}) — ${crop} — ${district}${division ? ' / ' + division : ''}`;
+                  return (
+                    <option key={id} value={id}>{label}</option>
+                  );
+                })}
+              </select>
+
+              {/* Selected farm details */}
+              {myFarms.length > 0 && selectedFarmId && (
+                (() => {
+                  const sf = myFarms.find(f => getFarmIdentifier(f) === selectedFarmId);
+                  if (!sf) return null;
+                  return (
+                    <div className="mt-2 p-3 rounded-lg border bg-white/90">
+                      <div className="text-sm font-semibold text-gray-900">{sf.farmName || 'Unnamed Farm'}</div>
+                      <div className="text-xs text-gray-600 mt-1">Farm ID: <span className="font-mono">{getFarmIdentifier(sf)}</span></div>
+                      <div className="text-xs text-gray-600">Crop: {sf.crop || 'N/A'}</div>
+                      <div className="text-xs text-gray-600">District: {(sf as any).district || 'N/A'}</div>
+                      <div className="text-xs text-gray-600">DS Division: {(sf as any).division || (sf as any).dsDivision || 'N/A'}</div>
+                    </div>
+                  );
+                })()
+              )}
+            </div>
           </div>
         )}
 
