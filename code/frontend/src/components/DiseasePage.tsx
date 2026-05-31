@@ -1,7 +1,8 @@
-import { useState } from 'react';
-import { Upload, MapPin, Loader2, CheckCircle, AlertCircle, Send, Microscope, FileText, Shield, Leaf } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Upload, Loader2, CheckCircle, Microscope, FileText, Shield, Leaf } from 'lucide-react';
 import uploadfile from '../utils/mediaUpload';
 import { DiseaseLocationPicker } from './DiseaseLocationPicker';
+import { farmAPI, userAPI } from '../services/api';
 
 type PredictionResult = {
   class_id: number;
@@ -10,6 +11,33 @@ type PredictionResult = {
   all_probabilities: Record<string, number>;
   imageUrl?: string;
 };
+
+type FarmOption = {
+  _id: string;
+  id?: string;
+  farmId?: string;
+  farmName: string;
+  crop?: string;
+  location?: string;
+};
+
+function getFarmIdentifier(farm: FarmOption) {
+  return String(farm?._id || farm?.id || farm?.farmId || '');
+}
+
+function normalizeValue(value: unknown) {
+  return String(value ?? '').trim().toLowerCase();
+}
+
+function getFarmFarmerNic(farm: any) {
+  return normalizeValue(
+    farm?.farmerNIC ||
+    farm?.farmerNic ||
+    farm?.farmer?.nic ||
+    farm?.userNIC ||
+    ''
+  );
+}
 
 const DISEASE_DETAILS: Record<string, { label: string; description: string; treatment: string; prevention: string }> = {
   bacterial_leaf_blight: {
@@ -74,8 +102,44 @@ export function DiseasePage() {
   const [locationLat, setLocationLat] = useState<number | null>(null);
   const [locationLng, setLocationLng] = useState<number | null>(null);
   const [notes, setNotes] = useState('');
-  const [reportSent, setReportSent] = useState(false);
   const [analysisError, setAnalysisError] = useState('');
+  const [myFarms, setMyFarms] = useState<FarmOption[]>([]);
+  const [selectedFarmId, setSelectedFarmId] = useState('');
+  const [showAllFarms, setShowAllFarms] = useState(true);
+  const [farmLoadError, setFarmLoadError] = useState('');
+
+  useEffect(() => {
+    const fetchMyFarms = async () => {
+      try {
+        setFarmLoadError('');
+        const profileData = await userAPI.fetchProfile();
+        const userNic = normalizeValue(profileData?.user?.nic);
+
+        if (!userNic) {
+          setMyFarms([]);
+          return;
+        }
+
+        const data = await farmAPI.getAllFarms();
+        const allFarms = data?.farms || [];
+        const farmsForUser = allFarms
+          .filter((farm: any) => getFarmFarmerNic(farm) === userNic)
+          .map((farm: any) => ({
+            ...farm,
+            _id: String(farm?._id || farm?.id || farm?.farmId || ''),
+          }));
+
+        setMyFarms(farmsForUser);
+        if (farmsForUser.length > 0) {
+          setSelectedFarmId(getFarmIdentifier(farmsForUser[0]));
+        }
+      } catch (error: any) {
+        setFarmLoadError(error?.response?.data?.message || 'Failed to load your farms');
+      }
+    };
+
+    fetchMyFarms();
+  }, []);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -146,16 +210,6 @@ export function DiseasePage() {
       setIsAnalyzing(false);
     }
   };
-
-  const handleSendReport = () => {
-    if (!analysisResult) return;
-    // Simulate sending report
-    setTimeout(() => {
-      setReportSent(true);
-    }, 1500);
-  };
-
-
 
   return (
     <div className="space-y-6">
@@ -267,11 +321,94 @@ export function DiseasePage() {
           </ul>
         </div>
 
+        {myFarms.length > 0 && (
+          <div className="rounded-xl border border-indigo-200 bg-gradient-to-br from-indigo-50 via-white to-sky-50 p-3 md:p-4 space-y-3">
+            <div className="flex items-center justify-between gap-2">
+              <h4 className="font-semibold text-gray-900 text-xs md:text-sm">Select Farm Before Analyze</h4>
+              <span className="text-[11px] md:text-xs text-indigo-700 bg-indigo-100 px-2 py-1 rounded-full">
+                {myFarms.length} Farm{myFarms.length > 1 ? 's' : ''}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {(showAllFarms ? myFarms : myFarms.slice(0, 2)).map((farm) => {
+                const farmIdentifier = getFarmIdentifier(farm);
+                const isSelected = selectedFarmId === farmIdentifier;
+                return (
+                  <button
+                    key={farmIdentifier}
+                    type="button"
+                    onClick={() => setSelectedFarmId(farmIdentifier)}
+                    className={`text-left p-3.5 rounded-xl border transition-all duration-200 ${isSelected
+                      ? 'bg-gradient-to-r from-indigo-600 to-blue-600 border-indigo-700 text-white shadow-md scale-[1.01]'
+                      : 'bg-white/90 border-indigo-200 text-gray-800 hover:border-indigo-400 hover:bg-white hover:shadow-sm'
+                      }`}
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <p className="text-xs md:text-sm font-semibold leading-tight pr-2">{farm.farmName || 'Unnamed Farm'}</p>
+                      {isSelected && (
+                        <span className="text-[10px] md:text-[11px] font-semibold bg-white/20 text-white px-2 py-0.5 rounded-full whitespace-nowrap">
+                          Selected
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="mt-2.5 space-y-1.5">
+                      <div className={`text-[11px] md:text-xs rounded-md px-2 py-1 ${isSelected ? 'bg-white/15 text-indigo-100' : 'bg-indigo-50 text-indigo-800'}`}>
+                        <span className="font-semibold">Farm ID:</span> {farmIdentifier || 'N/A'}
+                      </div>
+                      <div className={`text-[11px] md:text-xs rounded-md px-2 py-1 ${isSelected ? 'bg-white/15 text-indigo-100' : 'bg-sky-50 text-sky-900'}`}>
+                        <span className="font-semibold">Crop Type:</span> {farm.crop || 'N/A'}
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            {myFarms.length > 2 && (
+              <button
+                type="button"
+                onClick={() => setShowAllFarms((prev) => !prev)}
+                className="text-xs md:text-sm font-medium text-indigo-700 hover:text-indigo-900 underline underline-offset-2"
+              >
+                {showAllFarms ? 'Show only first 2 farms' : `Show ${myFarms.length - 2} more farm${myFarms.length - 2 > 1 ? 's' : ''}`}
+              </button>
+            )}
+          </div>
+        )}
+
+        {farmLoadError && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-3 md:p-4">
+            <p className="text-xs md:text-sm text-red-700">{farmLoadError}</p>
+          </div>
+        )}
+
         {/* Analyze Button */}
         <button
           onClick={handleAnalyze}
-          disabled={!selectedImage || !selectedFile || isAnalyzing}
-          style={{ background: (!selectedImage || !selectedFile || isAnalyzing) ? '#D1D5DB' : 'linear-gradient(135deg, #D97706 0%, #F59E0B 100%)', boxShadow: (!selectedImage || !selectedFile || isAnalyzing) ? 'none' : '0 4px 14px rgba(217,119,6,0.35)' }}
+          disabled={
+            !selectedImage ||
+            !selectedFile ||
+            isAnalyzing ||
+            (myFarms.length > 0 && !myFarms.some((farm) => getFarmIdentifier(farm) === selectedFarmId))
+          }
+          style={{
+            background:
+              (!selectedImage ||
+                !selectedFile ||
+                isAnalyzing ||
+                (myFarms.length > 0 && !myFarms.some((farm) => getFarmIdentifier(farm) === selectedFarmId)))
+                ? '#D1D5DB'
+                : 'linear-gradient(135deg, #D97706 0%, #F59E0B 100%)',
+            boxShadow:
+              (!selectedImage ||
+                !selectedFile ||
+                isAnalyzing ||
+                (myFarms.length > 0 && !myFarms.some((farm) => getFarmIdentifier(farm) === selectedFarmId)))
+                ? 'none'
+                : '0 4px 14px rgba(217,119,6,0.35)',
+          }}
           className="w-full py-3 md:py-4 disabled:cursor-not-allowed text-white rounded-xl font-medium flex items-center justify-center gap-3 transition-all text-sm md:text-base"
         >
           {isAnalyzing ? (
@@ -352,34 +489,8 @@ export function DiseasePage() {
                     ))}
                 </div>
               </div>
+
             </div>
-
-            {/* Send Report Button */}
-            <button
-              onClick={handleSendReport}
-              disabled={reportSent}
-              className="w-full py-3 md:py-4 bg-green-600 hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-xl font-medium flex items-center justify-center gap-3 transition-all text-sm md:text-base"
-            >
-              {reportSent ? (
-                <>
-                  <CheckCircle className="w-4 h-4 md:w-5 md:h-5" />
-                  Report Sent to Agricultural Officer
-                </>
-              ) : (
-                <>
-                  <Send className="w-4 h-4 md:w-5 md:h-5" />
-                  Send Report to Agricultural Officer
-                </>
-              )}
-            </button>
-
-            {reportSent && (
-              <div className="bg-green-50 border border-green-200 rounded-lg p-3 md:p-4">
-                <p className="text-xs md:text-sm text-green-800">
-                  ✓ Your disease report has been successfully sent to your assigned agricultural officer. They will review it and contact you soon.
-                </p>
-              </div>
-            )}
           </div>
         )}
       </div>
