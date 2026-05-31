@@ -51,6 +51,7 @@
             "react-router": "*",
             "recharts": "^2.15.4",
             "sonner": "^2.0.3",
+            "srilanka-districts-map": "^1.0.3",
             "tailwind-merge": "*",
             "vaul": "^1.1.2"
       },
@@ -62,8 +63,8 @@
             "@types/react-dom": "^19.2.3",
             "@vitejs/plugin-react-swc": "^3.10.2",
             "autoprefixer": "^10.4.27",
-            "jsdom": "^26.1.0",
             "jest": "^30.4.2",
+            "jsdom": "^26.1.0",
             "postcss": "^8.5.6",
             "tailwindcss": "^4.2.1",
             "typescript": "^5.9.3",
