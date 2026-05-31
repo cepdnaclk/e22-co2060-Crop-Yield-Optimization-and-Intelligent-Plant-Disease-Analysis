@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Upload, Loader2, CheckCircle, Microscope, FileText, Shield, Leaf, MapPin } from 'lucide-react';
+import { toast } from 'sonner';
 import uploadfile from '../utils/mediaUpload';
 import { DiseaseLocationPicker } from './DiseaseLocationPicker';
 import { farmAPI, userAPI } from '../services/api';
@@ -211,7 +212,7 @@ export function DiseasePage() {
         } else if (!selectedFarmId) {
           // No farm selected — skip saving
         } else {
-          await farmAPI.reportDisease({
+          const saveResponse = await farmAPI.reportDisease({
             farmId: selectedFarmId,
             // send full probabilities so backend can store multiple detections
             all_probabilities: prediction.all_probabilities,
@@ -219,6 +220,16 @@ export function DiseasePage() {
             location: location || undefined,
             notes: notes || undefined,
           });
+
+          const savedCount = Array.isArray(saveResponse?.report?.diseases)
+            ? saveResponse.report.diseases.length
+            : undefined;
+
+          toast.success(
+            savedCount
+              ? `Disease report saved. History entries: ${savedCount}`
+              : 'Disease report saved successfully'
+          );
         }
       } catch (err: any) {
         // Non-fatal: show console and set analysisError for visibility

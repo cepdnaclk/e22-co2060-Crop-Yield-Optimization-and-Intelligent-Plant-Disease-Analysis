@@ -116,21 +116,24 @@ export async function createFarm(req, res) {
 
   const { farmerNIC, ...farmData } = req.body;
 
+  // Find the farmer by NIC first so we can reuse their district/division as defaults
+  const farmer = await User.findOne({ nic: farmerNIC });
+  if (!farmer) {
+    return res.status(404).json({ message: "Farmer not found" });
+  }
+
+  const resolvedDistrict = farmData.district || farmer.district || ALLOWED_DISTRICTS[0];
+  const resolvedDivision = farmData.division || farmer.division || (ALLOWED_DIVISIONS[resolvedDistrict]?.[0] || 'Ampara');
+
   // Validate district presence and value
-  if (!farmData.district || !ALLOWED_DISTRICTS.includes(String(farmData.district))) {
+  if (!resolvedDistrict || !ALLOWED_DISTRICTS.includes(String(resolvedDistrict))) {
     return res.status(400).json({ message: "Invalid or missing district. Please provide one of the allowed districts.", allowedDistricts: ALLOWED_DISTRICTS });
   }
 
   // Validate division presence and that it belongs to the provided district
-  const districtKey = String(farmData.district);
-  if (!farmData.division || !ALLOWED_DIVISIONS[districtKey] || !ALLOWED_DIVISIONS[districtKey].includes(String(farmData.division))) {
+  const districtKey = String(resolvedDistrict);
+  if (!resolvedDivision || !ALLOWED_DIVISIONS[districtKey] || !ALLOWED_DIVISIONS[districtKey].includes(String(resolvedDivision))) {
     return res.status(400).json({ message: "Invalid or missing DS division for the selected district.", allowedDivisions: ALLOWED_DIVISIONS[districtKey] || [] });
-  }
-
-  // Find the farmer by NIC
-  const farmer = await User.findOne({ nic: farmerNIC });
-  if (!farmer) {
-    return res.status(404).json({ message: "Farmer not found" });
   }
 
   let retryCount = 0;
@@ -156,6 +159,8 @@ export async function createFarm(req, res) {
 
       const farm = new Farm({
         ...farmData,
+        district: resolvedDistrict,
+        division: resolvedDivision,
         farmer: farmer._id,
         farmId: farmId
       });
