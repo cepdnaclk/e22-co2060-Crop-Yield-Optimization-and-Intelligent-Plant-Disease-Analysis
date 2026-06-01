@@ -34,31 +34,12 @@ function createTransporter() {
   });
 }
 
-function createOtpTransporter() {
-  const smtp2goUser = process.env.SMTP2GO_USER?.trim();
-  const smtp2goPass = process.env.SMTP2GO_PASS?.trim();
-  if (smtp2goUser && smtp2goPass) {
-    return createTransporter();
-  }
-
-  const gmailUser = process.env.GMAIL_USER?.trim();
-  const gmailPass = process.env.GMAIL_APP_PASSWORD?.replace(/\s+/g, "").trim();
-
-  if (gmailUser && gmailPass) {
-    return nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: gmailUser,
-        pass: gmailPass,
-      },
-    });
-  }
-
+function createNotificationTransporter() {
   return createTransporter();
 }
 
-function getOtpFromAddress() {
-  return process.env.SMTP_FROM_ADDRESS?.trim() || process.env.GMAIL_USER?.trim();
+function getNotificationFromAddress() {
+  return process.env.SMTP_FROM_ADDRESS?.trim();
 }
 
 /**
@@ -302,9 +283,9 @@ If you believe you received this email in error, please contact support.
  */
 export async function sendPointsAwardedEmail(params) {
   // Validate required environment variables before attempting to send
-  const smtpFrom = process.env.SMTP_FROM_ADDRESS?.trim();
-  if (!process.env.SMTP2GO_USER || !process.env.SMTP2GO_PASS || !smtpFrom) {
-    console.warn("[EmailService] SMTP2GO credentials or SMTP_FROM_ADDRESS not configured. Skipping email.");
+  const smtpFrom = getNotificationFromAddress();
+  if (!smtpFrom) {
+    console.warn("[EmailService] No points sender configured. Skipping email.");
     return;
   }
 
@@ -314,17 +295,17 @@ export async function sendPointsAwardedEmail(params) {
   }
 
   try {
-    const transporter = createTransporter();
+    const transporter = createNotificationTransporter();
     const { html, text } = buildPointsEmailContent(params);
 
     const mailOptions = {
       from: {
-        name: "AgriConnect Notifications",
+        name: "AgriConnect",
         address: smtpFrom,
       },
       replyTo: smtpFrom,
       to: params.farmerEmail,
-      subject: `Your harvest points have been updated – AgriConnect`,
+      subject: "Your harvest points have been updated",
       text,   // Plain-text fallback (critical for spam score)
       html,
       headers: {
@@ -349,7 +330,10 @@ export async function sendPointsAwardedEmail(params) {
     console.log(`[EmailService] SMTP send result: accepted=${JSON.stringify(info.accepted)}, rejected=${JSON.stringify(info.rejected)}, response=${info.response}`);
   } catch (error) {
     // Log the error but DO NOT re-throw — email failure must not break point assignment
-    console.error(`[EmailService] Failed to send points email to ${params.farmerEmail}:`, error.message);
+    console.error(`[EmailService] Failed to send points email to ${params.farmerEmail}:`, error.message, error.code || "");
+    if (error.response) {
+      console.error(`[EmailService] SMTP response for ${params.farmerEmail}:`, error.response);
+    }
   }
 }
 
@@ -364,7 +348,7 @@ export async function sendPointsAwardedEmail(params) {
  * @returns {Promise<void>}
  */
 export async function sendOtpEmail({ email, code, firstName = "there" }) {
-  const smtpFrom = getOtpFromAddress();
+  const smtpFrom = getNotificationFromAddress();
   if (!smtpFrom) {
     console.warn("[EmailService] No OTP sender configured. Skipping OTP email.");
     return;
@@ -416,7 +400,7 @@ Department of Agriculture – Sri Lanka
 `;
 
   try {
-    const transporter = createOtpTransporter();
+    const transporter = createNotificationTransporter();
     const mailOptions = {
       from: {
         name: "AgriConnect",
