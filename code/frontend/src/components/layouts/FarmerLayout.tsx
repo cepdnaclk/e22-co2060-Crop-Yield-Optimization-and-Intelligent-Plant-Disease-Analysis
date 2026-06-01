@@ -1,9 +1,10 @@
 import { Outlet, useNavigate } from 'react-router';
 import { Sidebar } from '../Sidebar';
-import { Bell, AlertCircle } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useInactivityTimeout } from '../../utils/useInactivityTimeout';
 import { clearAuthData } from '../../utils/authUtils';
+import { NotificationsDropdown } from '../ui/NotificationsDropdown';
 
 export function FarmerLayout() {
   const navigate = useNavigate();
@@ -173,12 +174,7 @@ export function FarmerLayout() {
           </h1>
           
           {/* Notifications Only */}
-          <button className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors">
-            <Bell className="w-5 h-5 md:w-6 md:h-6 text-gray-600" />
-            <span className="absolute top-1 right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 md:w-5 md:h-5 flex items-center justify-center text-[10px] md:text-xs">
-              2
-            </span>
-          </button>
+          <NotificationsDropdown />
         </header>
 
         {/* Main Content */}
