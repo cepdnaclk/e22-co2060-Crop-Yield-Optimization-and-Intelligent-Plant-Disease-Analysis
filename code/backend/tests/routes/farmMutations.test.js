@@ -11,6 +11,7 @@ const userFindByIdAndUpdateMock = jest.fn();
 const avgFindOneMock = jest.fn();
 const avgFindMock = jest.fn();
 const isAdminMock = jest.fn(() => true);
+const sendPointsAwardedEmailMock = jest.fn().mockResolvedValue(undefined);
 
 const FarmMock = jest.fn().mockImplementation((data) => ({
   ...data,
@@ -41,6 +42,10 @@ await jest.unstable_mockModule("../../models/avgYield.js", () => ({
 
 await jest.unstable_mockModule("../../controllers/userController.js", () => ({
   isAdmin: isAdminMock,
+}));
+
+await jest.unstable_mockModule("../../services/emailService.js", () => ({
+  sendPointsAwardedEmail: sendPointsAwardedEmailMock,
 }));
 
 const {
@@ -221,11 +226,28 @@ describe("Farm Mutation Routes", () => {
 
   test("POST /api/farms/recalculate-points should recalculate points", async () => {
     const userSaveMock = jest.fn().mockResolvedValue({});
+    const farmSaveMock = jest.fn().mockResolvedValue({});
 
     userFindMock.mockResolvedValue([
-      { _id: "user-1", role: "farmer", points: 0, save: userSaveMock },
+      { _id: "user-1", role: "farmer", email: "farmer@example.com", firstName: "A", lastName: "Farmer", points: 0, save: userSaveMock },
     ]);
-    farmFindMock.mockResolvedValue([]);
+    farmFindMock.mockResolvedValue([
+      {
+        _id: "farm-1",
+        farmId: "FAM00202",
+        farmName: "North Field",
+        farmer: "user-1",
+        crop: "Rice",
+        district: "Galle",
+        sizeInAcres: 2,
+        harvests: [
+          { season: "Maha", year: 2026, harvestQty: 100, pointsEarned: null },
+        ],
+        save: farmSaveMock,
+      },
+    ]);
+    avgFindOneMock.mockResolvedValue({ averageYield: 20 });
+    avgFindMock.mockReturnValue({ sort: jest.fn().mockReturnThis(), limit: jest.fn().mockResolvedValue([{ averageYield: 40 }]) });
 
     const app = http.createServer((req, res) => {
       res.status = (code) => {
@@ -250,5 +272,6 @@ describe("Farm Mutation Routes", () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.body.message).toMatch(/recalculated successfully/i);
+    expect(sendPointsAwardedEmailMock).toHaveBeenCalledTimes(1);
   });
 });

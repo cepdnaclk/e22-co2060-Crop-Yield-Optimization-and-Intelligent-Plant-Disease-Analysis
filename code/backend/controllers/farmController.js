@@ -564,6 +564,7 @@ export const recalculateAllPoints = async (req, res) => {
     for (const user of allUsers) {
       const userFarms = await Farm.find({ farmer: user._id });
       let totalUserPoints = 0;
+      let pointsEmailContext = null;
 
       for (const farm of userFarms) {
         if (!farm.harvests || farm.harvests.length === 0) continue;
@@ -593,6 +594,16 @@ export const recalculateAllPoints = async (req, res) => {
 
           if (nextPoints !== null) {
             totalUserPoints += nextPoints;
+            if (!pointsEmailContext && nextPoints > 0) {
+              pointsEmailContext = {
+                farmName: farm.farmName,
+                farmId: farm.farmId,
+                season: harvest.season,
+                year: Number(harvest.year),
+                harvestQty: Number(harvest.harvestQty),
+                crop: farm.crop,
+              };
+            }
           }
         }
 
@@ -602,10 +613,29 @@ export const recalculateAllPoints = async (req, res) => {
       }
 
       // Update User total points exact (rounded to nearest integer)
+      const previousTotalPoints = Math.round(Number(user.points) || 0);
       const roundedTotalPoints = Math.round(totalUserPoints);
       if (user.points !== roundedTotalPoints) {
         user.points = roundedTotalPoints;
         await user.save();
+      }
+
+      const pointsDelta = roundedTotalPoints - previousTotalPoints;
+      if (pointsDelta > 0 && pointsEmailContext && user.email) {
+        sendPointsAwardedEmail({
+          farmerEmail: user.email,
+          farmerName: `${user.firstName} ${user.lastName}`,
+          farmName: pointsEmailContext.farmName,
+          farmId: pointsEmailContext.farmId,
+          season: pointsEmailContext.season,
+          year: pointsEmailContext.year,
+          pointsEarned: pointsDelta,
+          totalPoints: roundedTotalPoints,
+          harvestQty: pointsEmailContext.harvestQty,
+          crop: pointsEmailContext.crop,
+        }).catch((err) =>
+          console.error("[EmailService] Unhandled error in recalculated-points email:", err.message)
+        );
       }
 
       processedCount++;
