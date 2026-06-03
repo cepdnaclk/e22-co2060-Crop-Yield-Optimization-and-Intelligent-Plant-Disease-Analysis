@@ -5,6 +5,7 @@
  */
 import { createBrowserRouter, Navigate } from "react-router";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { userAPI } from "./services/api";
 import { LoginPage } from "./components/LoginPage";
 import { FarmerLayout } from "./components/layouts/FarmerLayout";
@@ -29,6 +30,7 @@ import { FarmerDetails } from "./components/admin/FarmerDetails";
 
 // Protected Route Component for Farmers
 function FarmerRoute({ children }: { children: React.ReactNode }) {
+  const { t } = useTranslation();
   const [isValidating, setIsValidating] = useState(true);
   const [isValid, setIsValid] = useState(false);
   const auth = getAuthData();
@@ -64,7 +66,7 @@ function FarmerRoute({ children }: { children: React.ReactNode }) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-green-50">
         <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-green-600 mb-4"></div>
-        <p className="text-green-800 font-medium">Verifying Session...</p>
+        <p className="text-green-800 font-medium">{t('route.verifyingSession')}</p>
       </div>
     );
   }

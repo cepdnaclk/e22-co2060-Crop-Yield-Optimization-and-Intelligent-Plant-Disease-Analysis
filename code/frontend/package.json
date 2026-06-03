@@ -53,7 +53,10 @@
             "sonner": "^2.0.3",
             "srilanka-districts-map": "^1.0.3",
             "tailwind-merge": "*",
-            "vaul": "^1.1.2"
+            "vaul": "^1.1.2",
+            "i18next": "^24.2.2",
+            "react-i18next": "^15.4.1",
+            "i18next-browser-languagedetector": "^8.0.4"
       },
       "devDependencies": {
             "@testing-library/jest-dom": "^6.9.1",

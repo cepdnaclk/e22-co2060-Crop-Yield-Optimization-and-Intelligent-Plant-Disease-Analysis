@@ -1,0 +1,52 @@
+{
+  "common": {
+    "language": "Language",
+    "english": "English",
+    "sinhala": "සිංහල",
+    "logout": "Logout",
+    "loading": "Loading...",
+    "farmer": "Farmer",
+    "member": "Member"
+  },
+  "farmerNav": {
+    "home": "Home",
+    "cropData": "Crop Data",
+    "disease": "Disease",
+    "profile": "My Profile",
+    "reports": "Reports",
+    "contactAdmin": "Contact Admin",
+    "portal": "Farmer Portal"
+  },
+  "sessionTimeout": {
+    "title": "Session Timeout Warning",
+    "messageStart": "Your session will expire in",
+    "messageEnd": "seconds due to inactivity. Click stay logged in.",
+    "stayLoggedIn": "Stay Logged In",
+    "logoutNow": "Logout Now"
+  },
+  "composeMessage": {
+    "newMessage": "New Message",
+    "subject": "Subject",
+    "subjectPlaceholder": "e.g. Flood damage to paddy fields",
+    "category": "Category",
+    "selectCategory": "Select a category",
+    "naturalDisaster": "Natural Disaster",
+    "technicalIssue": "Technical Issue",
+    "complaint": "Complaint",
+    "subsidyInquiry": "Subsidy Inquiry",
+    "equipmentDamage": "Equipment Damage",
+    "other": "Other",
+    "message": "Message",
+    "messagePlaceholder": "Describe your issue, complaint, or inquiry in detail...",
+    "attachmentsOptional": "Attachments (optional)",
+    "clickToUpload": "Click to upload document or photo",
+    "fileHelp": "PDF, DOC, JPG, PNG — max 10MB",
+    "clear": "Clear",
+    "sending": "Sending...",
+    "sendMessage": "Send Message"
+  },
+  "auto": {},
+  "route": {
+    "verifyingSession": "Verifying Session..."
+  }
+}

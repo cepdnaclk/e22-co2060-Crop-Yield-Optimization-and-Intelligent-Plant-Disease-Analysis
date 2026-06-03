@@ -5,6 +5,7 @@
  */
 import { Home, Sprout, AlertTriangle, User, FileText, LogOut, Menu, X, MessageSquare } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { userAPI } from '../services/api';
 
 interface SidebarProps {
@@ -14,6 +15,7 @@ interface SidebarProps {
 }
 
 export function Sidebar({ currentPage, onNavigate, onLogout }: SidebarProps) {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [userData, setUserData] = useState<any>({});
 
@@ -65,11 +67,11 @@ export function Sidebar({ currentPage, onNavigate, onLogout }: SidebarProps) {
   }, []);
 
   const menuItems = [
-    { id: 'home', label: 'Home', icon: Home },
-    { id: 'crop', label: 'Crop Data', icon: Sprout },
-    { id: 'disease', label: 'Disease', icon: AlertTriangle },
-    { id: 'notes', label: 'Contact Admin', icon: MessageSquare },
-    { id: 'reports', label: 'Reports', icon: FileText },
+    { id: 'home', label: t('farmerNav.home'), icon: Home },
+    { id: 'crop', label: t('farmerNav.cropData'), icon: Sprout },
+    { id: 'disease', label: t('farmerNav.disease'), icon: AlertTriangle },
+    { id: 'notes', label: t('farmerNav.contactAdmin'), icon: MessageSquare },
+    { id: 'reports', label: t('farmerNav.reports'), icon: FileText },
   ];
 
   const handleNavigate = (page: string) => {
@@ -79,7 +81,7 @@ export function Sidebar({ currentPage, onNavigate, onLogout }: SidebarProps) {
 
   const displayName = userData.firstName || userData.lastName
     ? `${userData.firstName || ''} ${userData.lastName || ''}`.trim()
-    : 'Farmer';
+    : t('common.farmer');
 
   return (
     <>
@@ -114,7 +116,7 @@ export function Sidebar({ currentPage, onNavigate, onLogout }: SidebarProps) {
             </div>
             <div>
               <h1 className="font-semibold text-xl">AgriConnect</h1>
-              <p className="text-xs text-green-200">Farmer Portal</p>
+              <p className="text-xs text-green-200">{t('farmerNav.portal')}</p>
             </div>
           </div>
         </div>
@@ -157,7 +159,7 @@ export function Sidebar({ currentPage, onNavigate, onLogout }: SidebarProps) {
             </div>
             <div className="text-left overflow-hidden">
               <p className="text-sm font-medium truncate">{displayName}</p>
-              <p className="text-xs text-green-200 truncate">{userData?.email || 'Member'}</p>
+              <p className="text-xs text-green-200 truncate">{userData?.email || t('common.member')}</p>
             </div>
           </button>
 
@@ -167,7 +169,7 @@ export function Sidebar({ currentPage, onNavigate, onLogout }: SidebarProps) {
             className="w-full flex items-center justify-center gap-3 px-6 py-3 transition-all text-green-50 hover:bg-green-600/50 rounded-lg border border-green-600/30"
           >
             <LogOut className="w-5 h-5" />
-            <span className="text-sm font-medium">Logout</span>
+            <span className="text-sm font-medium">{t('common.logout')}</span>
           </button>
         </div>
       </div>
