@@ -1,5 +1,6 @@
 import { Download, Layers, MapPin, Wheat, TrendingUp, Calendar, Loader, RefreshCw, BarChart3, Sprout } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { farmAPI, userAPI } from '../services/api';
 
 
@@ -22,6 +23,7 @@ interface FarmWithHarvests {
 }
 
 export function CropDataPage() {
+  const { t } = useTranslation();
   const [farms, setFarms] = useState<FarmWithHarvests[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -55,7 +57,7 @@ export function CropDataPage() {
       setFarms(myFarms);
     } catch (err: any) {
       console.error("Failed to load crop data:", err);
-      setError("Failed to load your cultivation records.");
+      setError(t('cropData.failedToLoad'));
     } finally {
       setLoading(false);
     }
@@ -193,7 +195,7 @@ export function CropDataPage() {
     return (
       <div className="flex flex-col justify-center items-center h-64 gap-3">
         <Loader className="w-8 h-8 animate-spin text-green-600" />
-        <p style={{ fontSize: '14px', color: '#6B7280' }}>Loading your cultivation data...</p>
+        <p style={{ fontSize: '14px', color: '#6B7280' }}>{t('cropData.loadingCropData')}</p>
       </div>
     );
   }
@@ -224,8 +226,8 @@ export function CropDataPage() {
               <Sprout style={{ width: '24px', height: '24px' }} />
             </div>
             <div>
-              <h2 style={{ fontSize: '21px', fontWeight: '700', margin: 0 }}>My Crop Data</h2>
-              <p style={{ fontSize: '13px', opacity: 0.85, margin: '2px 0 0' }}>Track your cultivation records, yields & performance</p>
+              <h2 style={{ fontSize: '21px', fontWeight: '700', margin: 0 }}>{t('cropData.title')}</h2>
+              <p style={{ fontSize: '13px', opacity: 0.85, margin: '2px 0 0' }}>{t('cropData.heroSubtitle')}</p>
             </div>
           </div>
           <button
@@ -236,7 +238,7 @@ export function CropDataPage() {
             onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.18)'; }}
           >
             <RefreshCw className={`w-4 h-4 ${refreshingPoints ? 'animate-spin' : ''}`} />
-            {refreshingPoints ? 'Refreshing...' : 'Refresh Points'}
+            {refreshingPoints ? t('cropData.refreshing') : t('cropData.refreshPoints')}
           </button>
         </div>
       </div>
@@ -245,18 +247,18 @@ export function CropDataPage() {
       <div style={{ background: 'white', border: '1px solid #E5E7EB', borderRadius: '14px', padding: 'clamp(12px,3vw,16px) clamp(12px,4vw,20px)', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
           <BarChart3 style={{ width: '18px', height: '18px', color: '#6B7280', flexShrink: 0 }} />
-          <span style={{ fontSize: '13px', fontWeight: 600, color: '#374151', marginRight: '4px' }}>Filters</span>
+          <span style={{ fontSize: '13px', fontWeight: 600, color: '#374151', marginRight: '4px' }}>{t('cropData.filters')}</span>
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', flex: 1, minWidth: 0 }}>
             <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)} style={{ ...filterSelectStyle, flex: '1 1 110px', minWidth: '100px' }}>
-              <option value="">All Years</option>
+              <option value="">{t('cropData.allYears')}</option>
               {filterOptions.years.map((y) => <option key={y} value={y}>{y}</option>)}
             </select>
             <select value={selectedSeason} onChange={(e) => setSelectedSeason(e.target.value)} style={{ ...filterSelectStyle, flex: '1 1 120px', minWidth: '100px' }}>
-              <option value="">All Seasons</option>
+              <option value="">{t('cropData.allSeasons')}</option>
               {filterOptions.seasons.map((s) => <option key={s} value={s}>{s}</option>)}
             </select>
             <select value={selectedCrop} onChange={(e) => setSelectedCrop(e.target.value)} style={{ ...filterSelectStyle, flex: '1 1 120px', minWidth: '100px' }}>
-              <option value="">All Crops</option>
+              <option value="">{t('cropData.allCrops')}</option>
               {filterOptions.crops.map((c) => <option key={c} value={c}>{c}</option>)}
             </select>
           </div>
@@ -272,13 +274,13 @@ export function CropDataPage() {
             <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'linear-gradient(135deg, #059669, #10B981)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px', boxShadow: '0 2px 8px rgba(5,150,105,0.3)' }}>
               <Wheat style={{ width: '18px', height: '18px', color: 'white' }} />
             </div>
-            <p style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Total Yield</p>
+            <p style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>{t('cropData.totalYield')}</p>
             <div className="flex items-baseline gap-1 my-1">
               <p className="text-2xl lg:text-3xl font-bold text-gray-900">{totalYieldTons.toFixed(1)}</p>
-              <span style={{ fontSize: '13px', fontWeight: 500, color: '#6B7280' }}>tons</span>
+              <span style={{ fontSize: '13px', fontWeight: 500, color: '#6B7280' }}>{t('cropData.tons')}</span>
             </div>
             <p style={{ fontSize: '12px', color: '#059669', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
-              <TrendingUp style={{ width: '13px', height: '13px' }} />Filtered output
+              <TrendingUp style={{ width: '13px', height: '13px' }} />{t('cropData.filteredOutput')}
             </p>
           </div>
         </div>
@@ -290,9 +292,9 @@ export function CropDataPage() {
             <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'linear-gradient(135deg, #2563EB, #3B82F6)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px', boxShadow: '0 2px 8px rgba(37,99,235,0.3)' }}>
               <Layers style={{ width: '18px', height: '18px', color: 'white' }} />
             </div>
-            <p style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Total Acres</p>
+            <p style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>{t('cropData.totalAcres')}</p>
             <p className="text-2xl lg:text-3xl font-bold text-gray-900 my-1">{totalAcres.toFixed(1)}</p>
-            <p style={{ fontSize: '12px', color: '#2563EB', marginTop: '4px' }}>Cultivated land area</p>
+            <p style={{ fontSize: '12px', color: '#2563EB', marginTop: '4px' }}>{t('cropData.cultivatedArea')}</p>
           </div>
         </div>
 
@@ -303,13 +305,13 @@ export function CropDataPage() {
             <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'linear-gradient(135deg, #D97706, #F59E0B)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px', boxShadow: '0 2px 8px rgba(217,119,6,0.3)' }}>
               <TrendingUp style={{ width: '18px', height: '18px', color: 'white' }} />
             </div>
-            <p style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Avg Yield/Acre</p>
+            <p style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>{t('cropData.avgYieldPerAcre')}</p>
             <div className="flex items-baseline gap-1 my-1">
               <p className="text-2xl lg:text-3xl font-bold text-gray-900">{avgYieldPerAcre.toFixed(2)}</p>
-              <span style={{ fontSize: '13px', fontWeight: 500, color: '#6B7280' }}>t/ac</span>
+              <span style={{ fontSize: '13px', fontWeight: 500, color: '#6B7280' }}>{t('cropData.tPerAcre')}</span>
             </div>
             <p style={{ fontSize: '12px', color: '#D97706', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
-              <TrendingUp style={{ width: '13px', height: '13px' }} />Yield efficiency
+              <TrendingUp style={{ width: '13px', height: '13px' }} />{t('cropData.yieldEfficiency')}
             </p>
           </div>
         </div>
@@ -321,9 +323,9 @@ export function CropDataPage() {
             <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'linear-gradient(135deg, #7C3AED, #8B5CF6)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px', boxShadow: '0 2px 8px rgba(124,58,237,0.3)' }}>
               <Calendar style={{ width: '18px', height: '18px', color: 'white' }} />
             </div>
-            <p style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Total Records</p>
+            <p style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>{t('cropData.totalRecords')}</p>
             <p className="text-2xl lg:text-3xl font-bold text-gray-900 my-1">{totalRecords}</p>
-            <p style={{ fontSize: '12px', color: '#7C3AED', marginTop: '4px' }}>Harvest entries</p>
+            <p style={{ fontSize: '12px', color: '#7C3AED', marginTop: '4px' }}>{t('cropData.harvestEntries')}</p>
           </div>
         </div>
       </div>
@@ -336,24 +338,24 @@ export function CropDataPage() {
               <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'linear-gradient(135deg, #059669, #10B981)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Wheat style={{ width: '16px', height: '16px', color: 'white' }} />
               </div>
-              <h3 style={{ fontSize: 18, fontWeight: 700, color: '#111827', margin: 0 }}>Cultivation Records</h3>
+              <h3 style={{ fontSize: 18, fontWeight: 700, color: '#111827', margin: 0 }}>{t('cropData.cultivationRecords')}</h3>
               <span style={{ fontSize: 11, color: '#059669', background: '#ECFDF5', border: '1px solid #A7F3D0', borderRadius: 20, padding: '3px 10px', fontWeight: 600 }}>
-                {displayedHarvests.length} records
+                {displayedHarvests.length} {t('cropData.records')}
               </span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <span style={{ fontSize: 12, color: '#6b7280' }}>Sort</span>
+                <span style={{ fontSize: 12, color: '#6b7280' }}>{t('cropData.sort')}</span>
                 <select id="crop-record-sort" value={sortBy} onChange={(e) => setSortBy(e.target.value as 'newest' | 'highestYield')}
                   style={{ background: '#F9FAFB', border: '1px solid #E5E7EB', borderRadius: 8, padding: '6px 12px', fontSize: 12, fontWeight: 500, color: '#111827', cursor: 'pointer' }}>
-                  <option value="newest">Newest</option>
-                  <option value="highestYield">Highest Yield</option>
+                  <option value="newest">{t('cropData.newest')}</option>
+                  <option value="highestYield">{t('cropData.highestYield')}</option>
                 </select>
               </div>
               {selectedVisibleHarvests.length > 0 && (
                 <button type="button" onClick={handleExportCsv}
                   style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'linear-gradient(135deg, #059669, #10B981)', color: '#fff', borderRadius: 8, fontSize: 12, fontWeight: 600, padding: '7px 14px', border: 'none', cursor: 'pointer', boxShadow: '0 2px 6px rgba(5,150,105,0.3)' }}>
-                  <Download className="h-3.5 w-3.5" />Export CSV
+                  <Download className="h-3.5 w-3.5" />{t('cropData.exportCsv')}
                 </button>
               )}
             </div>
@@ -364,8 +366,8 @@ export function CropDataPage() {
           {displayedHarvests.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '40px 20px', color: '#9CA3AF' }}>
               <Wheat style={{ width: '40px', height: '40px', margin: '0 auto 12px', opacity: 0.4 }} />
-              <p style={{ fontSize: '14px', fontWeight: 500, margin: 0 }}>No harvest records found</p>
-              <p style={{ fontSize: '12px', marginTop: '4px' }}>Try adjusting your filters</p>
+              <p style={{ fontSize: '14px', fontWeight: 500, margin: 0 }}>{t('cropData.noHarvestRecordsFound')}</p>
+              <p style={{ fontSize: '12px', marginTop: '4px' }}>{t('cropData.tryAdjustingFilters')}</p>
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -386,7 +388,7 @@ export function CropDataPage() {
                       <span style={{ background: '#ECFDF5', color: '#059669', padding: '3px 9px', borderRadius: 20, fontSize: '10px', fontWeight: 600, border: '1px solid #A7F3D0' }}>🌾 {record.farmName}</span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <span style={{ background: '#DCFCE7', color: '#16A34A', fontWeight: 600, padding: '3px 9px', borderRadius: 20, fontSize: '10px', border: '1px solid #86EFAC' }}>✓ Verified</span>
+                      <span style={{ background: '#DCFCE7', color: '#16A34A', fontWeight: 600, padding: '3px 9px', borderRadius: 20, fontSize: '10px', border: '1px solid #86EFAC' }}>✓ {t('cropData.verified')}</span>
                       <button type="button" onClick={() => handleToggleHarvestSelection(record._id)}
                         style={{ width: '26px', height: '26px', borderRadius: '7px', border: isSelected ? '1.5px solid #10B981' : '1.5px solid #D1D5DB', background: isSelected ? '#10B981' : '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: '11px', color: isSelected ? 'white' : '#9CA3AF', transition: 'all 0.15s' }}>
                         {isSelected ? '✓' : ''}
@@ -398,42 +400,42 @@ export function CropDataPage() {
                     <div style={{ padding: '12px 14px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '3px' }}>
                         <MapPin style={{ width: '11px', height: '11px', color: '#9CA3AF' }} />
-                        <span style={{ fontSize: '11px', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Location</span>
+                        <span style={{ fontSize: '11px', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('cropData.location')}</span>
                       </div>
                       <p style={{ fontSize: '15px', fontWeight: 600, color: '#1F2937', margin: 0 }}>{record.location}</p>
                     </div>
                     <div style={{ padding: '12px 14px', borderLeft: '1px solid #F3F4F6' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '3px' }}>
                         <Layers style={{ width: '11px', height: '11px', color: '#9CA3AF' }} />
-                        <span style={{ fontSize: '11px', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Acres</span>
+                        <span style={{ fontSize: '11px', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('cropData.acres')}</span>
                       </div>
-                      <p style={{ fontSize: '15px', fontWeight: 600, color: '#1F2937', margin: 0 }}>{record.acres} acres</p>
+                      <p style={{ fontSize: '15px', fontWeight: 600, color: '#1F2937', margin: 0 }}>{record.acres} {t('cropData.acres')}</p>
                     </div>
                     <div style={{ padding: '12px 14px', borderLeft: '1px solid #F3F4F6' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '3px' }}>
                         <Sprout style={{ width: '11px', height: '11px', color: '#9CA3AF' }} />
-                        <span style={{ fontSize: '11px', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Crop</span>
+                        <span style={{ fontSize: '11px', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('cropData.cropType')}</span>
                       </div>
                       <p style={{ fontSize: '15px', fontWeight: 600, color: '#1F2937', margin: 0 }}>{record.crop}</p>
                     </div>
                     <div style={{ padding: '12px 14px', borderLeft: '1px solid #F3F4F6', background: '#F0FDF4' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '3px' }}>
                         <TrendingUp style={{ width: '11px', height: '11px', color: '#059669' }} />
-                        <span style={{ fontSize: '11px', fontWeight: 600, color: '#059669', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Yield</span>
+                        <span style={{ fontSize: '11px', fontWeight: 600, color: '#059669', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('cropData.yield')}</span>
                       </div>
-                      <p style={{ fontSize: '17px', fontWeight: 700, color: '#059669', margin: 0 }}>{(record.harvestQty / 1000).toFixed(2)} tons</p>
+                      <p style={{ fontSize: '17px', fontWeight: 700, color: '#059669', margin: 0 }}>{(record.harvestQty / 1000).toFixed(2)} {t('cropData.tons')}</p>
                     </div>
                   </div>
                   {/* Points Footer */}
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '9px 16px', borderTop: '1px solid #F3F4F6', background: '#FEFCE8' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
                       <span style={{ fontSize: '14px' }}>⭐</span>
-                      <span style={{ fontSize: '13px', fontWeight: 600, color: '#92400E' }}>Points Earned</span>
+                      <span style={{ fontSize: '13px', fontWeight: 600, color: '#92400E' }}>{t('cropData.pointsEarned')}</span>
                     </div>
                     {record.pointsEarned === null || record.pointsEarned === undefined ? (
-                      <span style={{ background: '#FEF3C7', border: '1px solid #FCD34D', color: '#92400E', fontSize: '12px', fontWeight: 600, padding: '4px 12px', borderRadius: 20 }}>⏳ Pending review</span>
+                      <span style={{ background: '#FEF3C7', border: '1px solid #FCD34D', color: '#92400E', fontSize: '12px', fontWeight: 600, padding: '4px 12px', borderRadius: 20 }}>⏳ {t('cropData.pendingReview')}</span>
                     ) : (
-                      <span style={{ background: '#FDE68A', color: '#92400E', fontSize: '13px', fontWeight: 700, padding: '5px 14px', borderRadius: 20 }}>🏆 {Math.round(record.pointsEarned)} pts</span>
+                      <span style={{ background: '#FDE68A', color: '#92400E', fontSize: '13px', fontWeight: 700, padding: '5px 14px', borderRadius: 20 }}>🏆 {Math.round(record.pointsEarned)} {t('cropData.points')}</span>
                     )}
                   </div>
                 </div>
