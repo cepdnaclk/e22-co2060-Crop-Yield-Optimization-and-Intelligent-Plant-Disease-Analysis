@@ -407,13 +407,13 @@ export const addHarvestAndPoints = async (req, res) => {
       updatedFarmer = await User.findByIdAndUpdate(
         farm.farmer,
         { $inc: { points: delta } },
-        { new: true }   // Return the updated document so we have the new total
+        { returnDocument: 'after' }   // Return the updated document so we have the new total
       );
     }
 
     // Send points notification email (fire-and-forget — never blocks the response)
     if (!pointsPending && delta > 0 && updatedFarmer) {
-      sendPointsAwardedEmail({
+      await sendPointsAwardedEmail({
         farmerEmail:  updatedFarmer.email,
         farmerName:   `${updatedFarmer.firstName} ${updatedFarmer.lastName}`,
         farmName:     farm.farmName,
@@ -424,9 +424,7 @@ export const addHarvestAndPoints = async (req, res) => {
         totalPoints:  Math.round(updatedFarmer.points),
         harvestQty:   harvestQtyNum,
         crop:         farm.crop,
-      }).catch((err) =>
-        console.error("[EmailService] Unhandled error in points email:", err.message)
-      );
+      });
     }
 
     res.json({
@@ -511,7 +509,7 @@ export async function recalculatePendingPointsForAverage({ district, crop, seaso
       const updatedFarmer = await User.findByIdAndUpdate(
         farm.farmer,
         { $inc: { points: farmerDelta } },
-        { new: true }   // Return updated document for email
+        { returnDocument: 'after' }   // Return updated document for email
       );
       pointsApplied += farmerDelta;
 
@@ -522,7 +520,7 @@ export async function recalculatePendingPointsForAverage({ district, crop, seaso
         const resolvedHarvest = farm.harvests.find(
           (h) => h.season === season && Number(h.year) === yearNum && h.pointsEarned !== null
         );
-        sendPointsAwardedEmail({
+        await sendPointsAwardedEmail({
           farmerEmail:  updatedFarmer.email,
           farmerName:   `${updatedFarmer.firstName} ${updatedFarmer.lastName}`,
           farmName:     farm.farmName,
@@ -533,9 +531,7 @@ export async function recalculatePendingPointsForAverage({ district, crop, seaso
           totalPoints:  Math.round(updatedFarmer.points),
           harvestQty:   resolvedHarvest ? resolvedHarvest.harvestQty : 0,
           crop:         farm.crop,
-        }).catch((err) =>
-          console.error("[EmailService] Unhandled error in pending-points email:", err.message)
-        );
+        });
       }
     }
   }
@@ -564,6 +560,7 @@ export const recalculateAllPoints = async (req, res) => {
     for (const user of allUsers) {
       const userFarms = await Farm.find({ farmer: user._id });
       let totalUserPoints = 0;
+      let pointsEmailContext = null;
 
       for (const farm of userFarms) {
         if (!farm.harvests || farm.harvests.length === 0) continue;
@@ -593,6 +590,16 @@ export const recalculateAllPoints = async (req, res) => {
 
           if (nextPoints !== null) {
             totalUserPoints += nextPoints;
+            if (!pointsEmailContext && nextPoints > 0) {
+              pointsEmailContext = {
+                farmName: farm.farmName,
+                farmId: farm.farmId,
+                season: harvest.season,
+                year: Number(harvest.year),
+                harvestQty: Number(harvest.harvestQty),
+                crop: farm.crop,
+              };
+            }
           }
         }
 
@@ -602,10 +609,27 @@ export const recalculateAllPoints = async (req, res) => {
       }
 
       // Update User total points exact (rounded to nearest integer)
+      const previousTotalPoints = Math.round(Number(user.points) || 0);
       const roundedTotalPoints = Math.round(totalUserPoints);
       if (user.points !== roundedTotalPoints) {
         user.points = roundedTotalPoints;
         await user.save();
+      }
+
+      const pointsDelta = roundedTotalPoints - previousTotalPoints;
+      if (pointsDelta > 0 && pointsEmailContext && user.email) {
+        await sendPointsAwardedEmail({
+          farmerEmail: user.email,
+          farmerName: `${user.firstName} ${user.lastName}`,
+          farmName: pointsEmailContext.farmName,
+          farmId: pointsEmailContext.farmId,
+          season: pointsEmailContext.season,
+          year: pointsEmailContext.year,
+          pointsEarned: pointsDelta,
+          totalPoints: roundedTotalPoints,
+          harvestQty: pointsEmailContext.harvestQty,
+          crop: pointsEmailContext.crop,
+        });
       }
 
       processedCount++;
