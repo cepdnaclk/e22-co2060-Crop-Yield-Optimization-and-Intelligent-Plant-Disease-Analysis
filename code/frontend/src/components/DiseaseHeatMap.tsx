@@ -3,18 +3,18 @@ import { svgPaths } from 'srilanka-districts-map/dist/districtData';
 import { farmAPI } from '../services/api';
 import { Loader2 } from 'lucide-react';
 
-// Tier definitions: color hex, label, and a readable tooltip color (high contrast on dark bg)
+// Tier definitions: color hex and label
 const TIERS = [
-  { max: 0,    color: '#bbf7d0', label: 'None',      tooltipColor: '#86efac' },
-  { max: 124,  color: '#86efac', label: 'Very Low',   tooltipColor: '#4ade80' },
-  { max: 249,  color: '#fef08a', label: 'Low',        tooltipColor: '#fde047' },
-  { max: 374,  color: '#fde047', label: 'Warning',    tooltipColor: '#facc15' },
-  { max: 499,  color: '#facc15', label: 'Alert',      tooltipColor: '#eab308' },
-  { max: 624,  color: '#fb923c', label: 'Moderate',   tooltipColor: '#fb923c' },
-  { max: 749,  color: '#f97316', label: 'Elevated',   tooltipColor: '#f97316' },
-  { max: 874,  color: '#ef4444', label: 'High',       tooltipColor: '#f87171' },
-  { max: 999,  color: '#b91c1c', label: 'Very High',  tooltipColor: '#fca5a5' },
-  { max: Infinity, color: '#7f1d1d', label: 'Critical', tooltipColor: '#fecaca' },
+  { max: 0,    color: '#ffffff', label: 'None' },
+  { max: 124,  color: '#fff7ec', label: 'Very Low' },
+  { max: 249,  color: '#fee8c8', label: 'Low' },
+  { max: 374,  color: '#fdd49e', label: 'Warning' },
+  { max: 499,  color: '#fdbb84', label: 'Alert' },
+  { max: 624,  color: '#fc8d59', label: 'Moderate' },
+  { max: 749,  color: '#ef6548', label: 'Elevated' },
+  { max: 874,  color: '#d7301f', label: 'High' },
+  { max: 999,  color: '#b30000', label: 'Very High' },
+  { max: Infinity, color: '#7f0000', label: 'Critical' },
 ];
 
 const getTier = (count: number) => {
@@ -99,8 +99,8 @@ export const DiseaseHeatMap: React.FC = () => {
                     key={`${district}-${i}`}
                     d={d}
                     fill={fillColor}
-                    stroke={isHovered ? '#1e293b' : '#64748b'}
-                    strokeWidth={isHovered ? 0.35 : 0.12}
+                    stroke={'#000000'}
+                    strokeWidth={isHovered ? 0.4 : 0.15}
                     style={{
                       cursor: 'pointer',
                       transition: 'fill 0.2s ease, stroke-width 0.15s ease',
@@ -186,7 +186,7 @@ export const DiseaseHeatMap: React.FC = () => {
             <span
               style={{
                 fontWeight: 700,
-                color: getTier(stats[hoveredDistrict] || 0).tooltipColor,
+                color: '#fff',
               }}
             >
               {getTier(stats[hoveredDistrict] || 0).label}

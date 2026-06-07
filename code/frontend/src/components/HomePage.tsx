@@ -307,7 +307,7 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
           {/* Desktop layout: map | advisory side by side */}
           <div className="hidden sm:flex gap-4">
             {/* Map (with built-in legend) */}
-            <div className="flex-1 relative bg-gray-50 rounded-lg min-h-[280px] flex items-center justify-center">
+            <div className="flex-1 relative bg-white rounded-lg min-h-[280px] flex items-center justify-center">
               <DiseaseHeatMap />
             </div>
 
@@ -324,7 +324,7 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
 
           {/* Mobile layout: map full-width (legend included in component) */}
           <div className="sm:hidden">
-            <div className="relative bg-gray-50 rounded-lg" style={{ minHeight: '320px' }}>
+            <div className="relative bg-white rounded-lg" style={{ minHeight: '320px' }}>
               <DiseaseHeatMap />
             </div>
           </div>
