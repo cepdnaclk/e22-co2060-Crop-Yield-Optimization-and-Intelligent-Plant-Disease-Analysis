@@ -12,6 +12,7 @@ import farmerImage from 'figma:asset/8d18ad2077654c1f65710d650ff192f7ba499f8c.pn
 import { formatNumber } from '../utils/numberUtils';
 import { EmailVerificationModal } from './ui/EmailVerificationModal';
 import { FloodMapModal } from './ui/FloodMapModal';
+import { DiseaseHeatMap } from './DiseaseHeatMap';
 
 // Hook used by Home dashboard (and others) to load summary metrics.
 export function useHomeDashboardData() {
@@ -329,7 +330,7 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
 
             {/* Map */}
             <div className="flex-1 relative bg-gray-50 rounded-lg overflow-hidden min-h-[280px] flex items-center justify-center">
-              <img src="/src/assets/sri_lanka_heatmap.png" alt="Sri Lanka Disease Heatmap" className="w-full h-full object-contain mix-blend-multiply opacity-90" />
+              <DiseaseHeatMap />
             </div>
 
             {/* Advisory */}
@@ -346,7 +347,7 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
           {/* Mobile layout: map full-width, compact legend below */}
           <div className="sm:hidden space-y-3">
             <div className="relative bg-gray-50 rounded-lg overflow-hidden" style={{ minHeight: '220px' }}>
-              <img src="/src/assets/sri_lanka_heatmap.png" alt="Sri Lanka Disease Heatmap" className="w-full h-full object-contain mix-blend-multiply opacity-90" />
+              <DiseaseHeatMap />
             </div>
             <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-gray-600">
               {[
