@@ -4,7 +4,7 @@
  * Base path: /api/farms
  */
 import express from "express";
-import { addHarvestAndPoints, recalculateAllPoints, createFarm, getAllFarms, getFarmById, updateFarm, deleteFarm, getHarvestHistory, getFarmerReport, getAllCrops } from "../controllers/farmController.js";
+import { addHarvestAndPoints, recalculateAllPoints, createFarm, getAllFarms, getFarmById, updateFarm, deleteFarm, getHarvestHistory, getFarmerReport, getAllCrops, getDiseaseHeatmapStats } from "../controllers/farmController.js";
 import { reportDisease } from "../controllers/farmController.js";
 import { requireAuth, requireEmailVerified } from "../middleware/authMiddleware.js";
 
@@ -20,6 +20,7 @@ farmRouter.get("/", getAllFarms)
 farmRouter.get("/crops/list", getAllCrops)
 farmRouter.get("/harvests", getHarvestHistory)
 farmRouter.get("/my-report", getFarmerReport)
+farmRouter.get("/disease-stats", getDiseaseHeatmapStats)
 farmRouter.get("/:farmId", getFarmById)
 
 // POST endpoints
