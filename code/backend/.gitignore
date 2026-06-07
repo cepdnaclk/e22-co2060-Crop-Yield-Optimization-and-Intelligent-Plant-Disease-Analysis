@@ -6,3 +6,5 @@ dist/
 .env.*
 admin_access/
 uploads/
+seedDiseases.js
+cleanupDiseases.js
