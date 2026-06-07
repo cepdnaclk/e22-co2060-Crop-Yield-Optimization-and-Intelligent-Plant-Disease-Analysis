@@ -986,3 +986,42 @@ export const getFarmerReport = async (req, res) => {
     res.status(500).json({ message: "Failed to retrieve report", error: error.message });
   }
 };
+
+/**
+ * Aggregates disease reports per district from the last 6 months.
+ * Used for the Disease Heatmap.
+ */
+export const getDiseaseHeatmapStats = async (req, res) => {
+  try {
+    const sixMonthsAgo = new Date();
+    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+
+    const reports = await DiseaseReport.find({
+      "diseases.createdDate": { $gte: sixMonthsAgo }
+    }).populate('farm', 'district');
+
+    const stats = {};
+
+    reports.forEach(report => {
+      if (report.farm && report.farm.district) {
+        // Normalize district to lowercase and replace spaces with hyphens
+        let dist = report.farm.district.toLowerCase().replace(/\s+/g, '-');
+        
+        // Count only diseases from last 6 months
+        const recentDiseasesCount = report.diseases.filter(d => 
+          new Date(d.createdDate) >= sixMonthsAgo
+        ).length;
+
+        if (!stats[dist]) {
+          stats[dist] = 0;
+        }
+        stats[dist] += recentDiseasesCount;
+      }
+    });
+
+    res.json(stats);
+  } catch (error) {
+    console.error("Error retrieving disease stats:", error);
+    res.status(500).json({ message: "Failed to retrieve disease stats", error: error.message });
+  }
+};

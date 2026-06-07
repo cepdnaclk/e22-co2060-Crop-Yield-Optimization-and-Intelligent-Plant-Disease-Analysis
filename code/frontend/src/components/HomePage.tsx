@@ -12,6 +12,7 @@ import farmerImage from 'figma:asset/8d18ad2077654c1f65710d650ff192f7ba499f8c.pn
 import { formatNumber } from '../utils/numberUtils';
 import { EmailVerificationModal } from './ui/EmailVerificationModal';
 import { FloodMapModal } from './ui/FloodMapModal';
+import { DiseaseHeatMap } from './DiseaseHeatMap';
 
 // Hook used by Home dashboard (and others) to load summary metrics.
 export function useHomeDashboardData() {
@@ -303,38 +304,16 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
         <div className="bg-white rounded-2xl p-4 md:p-6 border border-gray-200 lg:col-span-2">
           <h3 className="text-base md:text-lg font-semibold text-gray-800 mb-4">Disease Heat Map</h3>
 
-          {/* Desktop layout: legend | map | advisory side by side */}
+          {/* Desktop layout: map | advisory side by side */}
           <div className="hidden sm:flex gap-4">
-            {/* Activity Scale */}
-            <div className="flex flex-col justify-between text-xs text-gray-600 w-24 flex-shrink-0">
-              <p className="text-gray-700 font-medium mb-2">Report Frequency</p>
-              {[
-                { color: 'bg-red-900', label: 'Critical' },
-                { color: 'bg-red-700', label: 'Very High' },
-                { color: 'bg-red-500', label: 'High' },
-                { color: 'bg-orange-500', label: 'Elevated' },
-                { color: 'bg-orange-400', label: 'Moderate' },
-                { color: 'bg-yellow-400', label: 'Alert' },
-                { color: 'bg-yellow-300', label: 'Warning' },
-                { color: 'bg-yellow-200', label: 'Low' },
-                { color: 'bg-green-300', label: 'Very Low' },
-                { color: 'bg-green-200', label: 'None' },
-              ].map(({ color, label }) => (
-                <div key={label} className="flex items-center gap-2">
-                  <div className={`w-6 h-3 ${color} rounded flex-shrink-0`}></div>
-                  <span>{label}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* Map */}
-            <div className="flex-1 relative bg-gray-50 rounded-lg overflow-hidden min-h-[280px] flex items-center justify-center">
-              <img src="/src/assets/sri_lanka_heatmap.png" alt="Sri Lanka Disease Heatmap" className="w-full h-full object-contain mix-blend-multiply opacity-90" />
+            {/* Map (with built-in legend) */}
+            <div className="flex-1 relative bg-white rounded-lg min-h-[280px] flex items-center justify-center">
+              <DiseaseHeatMap />
             </div>
 
             {/* Advisory */}
             <div className="w-32 text-xs flex-shrink-0">
-              <h4 className="font-semibold text-gray-800 mb-3">Advisory & Tips</h4>
+              <h4 className="font-semibold text-gray-800 mb-3">Advisory &amp; Tips</h4>
               <ul className="space-y-2 text-gray-600">
                 <li>Nearthy Leaf Blast</li>
                 <li>Early morning humidity</li>
@@ -343,29 +322,10 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
             </div>
           </div>
 
-          {/* Mobile layout: map full-width, compact legend below */}
-          <div className="sm:hidden space-y-3">
-            <div className="relative bg-gray-50 rounded-lg overflow-hidden" style={{ minHeight: '220px' }}>
-              <img src="/src/assets/sri_lanka_heatmap.png" alt="Sri Lanka Disease Heatmap" className="w-full h-full object-contain mix-blend-multiply opacity-90" />
-            </div>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-gray-600">
-              {[
-                { color: 'bg-red-900', label: 'Critical' },
-                { color: 'bg-red-700', label: 'Very High' },
-                { color: 'bg-red-500', label: 'High' },
-                { color: 'bg-orange-500', label: 'Elevated' },
-                { color: 'bg-orange-400', label: 'Moderate' },
-                { color: 'bg-yellow-400', label: 'Alert' },
-                { color: 'bg-yellow-300', label: 'Warning' },
-                { color: 'bg-yellow-200', label: 'Low' },
-                { color: 'bg-green-300', label: 'Very Low' },
-                { color: 'bg-green-200', label: 'None' },
-              ].map(({ color, label }) => (
-                <div key={label} className="flex items-center gap-1.5">
-                  <div className={`w-5 h-2.5 ${color} rounded flex-shrink-0`}></div>
-                  <span>{label}</span>
-                </div>
-              ))}
+          {/* Mobile layout: map full-width (legend included in component) */}
+          <div className="sm:hidden">
+            <div className="relative bg-white rounded-lg" style={{ minHeight: '320px' }}>
+              <DiseaseHeatMap />
             </div>
           </div>
         </div>

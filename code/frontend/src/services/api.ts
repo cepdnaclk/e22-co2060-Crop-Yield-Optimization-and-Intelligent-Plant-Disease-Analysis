@@ -238,6 +238,11 @@ export const farmAPI = {
     const response = await api.get('/api/farms/crops/list');
     return response.data;
   },
+
+  getDiseaseStats: async () => {
+    const response = await api.get('/api/farms/disease-stats');
+    return response.data;
+  },
 };
 
 // Average Yield API endpoints
