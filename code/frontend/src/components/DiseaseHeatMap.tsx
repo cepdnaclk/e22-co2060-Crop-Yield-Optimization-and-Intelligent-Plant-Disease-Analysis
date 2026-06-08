@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { svgPaths } from 'srilanka-districts-map/dist/districtData';
 import { farmAPI } from '../services/api';
 import { Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 // Tier definitions: color hex and label
 const TIERS = [
@@ -29,9 +30,14 @@ const getColorByCount = (count: number): string => getTier(count).color;
 const getDistrictName = (key: string) =>
   key.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
+interface DistrictStats {
+  total: number;
+  breakdown: Record<string, number>;
+}
+
 export const DiseaseHeatMap: React.FC = () => {
   const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState<Record<string, number>>({});
+  const [stats, setStats] = useState<Record<string, DistrictStats>>({});
   const [hoveredDistrict, setHoveredDistrict] = useState<string | null>(null);
   const [mousePos, setMousePos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
@@ -40,6 +46,22 @@ export const DiseaseHeatMap: React.FC = () => {
   const [customStart, setCustomStart] = useState('');
   const [customEnd, setCustomEnd] = useState('');
   const activeRequestSeq = useRef(0);
+
+  const handleStartChange = (value: string) => {
+    if (customEnd && value && new Date(value) > new Date(customEnd)) {
+      toast.error('Start date cannot be later than end date');
+      return;
+    }
+    setCustomStart(value);
+  };
+
+  const handleEndChange = (value: string) => {
+    if (customStart && value && new Date(value) < new Date(customStart)) {
+      toast.error('End date cannot be earlier than start date');
+      return;
+    }
+    setCustomEnd(value);
+  };
 
   const loadData = useCallback(async () => {
     if (timeFilter === 'custom' && (!customStart || !customEnd)) {
@@ -52,7 +74,7 @@ export const DiseaseHeatMap: React.FC = () => {
       if (currentSeq !== activeRequestSeq.current) {
         return;
       }
-      const normalizedStats: Record<string, number> = {};
+      const normalizedStats: Record<string, DistrictStats> = {};
       const districtKeyMapping: Record<string, string> = {
         'monaragala': 'moneragala',
         'ratnapura': 'rathnapura',
@@ -60,7 +82,11 @@ export const DiseaseHeatMap: React.FC = () => {
       };
       for (const [key, value] of Object.entries(data)) {
         const mappedKey = districtKeyMapping[key] || key;
-        normalizedStats[mappedKey] = Number(value);
+        const valObj = value as DistrictStats;
+        normalizedStats[mappedKey] = {
+          total: Number(valObj.total || 0),
+          breakdown: valObj.breakdown || {},
+        };
       }
       setStats(normalizedStats);
     } catch (error) {
@@ -141,7 +167,8 @@ export const DiseaseHeatMap: React.FC = () => {
                 <input
                   type="date"
                   value={customStart}
-                  onChange={(e) => setCustomStart(e.target.value)}
+                  max={customEnd || undefined}
+                  onChange={(e) => handleStartChange(e.target.value)}
                   className="w-full text-sm border border-gray-300 rounded-lg p-2 focus:ring-green-500 focus:border-green-500"
                 />
               </div>
@@ -150,7 +177,8 @@ export const DiseaseHeatMap: React.FC = () => {
                 <input
                   type="date"
                   value={customEnd}
-                  onChange={(e) => setCustomEnd(e.target.value)}
+                  min={customStart || undefined}
+                  onChange={(e) => handleEndChange(e.target.value)}
                   className="w-full text-sm border border-gray-300 rounded-lg p-2 focus:ring-green-500 focus:border-green-500"
                 />
               </div>
@@ -182,7 +210,7 @@ export const DiseaseHeatMap: React.FC = () => {
             >
               <g transform="scale(1.45)">
                 {Object.entries(svgPaths).map(([district, paths]) => {
-                  const count = stats[district] || 0;
+                  const count = stats[district]?.total || 0;
                   const fillColor = getColorByCount(count);
                   const isHovered = hoveredDistrict === district;
 
@@ -257,31 +285,48 @@ export const DiseaseHeatMap: React.FC = () => {
           <div
             style={{
               background: '#1e293b',
+              border: '1px solid #334155',
               color: '#f1f5f9',
               fontSize: '12px',
               lineHeight: '1.5',
               padding: '6px 10px',
               borderRadius: '6px',
               boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+              fontFamily: 'system-ui, sans-serif',
             }}
           >
-            <span style={{ fontWeight: 700, color: '#fff' }}>
-              {getDistrictName(hoveredDistrict)}
-            </span>
-            <span style={{ margin: '0 6px', color: '#64748b' }}>|</span>
-            <span style={{ fontWeight: 600, color: '#f1f5f9' }}>
-              {stats[hoveredDistrict] || 0}
-            </span>
-            <span style={{ color: '#94a3b8', marginLeft: '3px' }}>reports</span>
-            <span style={{ margin: '0 6px', color: '#64748b' }}>|</span>
-            <span
-              style={{
-                fontWeight: 700,
-                color: '#fff',
-              }}
-            >
-              {getTier(stats[hoveredDistrict] || 0).label}
-            </span>
+            {/* Header: District | Reports | Severity */}
+            <div>
+              <span style={{ fontWeight: 700, color: '#fff' }}>
+                {getDistrictName(hoveredDistrict)}
+              </span>
+              <span style={{ margin: '0 6px', color: '#64748b' }}>|</span>
+              <span style={{ fontWeight: 600, color: '#f1f5f9' }}>
+                {stats[hoveredDistrict]?.total || 0}
+              </span>
+              <span style={{ color: '#94a3b8', marginLeft: '3px' }}>reports</span>
+              <span style={{ margin: '0 6px', color: '#64748b' }}>|</span>
+              <span style={{ fontWeight: 700, color: '#fff' }}>
+                {getTier(stats[hoveredDistrict]?.total || 0).label}
+              </span>
+            </div>
+
+            {/* Disease Breakdown */}
+            {diseaseFilter === 'all' && stats[hoveredDistrict]?.breakdown && (
+              <div className="border-t border-slate-700 pt-1 mt-1 space-y-0.5">
+                {Object.entries(stats[hoveredDistrict].breakdown)
+                  .filter(([_, count]) => count > 0)
+                  .map(([diseaseName, count]) => (
+                    <div key={diseaseName} className="flex justify-between gap-4 text-[11px] text-slate-300">
+                      <span>{diseaseName}:</span>
+                      <span className="font-semibold text-white">{count}</span>
+                    </div>
+                  ))}
+                {Object.values(stats[hoveredDistrict].breakdown).every(count => count === 0) && (
+                  <div className="text-slate-500 italic text-[11px]">No active disease cases</div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       )}
