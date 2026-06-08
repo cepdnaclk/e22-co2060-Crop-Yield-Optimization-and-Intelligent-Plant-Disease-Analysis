@@ -993,19 +993,30 @@ export const getFarmerReport = async (req, res) => {
  */
 export const getDiseaseHeatmapStats = async (req, res) => {
   try {
-    const { disease, months } = req.query;
+    const { disease, months, startDate, endDate } = req.query;
 
-    const monthsToSubtract = months && months !== 'all' ? parseInt(months, 10) : 6; // default 6
-    
     let fromDate = null;
-    if (months !== 'all') {
+    let toDate = null;
+
+    if (startDate && endDate) {
+      fromDate = new Date(startDate);
+      toDate = new Date(endDate);
+    } else if (months && months !== 'all') {
+      const monthsToSubtract = parseInt(months, 10) || 6;
       fromDate = new Date();
       fromDate.setMonth(fromDate.getMonth() - monthsToSubtract);
+    } else if (!months || months === 'all') {
+      if (!months) {
+        fromDate = new Date();
+        fromDate.setMonth(fromDate.getMonth() - 6);
+      }
     }
 
     const query = {};
-    if (fromDate) {
-      query["diseases.createdDate"] = { $gte: fromDate };
+    if (fromDate || toDate) {
+      query["diseases.createdDate"] = {};
+      if (fromDate) query["diseases.createdDate"].$gte = fromDate;
+      if (toDate) query["diseases.createdDate"].$lte = toDate;
     }
 
     const reports = await DiseaseReport.find(query).populate('farm', 'district');
@@ -1019,7 +1030,9 @@ export const getDiseaseHeatmapStats = async (req, res) => {
         
         // Count only diseases within the time frame, ignoring 'healthy'
         const recentDiseasesCount = report.diseases.filter(d => {
-          if (fromDate && new Date(d.createdDate) < fromDate) return false;
+          const dDate = new Date(d.createdDate);
+          if (fromDate && dDate < fromDate) return false;
+          if (toDate && dDate > toDate) return false;
           if (d.disease.toLowerCase() === 'healthy') return false;
           if (disease && disease !== 'all' && d.disease.toLowerCase() !== disease.toLowerCase()) return false;
           return true;

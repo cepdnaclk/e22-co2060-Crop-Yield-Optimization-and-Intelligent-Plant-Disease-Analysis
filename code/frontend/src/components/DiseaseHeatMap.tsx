@@ -37,31 +37,43 @@ export const DiseaseHeatMap: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [diseaseFilter, setDiseaseFilter] = useState('all');
   const [timeFilter, setTimeFilter] = useState('6');
+  const [customStart, setCustomStart] = useState('');
+  const [customEnd, setCustomEnd] = useState('');
+
+  const loadData = useCallback(async () => {
+    try {
+      if (timeFilter === 'custom' && (!customStart || !customEnd)) {
+        return;
+      }
+      setLoading(true);
+      const data = await farmAPI.getDiseaseStats(diseaseFilter, timeFilter, customStart, customEnd);
+      const normalizedStats: Record<string, number> = {};
+      const districtKeyMapping: Record<string, string> = {
+        'monaragala': 'moneragala',
+        'ratnapura': 'rathnapura',
+        'nuwara-eliya': 'nuwara eliya',
+      };
+      for (const [key, value] of Object.entries(data)) {
+        const mappedKey = districtKeyMapping[key] || key;
+        normalizedStats[mappedKey] = Number(value);
+      }
+      setStats(normalizedStats);
+    } catch (error) {
+      console.error('Failed to load disease heatmap stats', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [diseaseFilter, timeFilter, customStart, customEnd]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const data = await farmAPI.getDiseaseStats(diseaseFilter, timeFilter);
-        const normalizedStats: Record<string, number> = {};
-        const districtKeyMapping: Record<string, string> = {
-          'monaragala': 'moneragala',
-          'ratnapura': 'rathnapura',
-          'nuwara-eliya': 'nuwara eliya',
-        };
-        for (const [key, value] of Object.entries(data)) {
-          const mappedKey = districtKeyMapping[key] || key;
-          normalizedStats[mappedKey] = Number(value);
-        }
-        setStats(normalizedStats);
-      } catch (error) {
-        console.error('Failed to load disease heatmap stats', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, [diseaseFilter, timeFilter]);
+    if (timeFilter !== 'custom') {
+      loadData();
+    }
+  }, [timeFilter, diseaseFilter, loadData]);
+
+  const handleApplyCustomDate = () => {
+    loadData();
+  };
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (!containerRef.current) return;
@@ -95,9 +107,38 @@ export const DiseaseHeatMap: React.FC = () => {
           <option value="1">Last 1 Month</option>
           <option value="3">Last 3 Months</option>
           <option value="6">Last 6 Months</option>
-          <option value="12">Last 12 Months</option>
-          <option value="all">All Time</option>
+          <option value="custom">Custom Range</option>
         </select>
+
+        {timeFilter === 'custom' && (
+          <div className="bg-white p-2 rounded-md shadow-sm border border-gray-300 space-y-2">
+            <div>
+              <label className="block text-[10px] text-gray-500 mb-1">Start Date</label>
+              <input
+                type="date"
+                value={customStart}
+                onChange={(e) => setCustomStart(e.target.value)}
+                className="w-full text-xs border border-gray-300 rounded p-1"
+              />
+            </div>
+            <div>
+              <label className="block text-[10px] text-gray-500 mb-1">End Date</label>
+              <input
+                type="date"
+                value={customEnd}
+                onChange={(e) => setCustomEnd(e.target.value)}
+                className="w-full text-xs border border-gray-300 rounded p-1"
+              />
+            </div>
+            <button
+              onClick={handleApplyCustomDate}
+              disabled={!customStart || !customEnd}
+              className="w-full bg-green-600 hover:bg-green-700 text-white text-xs font-medium py-1 rounded disabled:opacity-50 transition-colors"
+            >
+              Apply
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Map area */}
