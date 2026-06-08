@@ -304,22 +304,9 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
         <div className="bg-white rounded-2xl p-4 md:p-6 border border-gray-200 lg:col-span-2">
           <h3 className="text-base md:text-lg font-semibold text-gray-800 mb-4">Disease Heat Map</h3>
 
-          {/* Responsive Layout: side-by-side on desktop, stacked on mobile */}
-          <div className="flex flex-col sm:flex-row gap-4">
-            {/* Map (with built-in legend) */}
-            <div className="flex-1 relative bg-white rounded-lg min-h-[280px] flex items-center justify-center">
-              <DiseaseHeatMap />
-            </div>
-
-            {/* Advisory (hidden on mobile, visible on desktop) */}
-            <div className="hidden sm:block w-32 text-xs flex-shrink-0">
-              <h4 className="font-semibold text-gray-800 mb-3">Advisory &amp; Tips</h4>
-              <ul className="space-y-2 text-gray-600">
-                <li>Nearthy Leaf Blast</li>
-                <li>Early morning humidity</li>
-                <li>High Risk Zone</li>
-              </ul>
-            </div>
+          {/* Map (with built-in legend) */}
+          <div className="relative bg-white rounded-lg min-h-[280px] flex items-center justify-center">
+            <DiseaseHeatMap />
           </div>
         </div>
       </div>
