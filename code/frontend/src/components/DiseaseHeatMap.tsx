@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { svgPaths } from 'srilanka-districts-map/dist/districtData';
 import { farmAPI } from '../services/api';
 import { Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 // Tier definitions: color hex and label
 const TIERS = [
@@ -40,6 +41,22 @@ export const DiseaseHeatMap: React.FC = () => {
   const [customStart, setCustomStart] = useState('');
   const [customEnd, setCustomEnd] = useState('');
   const activeRequestSeq = useRef(0);
+
+  const handleStartChange = (value: string) => {
+    if (customEnd && value && new Date(value) > new Date(customEnd)) {
+      toast.error('Start date cannot be later than end date');
+      return;
+    }
+    setCustomStart(value);
+  };
+
+  const handleEndChange = (value: string) => {
+    if (customStart && value && new Date(value) < new Date(customStart)) {
+      toast.error('End date cannot be earlier than start date');
+      return;
+    }
+    setCustomEnd(value);
+  };
 
   const loadData = useCallback(async () => {
     if (timeFilter === 'custom' && (!customStart || !customEnd)) {
@@ -141,7 +158,8 @@ export const DiseaseHeatMap: React.FC = () => {
                 <input
                   type="date"
                   value={customStart}
-                  onChange={(e) => setCustomStart(e.target.value)}
+                  max={customEnd || undefined}
+                  onChange={(e) => handleStartChange(e.target.value)}
                   className="w-full text-sm border border-gray-300 rounded-lg p-2 focus:ring-green-500 focus:border-green-500"
                 />
               </div>
@@ -150,7 +168,8 @@ export const DiseaseHeatMap: React.FC = () => {
                 <input
                   type="date"
                   value={customEnd}
-                  onChange={(e) => setCustomEnd(e.target.value)}
+                  min={customStart || undefined}
+                  onChange={(e) => handleEndChange(e.target.value)}
                   className="w-full text-sm border border-gray-300 rounded-lg p-2 focus:ring-green-500 focus:border-green-500"
                 />
               </div>
