@@ -27,7 +27,13 @@ const getTier = (count: number) => {
 
 const getColorByCount = (count: number): string => getTier(count).color;
 
+const DISPLAY_NAME_OVERRIDES: Record<string, string> = {
+  'moneragala': 'Monaragala',
+  'rathnapura': 'Ratnapura',
+};
+
 const getDistrictName = (key: string) =>
+  DISPLAY_NAME_OVERRIDES[key] ||
   key.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
 interface DistrictStats {
