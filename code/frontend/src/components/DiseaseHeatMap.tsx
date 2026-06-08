@@ -39,14 +39,19 @@ export const DiseaseHeatMap: React.FC = () => {
   const [timeFilter, setTimeFilter] = useState('6');
   const [customStart, setCustomStart] = useState('');
   const [customEnd, setCustomEnd] = useState('');
+  const activeRequestSeq = useRef(0);
 
   const loadData = useCallback(async () => {
+    if (timeFilter === 'custom' && (!customStart || !customEnd)) {
+      return;
+    }
+    const currentSeq = ++activeRequestSeq.current;
+    setLoading(true);
     try {
-      if (timeFilter === 'custom' && (!customStart || !customEnd)) {
+      const data = await farmAPI.getDiseaseStats(diseaseFilter, timeFilter, customStart, customEnd);
+      if (currentSeq !== activeRequestSeq.current) {
         return;
       }
-      setLoading(true);
-      const data = await farmAPI.getDiseaseStats(diseaseFilter, timeFilter, customStart, customEnd);
       const normalizedStats: Record<string, number> = {};
       const districtKeyMapping: Record<string, string> = {
         'monaragala': 'moneragala',
@@ -59,17 +64,24 @@ export const DiseaseHeatMap: React.FC = () => {
       }
       setStats(normalizedStats);
     } catch (error) {
-      console.error('Failed to load disease heatmap stats', error);
+      if (currentSeq === activeRequestSeq.current) {
+        console.error('Failed to load disease heatmap stats', error);
+      }
     } finally {
-      setLoading(false);
+      if (currentSeq === activeRequestSeq.current) {
+        setLoading(false);
+      }
     }
   }, [diseaseFilter, timeFilter, customStart, customEnd]);
 
   useEffect(() => {
     if (timeFilter !== 'custom') {
       loadData();
+    } else if (customStart && customEnd) {
+      loadData();
     }
-  }, [timeFilter, diseaseFilter, loadData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timeFilter, diseaseFilter]);
 
   const handleApplyCustomDate = () => {
     loadData();
@@ -155,87 +167,83 @@ export const DiseaseHeatMap: React.FC = () => {
 
         {/* Map area */}
         <div className="flex-1 flex flex-col items-center">
-          <div className="w-full flex items-center justify-center" style={{ height: '460px' }}>
+          <div className="w-full flex items-center justify-center relative" style={{ height: '460px' }}>
             {loading && (
-              <div className="flex flex-col items-center justify-center">
+              <div className="absolute inset-0 bg-white/75 backdrop-blur-[1.5px] flex flex-col items-center justify-center z-20 rounded-lg transition-opacity duration-200">
                 <Loader2 className="w-7 h-7 text-green-600 animate-spin mb-1.5" />
                 <p className="text-xs text-gray-500 font-medium">Loading map…</p>
               </div>
             )}
 
-            {!loading && (
-              <svg
-                viewBox="18 28 150 210"
-                preserveAspectRatio="xMidYMid meet"
-                style={{ width: '100%', height: '100%', display: 'block' }}
-              >
-                <g transform="scale(1.45)">
-                  {Object.entries(svgPaths).map(([district, paths]) => {
-                    const count = stats[district] || 0;
-                    const fillColor = getColorByCount(count);
-                    const isHovered = hoveredDistrict === district;
+            <svg
+              viewBox="18 28 150 210"
+              preserveAspectRatio="xMidYMid meet"
+              style={{ width: '100%', height: '100%', display: 'block' }}
+            >
+              <g transform="scale(1.45)">
+                {Object.entries(svgPaths).map(([district, paths]) => {
+                  const count = stats[district] || 0;
+                  const fillColor = getColorByCount(count);
+                  const isHovered = hoveredDistrict === district;
 
-                    return paths.map((d, i) => (
-                      <path
-                        key={`${district}-${i}`}
-                        d={d}
-                        fill={fillColor}
-                        stroke={'#000000'}
-                        strokeWidth={isHovered ? 0.4 : 0.15}
-                        style={{
-                          cursor: 'pointer',
-                          transition: 'fill 0.2s ease, stroke-width 0.15s ease',
-                          filter: isHovered ? 'brightness(0.88)' : 'none',
-                        }}
-                        onMouseEnter={() => setHoveredDistrict(district)}
-                        onMouseLeave={() => setHoveredDistrict(null)}
-                      />
-                    ));
-                  })}
-                </g>
-              </svg>
-            )}
+                  return paths.map((d, i) => (
+                    <path
+                      key={`${district}-${i}`}
+                      d={d}
+                      fill={fillColor}
+                      stroke={'#000000'}
+                      strokeWidth={isHovered ? 0.4 : 0.15}
+                      style={{
+                        cursor: 'pointer',
+                        transition: 'fill 0.2s ease, stroke-width 0.15s ease',
+                        filter: isHovered ? 'brightness(0.88)' : 'none',
+                      }}
+                      onMouseEnter={() => setHoveredDistrict(district)}
+                      onMouseLeave={() => setHoveredDistrict(null)}
+                    />
+                  ));
+                })}
+              </g>
+            </svg>
           </div>
 
           {/* Legend */}
-          {!loading && (
-            <div
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                justifyContent: 'center',
-                gap: '6px 16px',
-                padding: '10px 8px 4px',
-              }}
-            >
-              {[...TIERS].reverse().map((tier) => (
-                <div
-                  key={tier.label}
-                  style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
-                >
-                  <span
-                    style={{
-                      width: 10,
-                      height: 10,
-                      borderRadius: '50%',
-                      backgroundColor: tier.color,
-                      border: '1px solid #94a3b8',
-                      flexShrink: 0,
-                      display: 'inline-block',
-                    }}
-                  />
-                  <span style={{ fontSize: '11px', color: '#4b5563', lineHeight: 1 }}>
-                    {tier.label}
-                  </span>
-                </div>
-              ))}
-            </div>
-          )}
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              gap: '6px 16px',
+              padding: '10px 8px 4px',
+            }}
+          >
+            {[...TIERS].reverse().map((tier) => (
+              <div
+                key={tier.label}
+                style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
+              >
+                <span
+                  style={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: '50%',
+                    backgroundColor: tier.color,
+                    border: '1px solid #94a3b8',
+                    flexShrink: 0,
+                    display: 'inline-block',
+                  }}
+                />
+                <span style={{ fontSize: '11px', color: '#4b5563', lineHeight: 1 }}>
+                  {tier.label}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* Cursor-following tooltip */}
-      {!loading && hoveredDistrict && (
+      {hoveredDistrict && (
         <div
           className="pointer-events-none"
           style={{
