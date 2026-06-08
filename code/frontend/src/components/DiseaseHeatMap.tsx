@@ -6,15 +6,15 @@ import { toast } from 'sonner';
 
 // Tier definitions: color hex and label
 const TIERS = [
-  { max: 0,    color: '#ffffff', label: 'None' },
-  { max: 124,  color: '#fff7ec', label: 'Very Low' },
-  { max: 249,  color: '#fee8c8', label: 'Low' },
-  { max: 374,  color: '#fdd49e', label: 'Warning' },
-  { max: 499,  color: '#fdbb84', label: 'Alert' },
-  { max: 624,  color: '#fc8d59', label: 'Moderate' },
-  { max: 749,  color: '#ef6548', label: 'Elevated' },
-  { max: 874,  color: '#d7301f', label: 'High' },
-  { max: 999,  color: '#b30000', label: 'Very High' },
+  { max: 0, color: '#ffffff', label: 'None' },
+  { max: 124, color: '#fff7ec', label: 'Very Low' },
+  { max: 249, color: '#fee8c8', label: 'Low' },
+  { max: 374, color: '#fdd49e', label: 'Warning' },
+  { max: 499, color: '#fdbb84', label: 'Alert' },
+  { max: 624, color: '#fc8d59', label: 'Moderate' },
+  { max: 749, color: '#ef6548', label: 'Elevated' },
+  { max: 874, color: '#d7301f', label: 'High' },
+  { max: 999, color: '#b30000', label: 'Very High' },
   { max: Infinity, color: '#7f0000', label: 'Critical' },
 ];
 
@@ -375,7 +375,7 @@ export const DiseaseHeatMap: React.FC = () => {
                 </span>
               </div>
               {diseaseFilter === 'all' && stats[activeDistrict]?.breakdown && (
-                <div className="border-t border-slate-700 pt-1 mt-1 space-y-0.5">
+                <div className="border-t border-slate-700 pt-2 mt-1 space-y-0.5">
                   {Object.entries(stats[activeDistrict].breakdown)
                     .filter(([_, count]) => count > 0)
                     .map(([diseaseName, count]) => (
