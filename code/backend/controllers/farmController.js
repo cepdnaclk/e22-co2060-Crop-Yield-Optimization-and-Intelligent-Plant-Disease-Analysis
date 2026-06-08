@@ -999,17 +999,14 @@ export const getDiseaseHeatmapStats = async (req, res) => {
     let toDate = null;
 
     if (startDate && endDate) {
+      // Custom date range
       fromDate = new Date(startDate);
       toDate = new Date(endDate);
-    } else if (months && months !== 'all') {
+    } else {
+      // Preset months (defaults to 6 if not provided)
       const monthsToSubtract = parseInt(months, 10) || 6;
       fromDate = new Date();
       fromDate.setMonth(fromDate.getMonth() - monthsToSubtract);
-    } else if (!months || months === 'all') {
-      if (!months) {
-        fromDate = new Date();
-        fromDate.setMonth(fromDate.getMonth() - 6);
-      }
     }
 
     const query = {};
