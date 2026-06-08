@@ -68,8 +68,7 @@ export function NotificationsDropdown() {
 
       {isOpen && (
         <div 
-          className="absolute mt-2 w-80 sm:w-96 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden z-50 animate-in slide-in-from-top-2 duration-200"
-          style={{ right: 0 }}
+          className="fixed left-2 right-2 sm:absolute sm:left-auto sm:right-0 mt-2 sm:w-96 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden z-50 animate-in slide-in-from-top-2 duration-200"
         >
           <div className="px-4 py-3 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
             <h3 className="font-semibold text-gray-800">Notifications</h3>

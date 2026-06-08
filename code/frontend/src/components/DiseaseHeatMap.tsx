@@ -6,15 +6,15 @@ import { toast } from 'sonner';
 
 // Tier definitions: color hex and label
 const TIERS = [
-  { max: 0,    color: '#ffffff', label: 'None' },
-  { max: 124,  color: '#fff7ec', label: 'Very Low' },
-  { max: 249,  color: '#fee8c8', label: 'Low' },
-  { max: 374,  color: '#fdd49e', label: 'Warning' },
-  { max: 499,  color: '#fdbb84', label: 'Alert' },
-  { max: 624,  color: '#fc8d59', label: 'Moderate' },
-  { max: 749,  color: '#ef6548', label: 'Elevated' },
-  { max: 874,  color: '#d7301f', label: 'High' },
-  { max: 999,  color: '#b30000', label: 'Very High' },
+  { max: 0, color: '#ffffff', label: 'None' },
+  { max: 124, color: '#fff7ec', label: 'Very Low' },
+  { max: 249, color: '#fee8c8', label: 'Low' },
+  { max: 374, color: '#fdd49e', label: 'Warning' },
+  { max: 499, color: '#fdbb84', label: 'Alert' },
+  { max: 624, color: '#fc8d59', label: 'Moderate' },
+  { max: 749, color: '#ef6548', label: 'Elevated' },
+  { max: 874, color: '#d7301f', label: 'High' },
+  { max: 999, color: '#b30000', label: 'Very High' },
   { max: Infinity, color: '#7f0000', label: 'Critical' },
 ];
 
@@ -27,7 +27,13 @@ const getTier = (count: number) => {
 
 const getColorByCount = (count: number): string => getTier(count).color;
 
+const DISPLAY_NAME_OVERRIDES: Record<string, string> = {
+  'moneragala': 'Monaragala',
+  'rathnapura': 'Ratnapura',
+};
+
 const getDistrictName = (key: string) =>
+  DISPLAY_NAME_OVERRIDES[key] ||
   key.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
 interface DistrictStats {
@@ -39,7 +45,9 @@ export const DiseaseHeatMap: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<Record<string, DistrictStats>>({});
   const [hoveredDistrict, setHoveredDistrict] = useState<string | null>(null);
+  const [tappedDistrict, setTappedDistrict] = useState<string | null>(null);
   const [mousePos, setMousePos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [tapPos, setTapPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
   const [diseaseFilter, setDiseaseFilter] = useState('all');
   const [timeFilter, setTimeFilter] = useState('6');
@@ -50,6 +58,11 @@ export const DiseaseHeatMap: React.FC = () => {
   const [tooltipSize, setTooltipSize] = useState({ width: 220, height: 80 });
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
 
+  // Which district to show tooltip for: hover takes priority, then tap
+  const activeDistrict = hoveredDistrict || tappedDistrict;
+  // Which position to use: mousePos if hovering, tapPos if tapped
+  const activePos = hoveredDistrict ? mousePos : tapPos;
+
   const tooltipCallbackRef = useCallback((node: HTMLDivElement | null) => {
     if (node) {
       setTooltipSize({
@@ -59,12 +72,13 @@ export const DiseaseHeatMap: React.FC = () => {
     }
   }, []);
 
+  // Update container size whenever a district becomes active
   useEffect(() => {
-    if (hoveredDistrict && containerRef.current) {
+    if (activeDistrict && containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect();
       setContainerSize({ width: rect.width, height: rect.height });
     }
-  }, [hoveredDistrict]);
+  }, [activeDistrict]);
 
   const handleStartChange = (value: string) => {
     if (customEnd && value && new Date(value) > new Date(customEnd)) {
@@ -138,18 +152,12 @@ export const DiseaseHeatMap: React.FC = () => {
     setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
   }, []);
 
-  const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    if (!containerRef.current || e.touches.length === 0) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const touch = e.touches[0];
-    setMousePos({ x: touch.clientX - rect.left, y: touch.clientY - rect.top });
-  }, []);
-
-  const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (!containerRef.current || e.touches.length === 0) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const touch = e.touches[0];
-    setMousePos({ x: touch.clientX - rect.left, y: touch.clientY - rect.top });
+  // Dismiss tapped tooltip when clicking outside the map paths
+  const handleContainerClick = useCallback((e: React.MouseEvent) => {
+    const target = e.target as Element;
+    if (target.tagName !== 'path') {
+      setTappedDistrict(null);
+    }
   }, []);
 
   return (
@@ -157,8 +165,7 @@ export const DiseaseHeatMap: React.FC = () => {
       ref={containerRef}
       className="w-full relative rounded-lg"
       onMouseMove={handleMouseMove}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
+      onClick={handleContainerClick}
     >
       {/* Main layout: filters left, map right */}
       <div className="flex flex-col sm:flex-row gap-4">
@@ -247,7 +254,7 @@ export const DiseaseHeatMap: React.FC = () => {
                 {Object.entries(svgPaths).map(([district, paths]) => {
                   const count = stats[district]?.total || 0;
                   const fillColor = getColorByCount(count);
-                  const isHovered = hoveredDistrict === district;
+                  const isHovered = hoveredDistrict === district || tappedDistrict === district;
 
                   return paths.map((d, i) => (
                     <path
@@ -263,6 +270,13 @@ export const DiseaseHeatMap: React.FC = () => {
                       }}
                       onMouseEnter={() => setHoveredDistrict(district)}
                       onMouseLeave={() => setHoveredDistrict(null)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (!containerRef.current) return;
+                        const rect = containerRef.current.getBoundingClientRect();
+                        setTapPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+                        setTappedDistrict(prev => prev === district ? null : district);
+                      }}
                     />
                   ));
                 })}
@@ -305,28 +319,20 @@ export const DiseaseHeatMap: React.FC = () => {
         </div>
       </div>
 
-      {/* Cursor-following tooltip */}
-      {hoveredDistrict && (() => {
-        let tooltipLeft = mousePos.x + 16;
-        let tooltipTop = mousePos.y - 14;
+      {/* Unified floating tooltip — works for both hover (desktop) and tap (mobile) */}
+      {activeDistrict && (() => {
+        let tooltipLeft = activePos.x + 16;
+        let tooltipTop = activePos.y - 14;
 
         if (containerSize.width > 0) {
-          // Adjust left position if it would overflow the right edge
           if (tooltipLeft + tooltipSize.width > containerSize.width) {
-            tooltipLeft = mousePos.x - tooltipSize.width - 16;
+            tooltipLeft = activePos.x - tooltipSize.width - 16;
           }
-          // Clamp to left boundary
-          if (tooltipLeft < 4) {
-            tooltipLeft = 4;
-          }
-          // Adjust top position if it would overflow the bottom edge
+          if (tooltipLeft < 4) tooltipLeft = 4;
           if (tooltipTop + tooltipSize.height > containerSize.height) {
-            tooltipTop = mousePos.y - tooltipSize.height - 10;
+            tooltipTop = activePos.y - tooltipSize.height - 10;
           }
-          // Clamp to top boundary
-          if (tooltipTop < 4) {
-            tooltipTop = 4;
-          }
+          if (tooltipTop < 4) tooltipTop = 4;
         }
 
         return (
@@ -354,26 +360,23 @@ export const DiseaseHeatMap: React.FC = () => {
                 fontFamily: 'system-ui, sans-serif',
               }}
             >
-              {/* Header: District | Reports | Severity */}
               <div>
                 <span style={{ fontWeight: 700, color: '#fff' }}>
-                  {getDistrictName(hoveredDistrict)}
+                  {getDistrictName(activeDistrict)}
                 </span>
                 <span style={{ margin: '0 6px', color: '#64748b' }}>|</span>
                 <span style={{ fontWeight: 600, color: '#f1f5f9' }}>
-                  {stats[hoveredDistrict]?.total || 0}
+                  {stats[activeDistrict]?.total || 0}
                 </span>
                 <span style={{ color: '#94a3b8', marginLeft: '3px' }}>reports</span>
                 <span style={{ margin: '0 6px', color: '#64748b' }}>|</span>
                 <span style={{ fontWeight: 700, color: '#fff' }}>
-                  {getTier(stats[hoveredDistrict]?.total || 0).label}
+                  {getTier(stats[activeDistrict]?.total || 0).label}
                 </span>
               </div>
-
-              {/* Disease Breakdown */}
-              {diseaseFilter === 'all' && stats[hoveredDistrict]?.breakdown && (
-                <div className="border-t border-slate-700 pt-1 mt-1 space-y-0.5">
-                  {Object.entries(stats[hoveredDistrict].breakdown)
+              {diseaseFilter === 'all' && stats[activeDistrict]?.breakdown && (
+                <div className="border-t border-slate-700 pt-2 mt-1 space-y-0.5">
+                  {Object.entries(stats[activeDistrict].breakdown)
                     .filter(([_, count]) => count > 0)
                     .map(([diseaseName, count]) => (
                       <div key={diseaseName} className="flex justify-between gap-4 text-[11px] text-slate-300">
@@ -381,7 +384,7 @@ export const DiseaseHeatMap: React.FC = () => {
                         <span className="font-semibold text-white">{count}</span>
                       </div>
                     ))}
-                  {Object.values(stats[hoveredDistrict].breakdown).every(count => count === 0) && (
+                  {Object.values(stats[activeDistrict].breakdown).every(count => count === 0) && (
                     <div className="text-slate-500 italic text-[11px]">No active disease cases</div>
                   )}
                 </div>
