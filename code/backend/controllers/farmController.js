@@ -993,12 +993,22 @@ export const getFarmerReport = async (req, res) => {
  */
 export const getDiseaseHeatmapStats = async (req, res) => {
   try {
-    const sixMonthsAgo = new Date();
-    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+    const { disease, months } = req.query;
 
-    const reports = await DiseaseReport.find({
-      "diseases.createdDate": { $gte: sixMonthsAgo }
-    }).populate('farm', 'district');
+    const monthsToSubtract = months && months !== 'all' ? parseInt(months, 10) : 6; // default 6
+    
+    let fromDate = null;
+    if (months !== 'all') {
+      fromDate = new Date();
+      fromDate.setMonth(fromDate.getMonth() - monthsToSubtract);
+    }
+
+    const query = {};
+    if (fromDate) {
+      query["diseases.createdDate"] = { $gte: fromDate };
+    }
+
+    const reports = await DiseaseReport.find(query).populate('farm', 'district');
 
     const stats = {};
 
@@ -1007,10 +1017,13 @@ export const getDiseaseHeatmapStats = async (req, res) => {
         // Normalize district to lowercase and replace spaces with hyphens
         let dist = report.farm.district.toLowerCase().replace(/\s+/g, '-');
         
-        // Count only diseases from last 6 months
-        const recentDiseasesCount = report.diseases.filter(d => 
-          new Date(d.createdDate) >= sixMonthsAgo
-        ).length;
+        // Count only diseases within the time frame, ignoring 'healthy'
+        const recentDiseasesCount = report.diseases.filter(d => {
+          if (fromDate && new Date(d.createdDate) < fromDate) return false;
+          if (d.disease.toLowerCase() === 'healthy') return false;
+          if (disease && disease !== 'all' && d.disease.toLowerCase() !== disease.toLowerCase()) return false;
+          return true;
+        }).length;
 
         if (!stats[dist]) {
           stats[dist] = 0;

@@ -35,12 +35,14 @@ export const DiseaseHeatMap: React.FC = () => {
   const [hoveredDistrict, setHoveredDistrict] = useState<string | null>(null);
   const [mousePos, setMousePos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
+  const [diseaseFilter, setDiseaseFilter] = useState('all');
+  const [timeFilter, setTimeFilter] = useState('6');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const data = await farmAPI.getDiseaseStats();
+        const data = await farmAPI.getDiseaseStats(diseaseFilter, timeFilter);
         const normalizedStats: Record<string, number> = {};
         const districtKeyMapping: Record<string, string> = {
           'monaragala': 'moneragala',
@@ -59,7 +61,7 @@ export const DiseaseHeatMap: React.FC = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [diseaseFilter, timeFilter]);
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (!containerRef.current) return;
@@ -73,6 +75,31 @@ export const DiseaseHeatMap: React.FC = () => {
       className="w-full relative flex flex-col items-center rounded-lg"
       onMouseMove={handleMouseMove}
     >
+      {/* Filters */}
+      <div className="absolute top-2 left-2 z-10 w-48 space-y-2">
+        <select
+          value={diseaseFilter}
+          onChange={(e) => setDiseaseFilter(e.target.value)}
+          className="bg-white border border-gray-300 text-gray-700 text-xs rounded-md focus:ring-green-500 focus:border-green-500 block w-full p-2 shadow-sm"
+        >
+          <option value="all">All Diseases</option>
+          <option value="Bacterial leaf blight">Bacterial leaf blight</option>
+          <option value="Brown spot">Brown spot</option>
+          <option value="Leaf smut">Leaf smut</option>
+        </select>
+        <select
+          value={timeFilter}
+          onChange={(e) => setTimeFilter(e.target.value)}
+          className="bg-white border border-gray-300 text-gray-700 text-xs rounded-md focus:ring-green-500 focus:border-green-500 block w-full p-2 shadow-sm"
+        >
+          <option value="1">Last 1 Month</option>
+          <option value="3">Last 3 Months</option>
+          <option value="6">Last 6 Months</option>
+          <option value="12">Last 12 Months</option>
+          <option value="all">All Time</option>
+        </select>
+      </div>
+
       {/* Map area */}
       <div className="w-full flex items-center justify-center" style={{ height: '460px' }}>
         {loading && (
