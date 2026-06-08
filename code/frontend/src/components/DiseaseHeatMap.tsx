@@ -47,6 +47,25 @@ export const DiseaseHeatMap: React.FC = () => {
   const [customEnd, setCustomEnd] = useState('');
   const activeRequestSeq = useRef(0);
 
+  const [tooltipSize, setTooltipSize] = useState({ width: 220, height: 80 });
+  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
+
+  const tooltipCallbackRef = useCallback((node: HTMLDivElement | null) => {
+    if (node) {
+      setTooltipSize({
+        width: node.offsetWidth,
+        height: node.offsetHeight,
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (hoveredDistrict && containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      setContainerSize({ width: rect.width, height: rect.height });
+    }
+  }, [hoveredDistrict]);
+
   const handleStartChange = (value: string) => {
     if (customEnd && value && new Date(value) > new Date(customEnd)) {
       toast.error('Start date cannot be later than end date');
@@ -119,11 +138,27 @@ export const DiseaseHeatMap: React.FC = () => {
     setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
   }, []);
 
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (!containerRef.current || e.touches.length === 0) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const touch = e.touches[0];
+    setMousePos({ x: touch.clientX - rect.left, y: touch.clientY - rect.top });
+  }, []);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (!containerRef.current || e.touches.length === 0) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const touch = e.touches[0];
+    setMousePos({ x: touch.clientX - rect.left, y: touch.clientY - rect.top });
+  }, []);
+
   return (
     <div
       ref={containerRef}
       className="w-full relative rounded-lg"
       onMouseMove={handleMouseMove}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
     >
       {/* Main layout: filters left, map right */}
       <div className="flex flex-col sm:flex-row gap-4">
@@ -271,65 +306,90 @@ export const DiseaseHeatMap: React.FC = () => {
       </div>
 
       {/* Cursor-following tooltip */}
-      {hoveredDistrict && (
-        <div
-          className="pointer-events-none"
-          style={{
-            position: 'absolute',
-            left: mousePos.x + 16,
-            top: mousePos.y - 14,
-            whiteSpace: 'nowrap',
-            zIndex: 30,
-          }}
-        >
+      {hoveredDistrict && (() => {
+        let tooltipLeft = mousePos.x + 16;
+        let tooltipTop = mousePos.y - 14;
+
+        if (containerSize.width > 0) {
+          // Adjust left position if it would overflow the right edge
+          if (tooltipLeft + tooltipSize.width > containerSize.width) {
+            tooltipLeft = mousePos.x - tooltipSize.width - 16;
+          }
+          // Clamp to left boundary
+          if (tooltipLeft < 4) {
+            tooltipLeft = 4;
+          }
+          // Adjust top position if it would overflow the bottom edge
+          if (tooltipTop + tooltipSize.height > containerSize.height) {
+            tooltipTop = mousePos.y - tooltipSize.height - 10;
+          }
+          // Clamp to top boundary
+          if (tooltipTop < 4) {
+            tooltipTop = 4;
+          }
+        }
+
+        return (
           <div
+            className="pointer-events-none"
             style={{
-              background: '#1e293b',
-              border: '1px solid #334155',
-              color: '#f1f5f9',
-              fontSize: '12px',
-              lineHeight: '1.5',
-              padding: '6px 10px',
-              borderRadius: '6px',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-              fontFamily: 'system-ui, sans-serif',
+              position: 'absolute',
+              left: tooltipLeft,
+              top: tooltipTop,
+              whiteSpace: 'nowrap',
+              zIndex: 30,
             }}
           >
-            {/* Header: District | Reports | Severity */}
-            <div>
-              <span style={{ fontWeight: 700, color: '#fff' }}>
-                {getDistrictName(hoveredDistrict)}
-              </span>
-              <span style={{ margin: '0 6px', color: '#64748b' }}>|</span>
-              <span style={{ fontWeight: 600, color: '#f1f5f9' }}>
-                {stats[hoveredDistrict]?.total || 0}
-              </span>
-              <span style={{ color: '#94a3b8', marginLeft: '3px' }}>reports</span>
-              <span style={{ margin: '0 6px', color: '#64748b' }}>|</span>
-              <span style={{ fontWeight: 700, color: '#fff' }}>
-                {getTier(stats[hoveredDistrict]?.total || 0).label}
-              </span>
-            </div>
-
-            {/* Disease Breakdown */}
-            {diseaseFilter === 'all' && stats[hoveredDistrict]?.breakdown && (
-              <div className="border-t border-slate-700 pt-1 mt-1 space-y-0.5">
-                {Object.entries(stats[hoveredDistrict].breakdown)
-                  .filter(([_, count]) => count > 0)
-                  .map(([diseaseName, count]) => (
-                    <div key={diseaseName} className="flex justify-between gap-4 text-[11px] text-slate-300">
-                      <span>{diseaseName}:</span>
-                      <span className="font-semibold text-white">{count}</span>
-                    </div>
-                  ))}
-                {Object.values(stats[hoveredDistrict].breakdown).every(count => count === 0) && (
-                  <div className="text-slate-500 italic text-[11px]">No active disease cases</div>
-                )}
+            <div
+              ref={tooltipCallbackRef}
+              style={{
+                background: '#1e293b',
+                border: '1px solid #334155',
+                color: '#f1f5f9',
+                fontSize: '12px',
+                lineHeight: '1.5',
+                padding: '6px 10px',
+                borderRadius: '6px',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                fontFamily: 'system-ui, sans-serif',
+              }}
+            >
+              {/* Header: District | Reports | Severity */}
+              <div>
+                <span style={{ fontWeight: 700, color: '#fff' }}>
+                  {getDistrictName(hoveredDistrict)}
+                </span>
+                <span style={{ margin: '0 6px', color: '#64748b' }}>|</span>
+                <span style={{ fontWeight: 600, color: '#f1f5f9' }}>
+                  {stats[hoveredDistrict]?.total || 0}
+                </span>
+                <span style={{ color: '#94a3b8', marginLeft: '3px' }}>reports</span>
+                <span style={{ margin: '0 6px', color: '#64748b' }}>|</span>
+                <span style={{ fontWeight: 700, color: '#fff' }}>
+                  {getTier(stats[hoveredDistrict]?.total || 0).label}
+                </span>
               </div>
-            )}
+
+              {/* Disease Breakdown */}
+              {diseaseFilter === 'all' && stats[hoveredDistrict]?.breakdown && (
+                <div className="border-t border-slate-700 pt-1 mt-1 space-y-0.5">
+                  {Object.entries(stats[hoveredDistrict].breakdown)
+                    .filter(([_, count]) => count > 0)
+                    .map(([diseaseName, count]) => (
+                      <div key={diseaseName} className="flex justify-between gap-4 text-[11px] text-slate-300">
+                        <span>{diseaseName}:</span>
+                        <span className="font-semibold text-white">{count}</span>
+                      </div>
+                    ))}
+                  {Object.values(stats[hoveredDistrict].breakdown).every(count => count === 0) && (
+                    <div className="text-slate-500 italic text-[11px]">No active disease cases</div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
     </div>
   );
 };
