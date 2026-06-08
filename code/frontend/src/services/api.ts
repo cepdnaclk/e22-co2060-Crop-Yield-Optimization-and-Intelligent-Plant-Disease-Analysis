@@ -239,8 +239,15 @@ export const farmAPI = {
     return response.data;
   },
 
-  getDiseaseStats: async () => {
-    const response = await api.get('/api/farms/disease-stats');
+  getDiseaseStats: async (disease?: string, months?: string, startDate?: string, endDate?: string) => {
+    const params: Record<string, string> = {};
+    if (disease && disease !== 'all') params.disease = disease;
+    if (months && months !== 'custom') params.months = months;
+    if (months === 'custom' && startDate && endDate) {
+      params.startDate = startDate;
+      params.endDate = endDate;
+    }
+    const response = await api.get('/api/farms/disease-stats', { params });
     return response.data;
   },
 };

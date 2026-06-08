@@ -993,12 +993,30 @@ export const getFarmerReport = async (req, res) => {
  */
 export const getDiseaseHeatmapStats = async (req, res) => {
   try {
-    const sixMonthsAgo = new Date();
-    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+    const { disease, months, startDate, endDate } = req.query;
 
-    const reports = await DiseaseReport.find({
-      "diseases.createdDate": { $gte: sixMonthsAgo }
-    }).populate('farm', 'district');
+    let fromDate = null;
+    let toDate = null;
+
+    if (startDate && endDate) {
+      // Custom date range
+      fromDate = new Date(startDate);
+      toDate = new Date(endDate);
+    } else {
+      // Preset months (defaults to 6 if not provided)
+      const monthsToSubtract = parseInt(months, 10) || 6;
+      fromDate = new Date();
+      fromDate.setMonth(fromDate.getMonth() - monthsToSubtract);
+    }
+
+    const query = {};
+    if (fromDate || toDate) {
+      query["diseases.createdDate"] = {};
+      if (fromDate) query["diseases.createdDate"].$gte = fromDate;
+      if (toDate) query["diseases.createdDate"].$lte = toDate;
+    }
+
+    const reports = await DiseaseReport.find(query).populate('farm', 'district');
 
     const stats = {};
 
@@ -1007,10 +1025,15 @@ export const getDiseaseHeatmapStats = async (req, res) => {
         // Normalize district to lowercase and replace spaces with hyphens
         let dist = report.farm.district.toLowerCase().replace(/\s+/g, '-');
         
-        // Count only diseases from last 6 months
-        const recentDiseasesCount = report.diseases.filter(d => 
-          new Date(d.createdDate) >= sixMonthsAgo
-        ).length;
+        // Count only diseases within the time frame, ignoring 'healthy'
+        const recentDiseasesCount = report.diseases.filter(d => {
+          const dDate = new Date(d.createdDate);
+          if (fromDate && dDate < fromDate) return false;
+          if (toDate && dDate > toDate) return false;
+          if (d.disease.toLowerCase() === 'healthy') return false;
+          if (disease && disease !== 'all' && d.disease.toLowerCase() !== disease.toLowerCase()) return false;
+          return true;
+        }).length;
 
         if (!stats[dist]) {
           stats[dist] = 0;

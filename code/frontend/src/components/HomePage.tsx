@@ -13,6 +13,16 @@ import { formatNumber } from '../utils/numberUtils';
 import { EmailVerificationModal } from './ui/EmailVerificationModal';
 import { FloodMapModal } from './ui/FloodMapModal';
 import { DiseaseHeatMap } from './DiseaseHeatMap';
+// Helper to determine season dynamically based on agricultural calendar:
+// - Maha: September to March
+// - Yala: May to August (and transition months)
+const getCurrentSeason = (): string => {
+  const month = new Date().getMonth(); // 0 = Jan, 11 = Dec
+  if (month >= 8 || month <= 2) {
+    return 'Maha';
+  }
+  return 'Yala';
+};
 
 // Hook used by Home dashboard (and others) to load summary metrics.
 export function useHomeDashboardData() {
@@ -83,6 +93,7 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
 
   const outletContext = useOutletContext<{ onNavigate: (page: string) => void }>();
   const onNavigate = onNavigateProp || outletContext?.onNavigate || (() => { });
+  const currentSeason = getCurrentSeason();
 
   const fetchFloodForecast = async () => {
     try {
@@ -175,7 +186,7 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
                 Account Status: <span className="text-cyan-600 font-medium">Active</span>
               </p>
               <p className="text-xs md:text-sm text-gray-600 mt-1">
-                <span className="font-medium">Season:</span> {loading ? '...' : 'Maha'}
+                <span className="font-medium">Season:</span> {loading ? '...' : currentSeason}
               </p>
               <p className="text-xs md:text-sm text-gray-600 mt-1">
                 <span className="font-medium">Location:</span> {loading ? '...' : `${userProfile?.district || 'Unknown District'} / ${userProfile?.division || 'Unknown Division'}`}
@@ -210,7 +221,7 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
             </div>
           </div>
           <div className="text-right">
-            <p className="text-xs md:text-sm text-gray-600">Season: Maha</p>
+            <p className="text-xs md:text-sm text-gray-600">Season: {currentSeason}</p>
             <p className="text-xs md:text-sm text-gray-600 mt-1">Points This Season</p>
             <p className="text-2xl md:text-3xl font-bold text-gray-800 mt-1">420</p>
           </div>
@@ -304,29 +315,9 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
         <div className="bg-white rounded-2xl p-4 md:p-6 border border-gray-200 lg:col-span-2">
           <h3 className="text-base md:text-lg font-semibold text-gray-800 mb-4">Disease Heat Map</h3>
 
-          {/* Desktop layout: map | advisory side by side */}
-          <div className="hidden sm:flex gap-4">
-            {/* Map (with built-in legend) */}
-            <div className="flex-1 relative bg-white rounded-lg min-h-[280px] flex items-center justify-center">
-              <DiseaseHeatMap />
-            </div>
-
-            {/* Advisory */}
-            <div className="w-32 text-xs flex-shrink-0">
-              <h4 className="font-semibold text-gray-800 mb-3">Advisory &amp; Tips</h4>
-              <ul className="space-y-2 text-gray-600">
-                <li>Nearthy Leaf Blast</li>
-                <li>Early morning humidity</li>
-                <li>High Risk Zone</li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Mobile layout: map full-width (legend included in component) */}
-          <div className="sm:hidden">
-            <div className="relative bg-white rounded-lg" style={{ minHeight: '320px' }}>
-              <DiseaseHeatMap />
-            </div>
+          {/* Map (with built-in legend) */}
+          <div className="relative bg-white rounded-lg min-h-[280px] flex items-center justify-center">
+            <DiseaseHeatMap />
           </div>
         </div>
       </div>
