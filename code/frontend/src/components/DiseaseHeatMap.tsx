@@ -30,9 +30,14 @@ const getColorByCount = (count: number): string => getTier(count).color;
 const getDistrictName = (key: string) =>
   key.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
+interface DistrictStats {
+  total: number;
+  breakdown: Record<string, number>;
+}
+
 export const DiseaseHeatMap: React.FC = () => {
   const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState<Record<string, number>>({});
+  const [stats, setStats] = useState<Record<string, DistrictStats>>({});
   const [hoveredDistrict, setHoveredDistrict] = useState<string | null>(null);
   const [mousePos, setMousePos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
@@ -69,7 +74,7 @@ export const DiseaseHeatMap: React.FC = () => {
       if (currentSeq !== activeRequestSeq.current) {
         return;
       }
-      const normalizedStats: Record<string, number> = {};
+      const normalizedStats: Record<string, DistrictStats> = {};
       const districtKeyMapping: Record<string, string> = {
         'monaragala': 'moneragala',
         'ratnapura': 'rathnapura',
@@ -77,7 +82,11 @@ export const DiseaseHeatMap: React.FC = () => {
       };
       for (const [key, value] of Object.entries(data)) {
         const mappedKey = districtKeyMapping[key] || key;
-        normalizedStats[mappedKey] = Number(value);
+        const valObj = value as DistrictStats;
+        normalizedStats[mappedKey] = {
+          total: Number(valObj.total || 0),
+          breakdown: valObj.breakdown || {},
+        };
       }
       setStats(normalizedStats);
     } catch (error) {
@@ -201,7 +210,7 @@ export const DiseaseHeatMap: React.FC = () => {
             >
               <g transform="scale(1.45)">
                 {Object.entries(svgPaths).map(([district, paths]) => {
-                  const count = stats[district] || 0;
+                  const count = stats[district]?.total || 0;
                   const fillColor = getColorByCount(count);
                   const isHovered = hoveredDistrict === district;
 
@@ -274,33 +283,80 @@ export const DiseaseHeatMap: React.FC = () => {
           }}
         >
           <div
+            className="backdrop-blur-md border rounded-xl shadow-2xl transition-all duration-150 ease-out pointer-events-none"
             style={{
-              background: '#1e293b',
-              color: '#f1f5f9',
+              background: 'rgba(15, 23, 42, 0.93)',
+              borderColor: 'rgba(255, 255, 255, 0.08)',
+              padding: '12px 14px',
+              color: '#f8fafc',
               fontSize: '12px',
-              lineHeight: '1.5',
-              padding: '6px 10px',
-              borderRadius: '6px',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+              fontFamily: 'system-ui, sans-serif',
+              minWidth: '220px',
+              boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.5)'
             }}
           >
-            <span style={{ fontWeight: 700, color: '#fff' }}>
-              {getDistrictName(hoveredDistrict)}
-            </span>
-            <span style={{ margin: '0 6px', color: '#64748b' }}>|</span>
-            <span style={{ fontWeight: 600, color: '#f1f5f9' }}>
-              {stats[hoveredDistrict] || 0}
-            </span>
-            <span style={{ color: '#94a3b8', marginLeft: '3px' }}>reports</span>
-            <span style={{ margin: '0 6px', color: '#64748b' }}>|</span>
-            <span
-              style={{
-                fontWeight: 700,
-                color: '#fff',
-              }}
-            >
-              {getTier(stats[hoveredDistrict] || 0).label}
-            </span>
+            {/* Header: District Name & Severity Pill */}
+            <div className="flex items-center justify-between border-b border-white/10 pb-2 mb-2.5">
+              <div className="flex flex-col">
+                <span className="font-bold text-white text-sm tracking-wide">
+                  {getDistrictName(hoveredDistrict)}
+                </span>
+                <span className="text-[10px] text-slate-400 font-medium uppercase tracking-widest mt-0.5">
+                  District Report
+                </span>
+              </div>
+              
+              <span 
+                className="text-[10px] font-bold px-2 py-0.5 rounded-full border flex items-center gap-1.5"
+                style={{
+                  backgroundColor: `${getTier(stats[hoveredDistrict]?.total || 0).color}15`,
+                  borderColor: getTier(stats[hoveredDistrict]?.total || 0).color,
+                  color: getTier(stats[hoveredDistrict]?.total || 0).label === 'None' ? '#94a3b8' : getTier(stats[hoveredDistrict]?.total || 0).color
+                }}
+              >
+                <span 
+                  className="w-1.5 h-1.5 rounded-full inline-block animate-pulse" 
+                  style={{ backgroundColor: getTier(stats[hoveredDistrict]?.total || 0).color }}
+                />
+                {getTier(stats[hoveredDistrict]?.total || 0).label}
+              </span>
+            </div>
+
+            {/* Total Count */}
+            <div className="flex items-center justify-between font-medium mb-2 text-slate-200">
+              <span>Total Reports:</span>
+              <span className="font-bold text-green-400 text-sm">{stats[hoveredDistrict]?.total || 0}</span>
+            </div>
+
+            {/* Disease Breakdown */}
+            {diseaseFilter === 'all' && stats[hoveredDistrict]?.breakdown && (
+              <div className="border-t border-white/5 pt-2.5 mt-2">
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Breakdown</p>
+                <div className="flex flex-col gap-1.5">
+                  {Object.entries(stats[hoveredDistrict].breakdown)
+                    .filter(([_, count]) => count > 0)
+                    .map(([diseaseName, count]) => {
+                      let dotColor = '#94a3b8';
+                      if (diseaseName.toLowerCase() === 'bacterial leaf blight') dotColor = '#fbbf24'; // Amber
+                      else if (diseaseName.toLowerCase() === 'brown spot') dotColor = '#f97316'; // Orange
+                      else if (diseaseName.toLowerCase() === 'leaf smut') dotColor = '#ef4444'; // Red
+
+                      return (
+                        <div key={diseaseName} className="flex items-center justify-between text-[11px] text-slate-300">
+                          <div className="flex items-center gap-1.5">
+                            <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: dotColor }} />
+                            <span>{diseaseName}</span>
+                          </div>
+                          <span className="font-semibold text-white bg-white/5 px-1.5 py-0.5 rounded border border-white/5">{count}</span>
+                        </div>
+                      );
+                    })}
+                  {Object.values(stats[hoveredDistrict].breakdown).every(count => count === 0) && (
+                    <span className="text-slate-500 italic text-[11px]">No active disease cases</span>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

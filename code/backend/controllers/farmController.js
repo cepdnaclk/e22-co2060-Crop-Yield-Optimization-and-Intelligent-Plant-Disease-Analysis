@@ -1025,20 +1025,41 @@ export const getDiseaseHeatmapStats = async (req, res) => {
         // Normalize district to lowercase and replace spaces with hyphens
         let dist = report.farm.district.toLowerCase().replace(/\s+/g, '-');
         
-        // Count only diseases within the time frame, ignoring 'healthy'
-        const recentDiseasesCount = report.diseases.filter(d => {
+        // Filter diseases within the time frame, ignoring 'healthy'
+        const recentDiseases = report.diseases.filter(d => {
           const dDate = new Date(d.createdDate);
           if (fromDate && dDate < fromDate) return false;
           if (toDate && dDate > toDate) return false;
           if (d.disease.toLowerCase() === 'healthy') return false;
           if (disease && disease !== 'all' && d.disease.toLowerCase() !== disease.toLowerCase()) return false;
           return true;
-        }).length;
+        });
 
         if (!stats[dist]) {
-          stats[dist] = 0;
+          stats[dist] = {
+            total: 0,
+            breakdown: {
+              'Bacterial leaf blight': 0,
+              'Brown spot': 0,
+              'Leaf smut': 0
+            }
+          };
         }
-        stats[dist] += recentDiseasesCount;
+
+        stats[dist].total += recentDiseases.length;
+        recentDiseases.forEach(d => {
+          let normalizedName = 'Unknown';
+          const nameLower = d.disease.toLowerCase();
+          if (nameLower === 'bacterial leaf blight') normalizedName = 'Bacterial leaf blight';
+          else if (nameLower === 'brown spot') normalizedName = 'Brown spot';
+          else if (nameLower === 'leaf smut') normalizedName = 'Leaf smut';
+          else normalizedName = d.disease; // fallback
+
+          if (!stats[dist].breakdown[normalizedName]) {
+            stats[dist].breakdown[normalizedName] = 0;
+          }
+          stats[dist].breakdown[normalizedName]++;
+        });
       }
     });
 
