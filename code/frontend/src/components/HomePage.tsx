@@ -174,48 +174,68 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
       )}
 
       {/* Top Section - Welcome & Points */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 stagger-children">
         {/* Welcome Card */}
-        <div className="bg-white rounded-2xl p-4 md:p-6 border border-gray-200">
+        <div className="rounded-2xl p-4 md:p-6 card-hover" style={{
+          background: 'linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%)',
+          border: '1px solid rgba(16, 185, 129, 0.15)',
+          borderLeft: '4px solid #10b981',
+          boxShadow: '0 4px 16px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)',
+        }}>
           <div className="flex items-start justify-between mb-4">
             <div>
-              <h2 className="text-xl md:text-2xl font-semibold text-gray-800 mb-2">
+              <h2 className="text-xl md:text-2xl font-semibold text-gray-800 mb-2" style={{ letterSpacing: '-0.02em' }}>
                 Welcome, {loading ? '...' : (userProfile?.firstName || 'Farmer')}
               </h2>
               <p className="text-xs md:text-sm text-gray-600">
-                Account Status: <span className="text-cyan-600 font-medium">Active</span>
+                Account Status: <span className="text-emerald-600 font-semibold" style={{ background: '#ecfdf5', padding: '2px 8px', borderRadius: '12px' }}>Active</span>
               </p>
-              <p className="text-xs md:text-sm text-gray-600 mt-1">
+              <p className="text-xs md:text-sm text-gray-600 mt-2">
                 <span className="font-medium">Season:</span> {loading ? '...' : currentSeason}
               </p>
               <p className="text-xs md:text-sm text-gray-600 mt-1">
                 <span className="font-medium">Location:</span> {loading ? '...' : `${userProfile?.district || 'Unknown District'} / ${userProfile?.division || 'Unknown Division'}`}
               </p>
             </div>
-            <img
-              src={userProfile?.image || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'}
-              alt="Farmer Profile"
-              className="w-12 h-12 md:w-16 md:h-16 rounded-full object-cover border-2 border-gray-200"
-            />
+            <div style={{ position: 'relative' }}>
+              <div style={{
+                position: 'absolute', inset: '-3px', borderRadius: '50%',
+                background: 'linear-gradient(135deg, #10b981, #34d399)',
+                opacity: 0.3, filter: 'blur(4px)',
+              }} />
+              <img
+                src={userProfile?.image || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'}
+                alt="Farmer Profile"
+                className="w-12 h-12 md:w-16 md:h-16 rounded-full object-cover"
+                style={{ border: '3px solid #10b981', position: 'relative', zIndex: 1 }}
+              />
+            </div>
           </div>
         </div>
 
         {/* Points Summary Card */}
         <SummaryCard
           hoverable={false}
-          className="w-full"
+          className="w-full card-hover"
+          style={{
+            background: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 40%, #ffffff 100%)',
+            border: '1px solid rgba(250, 204, 21, 0.2)',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)',
+          }}
           title="Points Summary"
           subtext={
-            <span className="text-xs text-teal-600 flex items-center gap-1">
+            <span className="text-xs text-teal-600 flex items-center gap-1 font-medium">
               This season
             </span>
           }
         >
           <div className="flex items-center gap-3 md:gap-4 mb-4">
-            <Star className="w-10 h-10 md:w-12 md:h-12 text-yellow-400 fill-yellow-400" />
+            <div className="animate-star-pulse">
+              <Star className="w-10 h-10 md:w-12 md:h-12 text-yellow-400 fill-yellow-400" />
+            </div>
             <div>
               <p className="text-xs md:text-sm text-gray-600">Total Points:</p>
-              <p className="text-3xl md:text-4xl font-bold text-gray-800">
+              <p className="text-3xl md:text-4xl font-bold text-gray-800" style={{ letterSpacing: '-0.03em' }}>
                 {loading ? '...' : Math.round(Number(userProfile?.points) || 0)}
               </p>
             </div>
@@ -223,16 +243,20 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
           <div className="text-right">
             <p className="text-xs md:text-sm text-gray-600">Season: {currentSeason}</p>
             <p className="text-xs md:text-sm text-gray-600 mt-1">Points This Season</p>
-            <p className="text-2xl md:text-3xl font-bold text-gray-800 mt-1">420</p>
+            <p className="text-2xl md:text-3xl font-bold text-gray-800 mt-1" style={{ letterSpacing: '-0.03em' }}>420</p>
           </div>
         </SummaryCard>
       </div>
 
       {/* Middle Section - Alerts & Heat Map */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 stagger-children">
         {/* Alerts & Warnings */}
-        <div className="bg-white rounded-2xl p-4 md:p-6 border border-gray-200">
-          <h3 className="text-base md:text-lg font-semibold text-gray-800 mb-4">Alerts & Warnings</h3>
+        <div className="rounded-2xl p-4 md:p-6 card-hover" style={{
+          background: '#ffffff',
+          border: '1px solid rgba(229,231,235,0.8)',
+          boxShadow: '0 4px 16px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)',
+        }}>
+          <h3 className="text-base md:text-lg font-semibold text-gray-800 mb-4" style={{ letterSpacing: '-0.01em' }}>Alerts & Warnings</h3>
           <div className="space-y-3 md:space-y-4">
             {/* Dynamic Flood Forecasting Widget */}
             {floodLoading ? (
@@ -312,8 +336,12 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
           </div>
         </div>
         {/* Disease Heat Map */}
-        <div className="bg-white rounded-2xl p-4 md:p-6 border border-gray-200 lg:col-span-2">
-          <h3 className="text-base md:text-lg font-semibold text-gray-800 mb-4">Disease Heat Map</h3>
+        <div className="rounded-2xl p-4 md:p-6 lg:col-span-2 card-hover" style={{
+          background: '#ffffff',
+          border: '1px solid rgba(229,231,235,0.8)',
+          boxShadow: '0 4px 16px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)',
+        }}>
+          <h3 className="text-base md:text-lg font-semibold text-gray-800 mb-4" style={{ letterSpacing: '-0.01em' }}>Disease Heat Map</h3>
 
           {/* Map (with built-in legend) */}
           <div className="relative bg-white rounded-lg min-h-[280px] flex items-center justify-center">
