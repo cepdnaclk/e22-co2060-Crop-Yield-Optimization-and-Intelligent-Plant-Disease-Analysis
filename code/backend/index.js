@@ -28,7 +28,7 @@ dotenv.config()
 // Get __dirname equivalent in ES6 modules
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-const CHATBOT_WEBHOOK_URL = process.env.CHATBOT_WEBHOOK_URL || 'https://n8n-opvk.onrender.com/webhook/246e550d-c772-4fcb-bae5-e847e8c632ce/chat'
+const CHATBOT_WEBHOOK_URL = process.env.CHATBOT_WEBHOOK_URL || 'https://n8n-opvk.onrender.com/webhook/d3d42ea4-6323-495c-b7c7-09075db3cdca/chat'
 const CHATBOT_WEBHOOK_TEST_URL = process.env.CHATBOT_WEBHOOK_TEST_URL || ''
 
 
