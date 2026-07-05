@@ -132,7 +132,7 @@ export function FarmerLayout() {
   };
 
   return (
-    <div id="farmer-portal-root" className="flex min-h-screen bg-gray-50">
+    <div id="farmer-portal-root" className="flex min-h-screen" style={{ background: 'linear-gradient(135deg, #f8fafb 0%, #f0fdf4 30%, #f8fafc 70%, #ecfdf5 100%)' }}>
       
 
       {/* Session Timeout Warning */}
@@ -184,19 +184,22 @@ export function FarmerLayout() {
 
       <div className="flex-1 w-full lg:ml-64">
         {/* Header */}
-        <header className="bg-white border-b border-gray-200 px-4 md:px-8 py-4 flex items-center justify-between sticky top-0 z-20">
-          <h1 className="text-gray-800 text-lg md:text-xl font-medium ml-12 lg:ml-0">
-            {getPageTitle()}
-          </h1>
+        <header className="sticky top-0 z-20" style={{ background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(12px) saturate(150%)', WebkitBackdropFilter: 'blur(12px) saturate(150%)', borderBottom: '1px solid rgba(229,231,235,0.7)', boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)' }}>
+          <div style={{ height: '3px', background: 'linear-gradient(90deg, #059669, #10b981, #34d399)', borderRadius: '0 0 2px 2px' }} />
+          <div className="px-4 md:px-8 py-4 flex items-center justify-between">
+            <h1 className="text-gray-800 text-lg md:text-xl font-semibold ml-12 lg:ml-0" style={{ letterSpacing: '-0.01em' }}>
+              {getPageTitle()}
+            </h1>
 
-          <div className="flex items-center gap-3">
-            <LanguageSwitcher />
-            <NotificationsDropdown />
+            <div className="flex items-center gap-3">
+              <LanguageSwitcher />
+              <NotificationsDropdown />
+            </div>
           </div>
         </header>
 
         {/* Main Content */}
-        <main className="p-4 md:p-8">
+        <main className="p-4 md:p-8 page-enter">
           <Outlet context={{ onNavigate: handleNavigate }} />
         </main>
       </div>

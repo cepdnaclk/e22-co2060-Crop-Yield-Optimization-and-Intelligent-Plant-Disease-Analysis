@@ -36,11 +36,16 @@ export function SummaryCard({
   children,
 }: SummaryCardProps) {
   const baseClasses =
-    'bg-white rounded-2xl p-4 md:p-6 border border-gray-200 transition-all duration-200';
-  const hoverClasses = hoverable ? 'hover:shadow-md hover:cursor-pointer group' : '';
+    'bg-white rounded-2xl p-4 md:p-6 border border-gray-200 transition-all duration-300 ease-out';
+  const hoverClasses = hoverable
+    ? 'hover:shadow-lg hover:cursor-pointer hover:-translate-y-1 group'
+    : '';
 
   return (
-    <div className={`${baseClasses} ${hoverClasses} ${className}`.trim()} style={style}>
+    <div className={`${baseClasses} ${hoverClasses} ${className}`.trim()} style={{
+      boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
+      ...style,
+    }}>
       <div className="flex items-start justify-between">
         <div className="flex-1">
           {children ? (
@@ -48,10 +53,10 @@ export function SummaryCard({
           ) : (
             <>
               {title && (
-                <p className="text-xs md:text-sm text-gray-600 mb-2">{title}</p>
+                <p className="text-xs md:text-sm text-gray-600 mb-2 font-medium">{title}</p>
               )}
               {value !== undefined && (
-                <p className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                <p className="text-2xl md:text-3xl font-bold text-gray-900 mb-2" style={{ letterSpacing: '-0.03em' }}>
                   {value}
                   {unit && <span className="text-xs text-gray-600 ml-1">{unit}</span>}
                 </p>
@@ -66,7 +71,7 @@ export function SummaryCard({
         </div>
         {icon && (
           <div
-            className={`${iconBgClass} rounded-lg p-3 group-hover:bg-opacity-90 transition-colors`}
+            className={`${iconBgClass} rounded-lg p-3 group-hover:bg-opacity-90 transition-all duration-300`}
           >
             {icon}
           </div>
