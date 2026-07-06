@@ -5,9 +5,12 @@
  */
 import { Star, HandIcon, SearchIcon, FileText, AlertTriangle, MapPin, ShieldCheck, Loader2, Map } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useOutletContext } from 'react-router';
 import { userAPI, farmAPI, floodAPI } from '../services/api';
 import { SummaryCard } from './SummaryCard';
+import { translateDistrict, translateDivision } from '../utils/locationTranslations';
+import { translateSeason } from '../utils/dataTranslations';
 import farmerImage from 'figma:asset/8d18ad2077654c1f65710d650ff192f7ba499f8c.png';
 import { formatNumber } from '../utils/numberUtils';
 import { EmailVerificationModal } from './ui/EmailVerificationModal';
@@ -83,6 +86,7 @@ interface HomePageProps {
 }
 
 export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
+  const { t, i18n } = useTranslation();
   // Dynamic User State
   const [userProfile, setUserProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -185,16 +189,16 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
           <div className="flex items-start justify-between mb-4">
             <div>
               <h2 className="text-xl md:text-2xl font-semibold text-gray-800 mb-2" style={{ letterSpacing: '-0.02em' }}>
-                Welcome, {loading ? '...' : (userProfile?.firstName || 'Farmer')}
+                {t('home.welcome')}, {loading ? '...' : (userProfile?.firstName || t('common.farmer'))}
               </h2>
               <p className="text-xs md:text-sm text-gray-600">
-                Account Status: <span className="text-emerald-600 font-semibold" style={{ background: '#ecfdf5', padding: '2px 8px', borderRadius: '12px' }}>Active</span>
+                {t('home.accountStatus')}: <span className="text-emerald-600 font-semibold" style={{ background: '#ecfdf5', padding: '2px 8px', borderRadius: '12px' }}>{t('home.active')}</span>
               </p>
               <p className="text-xs md:text-sm text-gray-600 mt-2">
-                <span className="font-medium">Season:</span> {loading ? '...' : currentSeason}
+                <span className="font-medium">{t('home.season')}:</span> {loading ? '...' : translateSeason(currentSeason, i18n.language)}
               </p>
               <p className="text-xs md:text-sm text-gray-600 mt-1">
-                <span className="font-medium">Location:</span> {loading ? '...' : `${userProfile?.district || 'Unknown District'} / ${userProfile?.division || 'Unknown Division'}`}
+                <span className="font-medium">{t('home.location')}:</span> {loading ? '...' : `${translateDistrict(userProfile?.district, i18n.language as 'en' | 'si') || t('home.unknownDistrict')} / ${translateDivision(userProfile?.division, i18n.language as 'en' | 'si') || t('home.unknownDivision')}`}
               </p>
             </div>
             <div style={{ position: 'relative' }}>
@@ -222,10 +226,10 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
             border: '1px solid rgba(250, 204, 21, 0.2)',
             boxShadow: '0 4px 16px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)',
           }}
-          title="Points Summary"
+          title={t('home.pointsSummary')}
           subtext={
             <span className="text-xs text-teal-600 flex items-center gap-1 font-medium">
-              This season
+              {t('home.thisSeason')}
             </span>
           }
         >
@@ -234,15 +238,15 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
               <Star className="w-10 h-10 md:w-12 md:h-12 text-yellow-400 fill-yellow-400" />
             </div>
             <div>
-              <p className="text-xs md:text-sm text-gray-600">Total Points:</p>
+              <p className="text-xs md:text-sm text-gray-600">{t('home.totalPoints')}:</p>
               <p className="text-3xl md:text-4xl font-bold text-gray-800" style={{ letterSpacing: '-0.03em' }}>
                 {loading ? '...' : Math.round(Number(userProfile?.points) || 0)}
               </p>
             </div>
           </div>
           <div className="text-right">
-            <p className="text-xs md:text-sm text-gray-600">Season: {currentSeason}</p>
-            <p className="text-xs md:text-sm text-gray-600 mt-1">Points This Season</p>
+            <p className="text-xs md:text-sm text-gray-600">{t('home.season')}: {translateSeason(currentSeason, i18n.language)}</p>
+            <p className="text-xs md:text-sm text-gray-600 mt-1">{t('home.pointsThisSeason')}</p>
             <p className="text-2xl md:text-3xl font-bold text-gray-800 mt-1" style={{ letterSpacing: '-0.03em' }}>420</p>
           </div>
         </SummaryCard>
@@ -256,28 +260,28 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
           border: '1px solid rgba(229,231,235,0.8)',
           boxShadow: '0 4px 16px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)',
         }}>
-          <h3 className="text-base md:text-lg font-semibold text-gray-800 mb-4" style={{ letterSpacing: '-0.01em' }}>Alerts & Warnings</h3>
+          <h3 className="text-base md:text-lg font-semibold text-gray-800 mb-4" style={{ letterSpacing: '-0.01em' }}>{t('home.alerts')}</h3>
           <div className="space-y-3 md:space-y-4">
             {/* Dynamic Flood Forecasting Widget */}
             {floodLoading ? (
               <div className="bg-gray-50 border border-gray-100 rounded-xl flex items-center justify-center animate-pulse" style={{ padding: '16px', minHeight: '100px' }}>
                 <div className="flex flex-col items-center gap-2">
                   <Loader2 className="w-5 h-5 text-green-600 animate-spin" />
-                  <p className="text-xs text-gray-500">Checking flood gauges...</p>
+                  <p className="text-xs text-gray-500">{t('home.checkingFlood')}</p>
                 </div>
               </div>
             ) : !floodData?.locationConfigured ? (
               <div className="rounded-xl text-white border border-slate-700 shadow-lg overflow-hidden" style={{ background: 'linear-gradient(to bottom right, #334155, #0f172a)', padding: '14px' }}>
                 <Map className="w-6 h-6 mb-2 text-green-400" />
-                <p className="font-bold tracking-wide uppercase" style={{ fontSize: '12px', marginBottom: '4px' }}>Flood Alerts Offline</p>
-                <p className="text-gray-300" style={{ fontSize: '11px', lineHeight: '1.4', marginBottom: '12px' }}>Set your coordinates to enable active localized flood tracking within a 10 km zone.</p>
+                <p className="font-bold tracking-wide uppercase" style={{ fontSize: '12px', marginBottom: '4px' }}>{t('home.floodOffline')}</p>
+                <p className="text-gray-300" style={{ fontSize: '11px', lineHeight: '1.4', marginBottom: '12px' }}>{t('home.floodOfflineDescription')}</p>
                 <button
                   onClick={() => setShowMapModal(true)}
                   className="w-full text-xs font-bold bg-white text-gray-800 hover:bg-green-50 active:scale-95 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 border border-white cursor-pointer"
                   style={{ padding: '10px 14px' }}
                 >
                   <MapPin className="w-4 h-4 text-green-600 animate-bounce" />
-                  <span>Pin Map Location</span>
+                  <span>{t('home.pinLocation')}</span>
                 </button>
               </div>
             ) : floodData?.highestAlert ? (
@@ -295,7 +299,7 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
                 </p>
                 <p className="font-medium truncate" style={{ fontSize: '12px', marginTop: '4px', lineHeight: '1.3' }}>{floodData.highestAlert.gaugeName}</p>
                 <p className="font-semibold" style={{ fontSize: '11px', marginTop: '4px', color: 'rgba(255,255,255,0.85)' }}>
-                  {floodData.highestAlert.distance} km away · Trend: {floodData.highestAlert.forecastTrend}
+                  {floodData.highestAlert.distance} km away · {t('home.trend')}: {floodData.highestAlert.forecastTrend}
                 </p>
                 <button
                   onClick={() => setShowMapModal(true)}
@@ -303,17 +307,17 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
                   style={{ marginTop: '12px', padding: '8px', fontSize: '11px' }}
                 >
                   <Map className="w-3.5 h-3.5" />
-                  Change Location
+                  {t('home.changeLocation')}
                 </button>
               </div>
             ) : (
               <div className="rounded-xl text-white border border-emerald-800 shadow-lg overflow-hidden" style={{ background: 'linear-gradient(to bottom right, #047857, #022c22)', padding: '14px' }}>
                 <ShieldCheck className="w-6 h-6 mb-1 text-green-300 animate-pulse" />
                 <p className="font-semibold flex items-center gap-1.5" style={{ fontSize: '12px' }}>
-                  🟢 Safe: No Floods Nearby
+                  🟢 {t('home.safeFlood')}
                 </p>
                 <p className="text-green-100" style={{ fontSize: '11px', marginTop: '4px', lineHeight: '1.4' }}>
-                  No active flood threats within 10 km of your tracking zone.
+                  {t('home.safeFloodDescription')}
                 </p>
                 <button
                   onClick={() => setShowMapModal(true)}
@@ -321,7 +325,7 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
                   style={{ marginTop: '12px', padding: '8px', fontSize: '11px' }}
                 >
                   <MapPin className="w-3.5 h-3.5 text-green-200 flex-shrink-0" />
-                  <span>Change Location</span>
+                  <span>{t('home.changeLocation')}</span>
                 </button>
               </div>
             )}
@@ -330,8 +334,8 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
                 <span style={{ fontSize: '10px' }}>1</span>
               </div>
               <AlertTriangle className="w-6 h-6 mb-1" />
-              <p className="font-medium" style={{ fontSize: '13px' }}>Possible Disease</p>
-              <p style={{ fontSize: '13px' }}>Outbreak Nearby</p>
+              <p className="font-medium" style={{ fontSize: '13px' }}>{t('home.possibleDisease')}</p>
+              <p style={{ fontSize: '13px' }}>{t('home.outbreakNearby')}</p>
             </div>
           </div>
         </div>
@@ -341,7 +345,7 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
           border: '1px solid rgba(229,231,235,0.8)',
           boxShadow: '0 4px 16px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)',
         }}>
-          <h3 className="text-base md:text-lg font-semibold text-gray-800 mb-4" style={{ letterSpacing: '-0.01em' }}>Disease Heat Map</h3>
+          <h3 className="text-base md:text-lg font-semibold text-gray-800 mb-4" style={{ letterSpacing: '-0.01em' }}>{t('home.diseaseHeatMap')}</h3>
 
           {/* Map (with built-in legend) */}
           <div className="relative bg-white rounded-lg min-h-[280px] flex items-center justify-center">

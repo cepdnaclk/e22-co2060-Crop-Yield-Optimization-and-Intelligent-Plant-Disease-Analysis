@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { Download, TrendingUp, BarChart3, PieChart } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, PieChart as RePieChart, Pie, Cell } from 'recharts';
 import { farmAPI } from '../services/api';
+import { useTranslation } from 'react-i18next';
+import { translateSeason, translateCrop } from '../utils/dataTranslations';
 import { AdminReportFilters } from './admin/AdminReportFilters';
 
 interface HarvestRecord {
@@ -34,6 +36,7 @@ const getMonthName = (date: Date) => {
 };
 
 export function ReportsPage() {
+  const { i18n } = useTranslation();
   const [farms, setFarms] = useState<FarmerFarm[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedYear, setSelectedYear] = useState<string>('');
@@ -406,7 +409,7 @@ export function ReportsPage() {
               <tbody className="divide-y divide-gray-200 bg-white">
                 {cropVarietyData.map((variety) => (
                   <tr key={variety.name} className="hover:bg-gray-50">
-                    <td className="px-3 md:px-6 py-2 md:py-4 text-xs md:text-sm text-gray-800">{variety.name}</td>
+                    <td className="px-3 md:px-6 py-2 md:py-4 text-xs md:text-sm text-gray-800">{translateCrop(variety.name, i18n.language)}</td>
                     <td className="px-3 md:px-6 py-2 md:py-4 text-xs md:text-sm text-gray-800">{variety.acres}</td>
                     <td className="px-3 md:px-6 py-2 md:py-4 text-xs md:text-sm">
                       <div className="flex items-center gap-2">
