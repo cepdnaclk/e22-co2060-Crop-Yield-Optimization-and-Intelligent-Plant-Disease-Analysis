@@ -661,7 +661,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
         <div style={{ width: '100%', maxWidth: 320, position: 'relative' }}>
           
           <div className="anim-fadeup-1" style={{ marginBottom: 28 }}>
-            <h2 style={{ color: '#0f2e18', fontWeight: 800, fontSize: '1.55rem',
+            <h2 aria-label="Sign In" style={{ color: '#0f2e18', fontWeight: 800, fontSize: '1.55rem',
               letterSpacing: '-0.025em', margin: '0 0 6px' }}>
               Welcome back
             </h2>
@@ -743,7 +743,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
               </label>
               <input type="email" value={email} required
                 onChange={e => setEmail(e.target.value)}
-                placeholder="you@agri.gov.lk"
+                placeholder="Enter your email"
                 style={inp} onFocus={onFocus} onBlur={onBlur} />
             </div>
 
