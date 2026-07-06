@@ -6,7 +6,9 @@
  */
 import { User, MapPin, Phone, Mail, Calendar, FileText } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { userAPI } from '../services/api';
+import { translateDistrict, translateDivision } from '../utils/locationTranslations';
 
 interface FarmerProfile {
   firstName: string;
@@ -21,6 +23,7 @@ interface FarmerProfile {
 }
 
 export function ProfilePage() {
+  const { i18n } = useTranslation();
   const [profile, setProfile] = useState<FarmerProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -156,11 +159,11 @@ export function ProfilePage() {
           </div>
           <div>
             <label className="text-xs md:text-sm text-gray-500 mb-1 block font-medium">Division</label>
-            <p className="text-gray-800 font-medium text-sm md:text-base">{profile.division || 'N/A'}</p>
+            <p className="text-gray-800 font-medium text-sm md:text-base">{translateDivision(profile.division, i18n.language as 'en' | 'si') || 'N/A'}</p>
           </div>
           <div>
             <label className="text-xs md:text-sm text-gray-500 mb-1 block font-medium">District</label>
-            <p className="text-gray-800 font-medium text-sm md:text-base">{profile.district || 'N/A'}</p>
+            <p className="text-gray-800 font-medium text-sm md:text-base">{translateDistrict(profile.district, i18n.language as 'en' | 'si') || 'N/A'}</p>
           </div>
         </div>
       </div>
@@ -188,7 +191,7 @@ export function ProfilePage() {
           </div>
           <div className="flex-1 min-w-0">
             <h3 className="text-gray-800 font-medium mb-1 text-sm md:text-base">
-              District Office: {profile.district || 'N/A'}
+              District Office: {translateDistrict(profile.district, i18n.language as 'en' | 'si') || 'N/A'}
             </h3>
             <p className="text-gray-600 text-xs md:text-sm mb-1">
               Contact your local agrarian service center for updates to your profile.

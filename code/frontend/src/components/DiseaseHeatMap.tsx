@@ -4,6 +4,7 @@ import { svgPaths } from 'srilanka-districts-map/dist/districtData';
 import { farmAPI } from '../services/api';
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { translateDistrict } from '../utils/locationTranslations';
 
 // Tier definitions: color hex and key for i18n
 const TIERS = [
@@ -28,14 +29,21 @@ const getTier = (count: number) => {
 
 const getColorByCount = (count: number): string => getTier(count).color;
 
-const DISPLAY_NAME_OVERRIDES: Record<string, string> = {
-  'moneragala': 'Monaragala',
-  'rathnapura': 'Ratnapura',
+const translateDiseaseName = (
+  disease: string,
+  t: any
+) => {
+  switch (disease) {
+    case "Bacterial leaf blight":
+      return t("heatmap.bacterialLeafBlight");
+    case "Brown spot":
+      return t("heatmap.brownSpot");
+    case "Leaf smut":
+      return t("heatmap.leafSmut");
+    default:
+      return disease;
+  }
 };
-
-const getDistrictName = (key: string) =>
-  DISPLAY_NAME_OVERRIDES[key] ||
-  key.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
 interface DistrictStats {
   total: number;
@@ -43,7 +51,7 @@ interface DistrictStats {
 }
 
 export const DiseaseHeatMap: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<Record<string, DistrictStats>>({});
   const [hoveredDistrict, setHoveredDistrict] = useState<string | null>(null);
@@ -517,7 +525,7 @@ export const DiseaseHeatMap: React.FC = () => {
             >
               <div>
                 <span style={{ fontWeight: 700, color: '#fff' }}>
-                  {getDistrictName(activeDistrict)}
+                  {translateDistrict(activeDistrict, i18n.language as 'en' | 'si')}
                 </span>
                 <span style={{ margin: '0 6px', color: '#64748b' }}>|</span>
                 <span style={{ fontWeight: 600, color: '#f1f5f9' }}>
@@ -535,7 +543,7 @@ export const DiseaseHeatMap: React.FC = () => {
                     .filter(([_, count]) => count > 0)
                     .map(([diseaseName, count]) => (
                       <div key={diseaseName} className="flex justify-between gap-4 text-[11px] text-slate-300">
-                        <span>{diseaseName}:</span>
+                        <span>{translateDiseaseName(diseaseName, t)}:</span>
                         <span className="font-semibold text-white">{count}</span>
                       </div>
                     ))}

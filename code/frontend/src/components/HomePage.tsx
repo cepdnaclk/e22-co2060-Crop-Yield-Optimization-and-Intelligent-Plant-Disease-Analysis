@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { useOutletContext } from 'react-router';
 import { userAPI, farmAPI, floodAPI } from '../services/api';
 import { SummaryCard } from './SummaryCard';
+import { translateDistrict, translateDivision } from '../utils/locationTranslations';
 import farmerImage from 'figma:asset/8d18ad2077654c1f65710d650ff192f7ba499f8c.png';
 import { formatNumber } from '../utils/numberUtils';
 import { EmailVerificationModal } from './ui/EmailVerificationModal';
@@ -84,7 +85,7 @@ interface HomePageProps {
 }
 
 export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   // Dynamic User State
   const [userProfile, setUserProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -196,7 +197,7 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
                 <span className="font-medium">{t('home.season')}:</span> {loading ? '...' : currentSeason}
               </p>
               <p className="text-xs md:text-sm text-gray-600 mt-1">
-                <span className="font-medium">{t('home.location')}:</span> {loading ? '...' : `${userProfile?.district || t('home.unknownDistrict')} / ${userProfile?.division || t('home.unknownDivision')}`}
+                <span className="font-medium">{t('home.location')}:</span> {loading ? '...' : `${translateDistrict(userProfile?.district, i18n.language as 'en' | 'si') || t('home.unknownDistrict')} / ${translateDivision(userProfile?.division, i18n.language as 'en' | 'si') || t('home.unknownDivision')}`}
               </p>
             </div>
             <div style={{ position: 'relative' }}>
