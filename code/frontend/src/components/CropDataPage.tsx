@@ -2,6 +2,7 @@ import { Download, Layers, MapPin, Wheat, TrendingUp, Calendar, Loader, RefreshC
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { farmAPI, userAPI } from '../services/api';
+import { translateSeason, translateCrop } from '../utils/dataTranslations';
 
 
 interface HarvestDetail {
@@ -23,7 +24,7 @@ interface FarmWithHarvests {
 }
 
 export function CropDataPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [farms, setFarms] = useState<FarmWithHarvests[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -255,11 +256,11 @@ export function CropDataPage() {
             </select>
             <select value={selectedSeason} onChange={(e) => setSelectedSeason(e.target.value)} style={{ ...filterSelectStyle, flex: '1 1 120px', minWidth: '100px' }}>
               <option value="">{t('cropData.allSeasons')}</option>
-              {filterOptions.seasons.map((s) => <option key={s} value={s}>{s}</option>)}
+              {filterOptions.seasons.map((s) => <option key={s} value={s}>{translateSeason(s, i18n.language)}</option>)}
             </select>
             <select value={selectedCrop} onChange={(e) => setSelectedCrop(e.target.value)} style={{ ...filterSelectStyle, flex: '1 1 120px', minWidth: '100px' }}>
               <option value="">{t('cropData.allCrops')}</option>
-              {filterOptions.crops.map((c) => <option key={c} value={c}>{c}</option>)}
+              {filterOptions.crops.map((c) => <option key={c} value={c}>{translateCrop(c, i18n.language)}</option>)}
             </select>
           </div>
         </div>
@@ -382,7 +383,7 @@ export function CropDataPage() {
                         <Calendar style={{ width: '15px', height: '15px', color: 'white' }} />
                       </div>
                       <div>
-                        <h4 style={{ fontSize: '14px', fontWeight: 700, color: '#111827', margin: 0 }}>{record.season} {record.year}</h4>
+                        <h4 style={{ fontSize: '14px', fontWeight: 700, color: '#111827', margin: 0 }}>{translateSeason(record.season, i18n.language)} {record.year}</h4>
                         <span style={{ fontSize: '11px', color: '#6B7280' }}>{new Date(record.createdDate).toLocaleDateString()}</span>
                       </div>
                       <span style={{ background: '#ECFDF5', color: '#059669', padding: '3px 9px', borderRadius: 20, fontSize: '10px', fontWeight: 600, border: '1px solid #A7F3D0' }}>🌾 {record.farmName}</span>
@@ -416,7 +417,7 @@ export function CropDataPage() {
                         <Sprout style={{ width: '11px', height: '11px', color: '#9CA3AF' }} />
                         <span style={{ fontSize: '11px', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('cropData.cropType')}</span>
                       </div>
-                      <p style={{ fontSize: '15px', fontWeight: 600, color: '#1F2937', margin: 0 }}>{record.crop}</p>
+                      <p style={{ fontSize: '15px', fontWeight: 600, color: '#1F2937', margin: 0 }}>{translateCrop(record.crop, i18n.language)}</p>
                     </div>
                     <div style={{ padding: '12px 14px', borderLeft: '1px solid #F3F4F6', background: '#F0FDF4' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '3px' }}>

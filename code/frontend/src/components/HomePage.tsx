@@ -10,6 +10,7 @@ import { useOutletContext } from 'react-router';
 import { userAPI, farmAPI, floodAPI } from '../services/api';
 import { SummaryCard } from './SummaryCard';
 import { translateDistrict, translateDivision } from '../utils/locationTranslations';
+import { translateSeason } from '../utils/dataTranslations';
 import farmerImage from 'figma:asset/8d18ad2077654c1f65710d650ff192f7ba499f8c.png';
 import { formatNumber } from '../utils/numberUtils';
 import { EmailVerificationModal } from './ui/EmailVerificationModal';
@@ -194,7 +195,7 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
                 {t('home.accountStatus')}: <span className="text-emerald-600 font-semibold" style={{ background: '#ecfdf5', padding: '2px 8px', borderRadius: '12px' }}>{t('home.active')}</span>
               </p>
               <p className="text-xs md:text-sm text-gray-600 mt-2">
-                <span className="font-medium">{t('home.season')}:</span> {loading ? '...' : currentSeason}
+                <span className="font-medium">{t('home.season')}:</span> {loading ? '...' : translateSeason(currentSeason, i18n.language)}
               </p>
               <p className="text-xs md:text-sm text-gray-600 mt-1">
                 <span className="font-medium">{t('home.location')}:</span> {loading ? '...' : `${translateDistrict(userProfile?.district, i18n.language as 'en' | 'si') || t('home.unknownDistrict')} / ${translateDivision(userProfile?.division, i18n.language as 'en' | 'si') || t('home.unknownDivision')}`}
@@ -244,7 +245,7 @@ export function HomePage({ onNavigate: onNavigateProp }: HomePageProps) {
             </div>
           </div>
           <div className="text-right">
-            <p className="text-xs md:text-sm text-gray-600">{t('home.season')}: {currentSeason}</p>
+            <p className="text-xs md:text-sm text-gray-600">{t('home.season')}: {translateSeason(currentSeason, i18n.language)}</p>
             <p className="text-xs md:text-sm text-gray-600 mt-1">{t('home.pointsThisSeason')}</p>
             <p className="text-2xl md:text-3xl font-bold text-gray-800 mt-1" style={{ letterSpacing: '-0.03em' }}>420</p>
           </div>
