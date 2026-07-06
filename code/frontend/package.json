@@ -37,6 +37,8 @@
             "cmdk": "^1.1.1",
             "embla-carousel-react": "^8.6.0",
             "html2canvas": "^1.4.1",
+            "i18next": "^24.2.2",
+            "i18next-browser-languagedetector": "^8.0.4",
             "input-otp": "^1.4.2",
             "jspdf": "^4.2.0",
             "jspdf-autotable": "^5.0.7",
@@ -47,16 +49,14 @@
             "react-day-picker": "^8.10.1",
             "react-dom": "^18.3.1",
             "react-hook-form": "^7.55.0",
+            "react-i18next": "^15.4.1",
             "react-resizable-panels": "^2.1.7",
             "react-router": "*",
             "recharts": "^2.15.4",
             "sonner": "^2.0.3",
             "srilanka-districts-map": "^1.0.3",
             "tailwind-merge": "*",
-            "vaul": "^1.1.2",
-            "i18next": "^24.2.2",
-            "react-i18next": "^15.4.1",
-            "i18next-browser-languagedetector": "^8.0.4"
+            "vaul": "^1.1.2"
       },
       "devDependencies": {
             "@testing-library/jest-dom": "^6.9.1",
@@ -72,7 +72,7 @@
             "tailwindcss": "^4.2.1",
             "typescript": "^5.9.3",
             "vite": "^6.4.1",
-            "vitest": "^2.1.9"
+            "vitest": "^4.1.10"
       },
       "scripts": {
             "dev": "vite",
