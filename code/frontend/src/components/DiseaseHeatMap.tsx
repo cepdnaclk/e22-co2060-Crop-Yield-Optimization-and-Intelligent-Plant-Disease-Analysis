@@ -1,21 +1,22 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { svgPaths } from 'srilanka-districts-map/dist/districtData';
 import { farmAPI } from '../services/api';
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
-// Tier definitions: color hex and label
+// Tier definitions: color hex and key for i18n
 const TIERS = [
-  { max: 0, color: '#ffffff', label: 'None' },
-  { max: 124, color: '#fff7ec', label: 'Very Low' },
-  { max: 249, color: '#fee8c8', label: 'Low' },
-  { max: 374, color: '#fdd49e', label: 'Warning' },
-  { max: 499, color: '#fdbb84', label: 'Alert' },
-  { max: 624, color: '#fc8d59', label: 'Moderate' },
-  { max: 749, color: '#ef6548', label: 'Elevated' },
-  { max: 874, color: '#d7301f', label: 'High' },
-  { max: 999, color: '#b30000', label: 'Very High' },
-  { max: Infinity, color: '#7f0000', label: 'Critical' },
+  { max: 0, color: '#ffffff', key: 'none' },
+  { max: 124, color: '#fff7ec', key: 'veryLow' },
+  { max: 249, color: '#fee8c8', key: 'low' },
+  { max: 374, color: '#fdd49e', key: 'warning' },
+  { max: 499, color: '#fdbb84', key: 'alert' },
+  { max: 624, color: '#fc8d59', key: 'moderate' },
+  { max: 749, color: '#ef6548', key: 'elevated' },
+  { max: 874, color: '#d7301f', key: 'high' },
+  { max: 999, color: '#b30000', key: 'veryHigh' },
+  { max: Infinity, color: '#7f0000', key: 'critical' },
 ];
 
 const getTier = (count: number) => {
@@ -42,6 +43,7 @@ interface DistrictStats {
 }
 
 export const DiseaseHeatMap: React.FC = () => {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<Record<string, DistrictStats>>({});
   const [hoveredDistrict, setHoveredDistrict] = useState<string | null>(null);
@@ -82,7 +84,7 @@ export const DiseaseHeatMap: React.FC = () => {
 
   const handleStartChange = (value: string) => {
     if (customEnd && value && new Date(value) > new Date(customEnd)) {
-      toast.error('Start date cannot be later than end date');
+      toast.error(t('heatmap.invalidStartDate'));
       return;
     }
     setCustomStart(value);
@@ -90,7 +92,7 @@ export const DiseaseHeatMap: React.FC = () => {
 
   const handleEndChange = (value: string) => {
     if (customStart && value && new Date(value) < new Date(customStart)) {
-      toast.error('End date cannot be earlier than start date');
+      toast.error(t('heatmap.invalidEndDate'));
       return;
     }
     setCustomEnd(value);
@@ -189,7 +191,7 @@ export const DiseaseHeatMap: React.FC = () => {
                   <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
                 </svg>
               </span>
-              Disease Type
+              {t('heatmap.diseaseType')}
             </label>
             <div style={{ position: 'relative' }}>
               <select
@@ -216,10 +218,10 @@ export const DiseaseHeatMap: React.FC = () => {
                   e.target.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)';
                 }}
               >
-                <option value="all">All Diseases</option>
-                <option value="Bacterial leaf blight">Bacterial leaf blight</option>
-                <option value="Brown spot">Brown spot</option>
-                <option value="Leaf smut">Leaf smut</option>
+                <option value="all">{t('heatmap.allDiseases')}</option>
+                <option value="Bacterial leaf blight">{t('heatmap.bacterialLeafBlight')}</option>
+                <option value="Brown spot">{t('heatmap.brownSpot')}</option>
+                <option value="Leaf smut">{t('heatmap.leafSmut')}</option>
               </select>
               {/* Custom chevron */}
               <div style={{
@@ -250,7 +252,7 @@ export const DiseaseHeatMap: React.FC = () => {
                   <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
                 </svg>
               </span>
-              Time Range
+              {t('heatmap.timeRange')}
             </label>
             <div style={{ position: 'relative' }}>
               <select
@@ -277,10 +279,10 @@ export const DiseaseHeatMap: React.FC = () => {
                   e.target.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)';
                 }}
               >
-                <option value="1">Last 1 Month</option>
-                <option value="3">Last 3 Months</option>
-                <option value="6">Last 6 Months</option>
-                <option value="custom">Custom Range</option>
+                <option value="1">{t('heatmap.last1Month')}</option>
+                <option value="3">{t('heatmap.last3Months')}</option>
+                <option value="6">{t('heatmap.last6Months')}</option>
+                <option value="custom">{t('heatmap.customRange')}</option>
               </select>
               {/* Custom chevron */}
               <div style={{
@@ -311,7 +313,7 @@ export const DiseaseHeatMap: React.FC = () => {
                   <span style={{
                     fontSize: '10px', background: '#dcfce7', color: '#15803d',
                     borderRadius: '4px', padding: '1px 5px', fontWeight: 700,
-                  }}>FROM</span>
+                  }}>{t('heatmap.from')}</span>
                 </label>
                 <input
                   type="date"
@@ -337,7 +339,7 @@ export const DiseaseHeatMap: React.FC = () => {
                   <span style={{
                     fontSize: '10px', background: '#dbeafe', color: '#1d4ed8',
                     borderRadius: '4px', padding: '1px 5px', fontWeight: 700,
-                  }}>TO</span>
+                  }}>{t('heatmap.to')}</span>
                 </label>
                 <input
                   type="date"
@@ -382,7 +384,7 @@ export const DiseaseHeatMap: React.FC = () => {
                   e.currentTarget.style.transform = 'none';
                 }}
               >
-                Apply Filter
+                {t('heatmap.applyFilter')}
               </button>
             </div>
           )}
@@ -394,7 +396,7 @@ export const DiseaseHeatMap: React.FC = () => {
             {loading && (
               <div className="absolute inset-0 bg-white/75 backdrop-blur-[1.5px] flex flex-col items-center justify-center z-20 rounded-lg transition-opacity duration-200">
                 <Loader2 className="w-7 h-7 text-green-600 animate-spin mb-1.5" />
-                <p className="text-xs text-gray-500 font-medium">Loading map…</p>
+                <p className="text-xs text-gray-500 font-medium">{t('heatmap.loadingMap')}</p>
               </div>
             )}
 
@@ -449,7 +451,7 @@ export const DiseaseHeatMap: React.FC = () => {
           >
             {[...TIERS].reverse().map((tier) => (
               <div
-                key={tier.label}
+                key={tier.key}
                 style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
               >
                 <span
@@ -464,7 +466,7 @@ export const DiseaseHeatMap: React.FC = () => {
                   }}
                 />
                 <span style={{ fontSize: '11px', color: '#4b5563', lineHeight: 1 }}>
-                  {tier.label}
+                  {t(`heatmap.legend.${tier.key}`)}
                 </span>
               </div>
             ))}
@@ -521,10 +523,10 @@ export const DiseaseHeatMap: React.FC = () => {
                 <span style={{ fontWeight: 600, color: '#f1f5f9' }}>
                   {stats[activeDistrict]?.total || 0}
                 </span>
-                <span style={{ color: '#94a3b8', marginLeft: '3px' }}>reports</span>
+                <span style={{ color: '#94a3b8', marginLeft: '3px' }}>{t('heatmap.reports')}</span>
                 <span style={{ margin: '0 6px', color: '#64748b' }}>|</span>
                 <span style={{ fontWeight: 700, color: '#fff' }}>
-                  {getTier(stats[activeDistrict]?.total || 0).label}
+                  {t(`heatmap.legend.${getTier(stats[activeDistrict]?.total || 0).key}`)}
                 </span>
               </div>
               {diseaseFilter === 'all' && stats[activeDistrict]?.breakdown && (
@@ -538,7 +540,7 @@ export const DiseaseHeatMap: React.FC = () => {
                       </div>
                     ))}
                   {Object.values(stats[activeDistrict].breakdown).every(count => count === 0) && (
-                    <div className="text-slate-500 italic text-[11px]">No active disease cases</div>
+                    <div className="text-slate-500 italic text-[11px]">{t('heatmap.noCases')}</div>
                   )}
                 </div>
               )}

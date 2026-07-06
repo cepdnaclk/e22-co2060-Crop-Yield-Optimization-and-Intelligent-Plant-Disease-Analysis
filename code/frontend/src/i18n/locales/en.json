@@ -61,6 +61,38 @@
     "outbreakNearby": "Outbreak Nearby",
     "diseaseHeatMap": "Disease Heat Map"
   },
+  "heatmap": {
+    "diseaseType": "Disease Type",
+    "allDiseases": "All Diseases",
+    "bacterialLeafBlight": "Bacterial Leaf Blight",
+    "brownSpot": "Brown Spot",
+    "leafSmut": "Leaf Smut",
+    "timeRange": "Time Range",
+    "last1Month": "Last 1 Month",
+    "last3Months": "Last 3 Months",
+    "last6Months": "Last 6 Months",
+    "customRange": "Custom Range",
+    "from": "FROM",
+    "to": "TO",
+    "applyFilter": "Apply Filter",
+    "loadingMap": "Loading map...",
+    "reports": "reports",
+    "noCases": "No active disease cases",
+    "invalidStartDate": "Start date cannot be later than end date",
+    "invalidEndDate": "End date cannot be earlier than start date",
+    "legend": {
+      "none": "None",
+      "veryLow": "Very Low",
+      "low": "Low",
+      "warning": "Warning",
+      "alert": "Alert",
+      "moderate": "Moderate",
+      "elevated": "Elevated",
+      "high": "High",
+      "veryHigh": "Very High",
+      "critical": "Critical"
+    }
+  },
   "homePage": {
     "welcomeTitle": "Welcome",
     "accountStatus": "Account Status",

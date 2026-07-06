@@ -61,6 +61,38 @@
     "outbreakNearby": "ආසන්නයේ රෝග ව්‍යාප්තියක්",
     "diseaseHeatMap": "රෝග ව්‍යාප්ති සිතියම"
   },
+  "heatmap": {
+    "diseaseType": "රෝග වර්ගය",
+    "allDiseases": "සියලුම රෝග",
+    "bacterialLeafBlight": "බැක්ටීරියා පත්‍ර අංගමාරය",
+    "brownSpot": "දුඹුරු ලප රෝගය",
+    "leafSmut": "පත්‍ර කලු ලප රෝගය",
+    "timeRange": "කාල පරාසය",
+    "last1Month": "පසුගිය මාස 1",
+    "last3Months": "පසුගිය මාස 3",
+    "last6Months": "පසුගිය මාස 6",
+    "customRange": "අභිරුචි කාල පරාසය",
+    "from": "සිට",
+    "to": "දක්වා",
+    "applyFilter": "පෙරහන යොදන්න",
+    "loadingMap": "සිතියම පූරණය වෙමින්...",
+    "reports": "වාර්තා",
+    "noCases": "සක්‍රීය රෝග වාර්තා නොමැත",
+    "invalidStartDate": "ආරම්භක දිනය අවසන් දිනයට පසුව විය නොහැක.",
+    "invalidEndDate": "අවසාන දිනය ආරම්භක දිනයට පෙර විය නොහැක.",
+    "legend": {
+      "none": "නොමැත",
+      "veryLow": "ඉතා අඩු",
+      "low": "අඩු",
+      "warning": "අනතුරු ඇඟවීම",
+      "alert": "අවදානම",
+      "moderate": "මධ්‍යස්ථ",
+      "elevated": "ඉහළ යමින්",
+      "high": "ඉහළ",
+      "veryHigh": "ඉතා ඉහළ",
+      "critical": "අතිශයින් අවදානම්"
+    }
+  },
   "homePage": {
     "welcomeTitle": "ආයුබෝවන්",
     "accountStatus": "ගිණුමේ තත්ත්වය",
