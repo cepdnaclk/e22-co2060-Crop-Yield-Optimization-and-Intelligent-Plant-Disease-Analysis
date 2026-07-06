@@ -36,6 +36,31 @@
   "route": {
     "verifyingSession": "Verifying Session..."
   },
+  "home": {
+    "welcome": "Welcome",
+    "accountStatus": "Account Status",
+    "active": "Active",
+    "season": "Season",
+    "location": "Location",
+    "unknownDistrict": "Unknown District",
+    "unknownDivision": "Unknown Division",
+    "pointsSummary": "Points Summary",
+    "thisSeason": "This season",
+    "totalPoints": "Total Points",
+    "pointsThisSeason": "Points This Season",
+    "alerts": "Alerts & Warnings",
+    "checkingFlood": "Checking flood gauges...",
+    "floodOffline": "Flood Alerts Offline",
+    "floodOfflineDescription": "Set your coordinates to enable active localized flood tracking within a 10 km zone.",
+    "pinLocation": "Pin Map Location",
+    "changeLocation": "Change Location",
+    "trend": "Trend",
+    "safeFlood": "Safe: No Floods Nearby",
+    "safeFloodDescription": "No active flood threats within 10 km of your tracking zone.",
+    "possibleDisease": "Possible Disease",
+    "outbreakNearby": "Outbreak Nearby",
+    "diseaseHeatMap": "Disease Heat Map"
+  },
   "homePage": {
     "welcomeTitle": "Welcome",
     "accountStatus": "Account Status",

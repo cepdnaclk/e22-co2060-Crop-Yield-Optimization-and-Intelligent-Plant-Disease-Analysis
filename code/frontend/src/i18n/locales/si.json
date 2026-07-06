@@ -36,6 +36,31 @@
   "route": {
     "verifyingSession": "පරිශීලක සැසිය පරීක්ෂා කරමින්..."
   },
+  "home": {
+    "welcome": "සාදරයෙන් පිළිගනිමු",
+    "accountStatus": "ගිණුමේ තත්ත්වය",
+    "active": "සක්‍රීය",
+    "season": "කන්නය",
+    "location": "ස්ථානය",
+    "unknownDistrict": "නොදන්නා දිස්ත්‍රික්කය",
+    "unknownDivision": "නොදන්නා ප්‍රාදේශීය ලේකම් කොට්ඨාසය",
+    "pointsSummary": "ලකුණු සාරාංශය",
+    "thisSeason": "මෙම කන්නය",
+    "totalPoints": "මුළු ලකුණු",
+    "pointsThisSeason": "මෙම කන්නයේ ලකුණු",
+    "alerts": "අනතුරු ඇඟවීම්",
+    "checkingFlood": "ගංවතුර දත්ත පරීක්ෂා කරමින්...",
+    "floodOffline": "ගංවතුර අනතුරු ඇඟවීම් අක්‍රියයි",
+    "floodOfflineDescription": "කිලෝමීටර් 10ක පරාසයක් තුළ ගංවතුර නිරීක්ෂණය සක්‍රීය කිරීමට ඔබගේ ස්ථානය සකසන්න.",
+    "pinLocation": "සිතියමේ ස්ථානය සලකුණු කරන්න",
+    "changeLocation": "ස්ථානය වෙනස් කරන්න",
+    "trend": "ප්‍රවණතාව",
+    "safeFlood": "ආරක්ෂිතයි: ආසන්නයේ ගංවතුර අවදානමක් නොමැත",
+    "safeFloodDescription": "ඔබගේ නිරීක්ෂණ කලාපයේ කිලෝමීටර් 10ක පරාසය තුළ සක්‍රීය ගංවතුර අවදානමක් නොමැත.",
+    "possibleDisease": "විය හැකි රෝගයක්",
+    "outbreakNearby": "ආසන්නයේ රෝග ව්‍යාප්තියක්",
+    "diseaseHeatMap": "රෝග ව්‍යාප්ති සිතියම"
+  },
   "homePage": {
     "welcomeTitle": "ආයුබෝවන්",
     "accountStatus": "ගිණුමේ තත්ත්වය",
