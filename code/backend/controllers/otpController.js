@@ -21,7 +21,7 @@
 import bcrypt from "bcrypt";
 import { randomInt } from "node:crypto";
 import User from "../models/user.js";
-import { sendOtpEmail } from "../services/emailService.js";
+import { sendOtpEmail, sendPasswordResetSuccessEmail } from "../services/emailService.js";
 
 const OTP_VALIDITY_MS   = 15 * 60 * 1000; // 15 minutes
 const RESEND_COOLDOWN_MS = 60 * 1000;      // 1 minute resend cooldown
@@ -438,6 +438,14 @@ export async function resetPassword(req, res) {
     user.emailVerified = true;
     user.emailOtp = { code: null, expiresAt: null, cooldownUntil: null };
     await user.save();
+
+    // Send confirmation email
+    sendPasswordResetSuccessEmail({
+      email: normalizedEmail,
+      firstName: user.firstName,
+    }).catch((err) =>
+      console.error("[OtpController] Failed to send password reset success email:", err.message)
+    );
 
     return res.json({ message: "Password reset successfully. You can now login." });
   } catch (error) {

@@ -7,6 +7,7 @@ const findOneMock = jest.fn();
 const hashMock = jest.fn();
 const compareMock = jest.fn();
 const sendOtpEmailMock = jest.fn();
+const sendPasswordResetSuccessEmailMock = jest.fn();
 
 await jest.unstable_mockModule("../../models/user.js", () => ({
   default: {
@@ -23,6 +24,7 @@ await jest.unstable_mockModule("bcrypt", () => ({
 
 await jest.unstable_mockModule("../../services/emailService.js", () => ({
   sendOtpEmail: sendOtpEmailMock,
+  sendPasswordResetSuccessEmail: sendPasswordResetSuccessEmailMock,
 }));
 
 const { forgotPassword, resetPassword } = await import("../../controllers/otpController.js");
@@ -103,6 +105,7 @@ describe("Forgot & Reset Password Routes", () => {
   test("POST /api/users/reset-password should verify code and reset password", async () => {
     const mockUser = {
       email: "farmer@example.com",
+      firstName: "Nimal",
       password: "old-password",
       emailOtp: {
         code: "hashed-code",
@@ -114,6 +117,7 @@ describe("Forgot & Reset Password Routes", () => {
     compareMock.mockResolvedValue(true);
     hashMock.mockResolvedValue("new-hashed-password");
     saveMock.mockResolvedValue({});
+    sendPasswordResetSuccessEmailMock.mockResolvedValue({});
 
     const app = http.createServer((req, res) => {
       let body = "";
@@ -145,5 +149,10 @@ describe("Forgot & Reset Password Routes", () => {
     expect(mockUser.password).toBe("new-hashed-password");
     expect(mockUser.emailVerified).toBe(true);
     expect(mockUser.emailOtp.code).toBeNull();
+    expect(sendPasswordResetSuccessEmailMock).toHaveBeenCalledWith({
+      email: "farmer@example.com",
+      firstName: "Nimal",
+    });
   });
+});
 });

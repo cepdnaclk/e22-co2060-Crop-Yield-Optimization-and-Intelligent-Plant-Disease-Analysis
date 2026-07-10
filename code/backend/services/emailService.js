@@ -436,3 +436,95 @@ Department of Agriculture – Sri Lanka
     }
   }
 }
+
+/**
+ * Sends a password reset confirmation email to a recipient.
+ * Designed to NEVER throw — failures are logged silently.
+ *
+ * @param {Object}  params
+ * @param {string}  params.email       - Recipient email address.
+ * @param {string}  [params.firstName] - Recipient's first name (optional, for personalisation).
+ * @returns {Promise<void>}
+ */
+export async function sendPasswordResetSuccessEmail({ email, firstName = "there" }) {
+  const smtpFrom = getNotificationFromAddress();
+  if (!smtpFrom) {
+    console.warn("[EmailService] No sender configured. Skipping password reset confirmation email.");
+    return;
+  }
+  if (!email) {
+    console.warn("[EmailService] Missing email. Skipping password reset confirmation email.");
+    return;
+  }
+
+  const html = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>AgriConnect Password Changed Successfully</title>
+</head>
+<body style="margin:0;padding:24px;background-color:#f6f7f8;font-family:Arial,Helvetica,sans-serif;color:#1f2937;">
+  <div style="max-width:560px;margin:0 auto;background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:32px;">
+    <p style="margin:0 0 16px 0;font-size:16px;">Hi ${firstName},</p>
+    <p style="margin:0 0 20px 0;font-size:15px;line-height:1.6;">This is a confirmation that the password for your AgriConnect account has been changed successfully.</p>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+      style="background-color:#f0fdf4;border:1px solid #b8d8c4;border-radius:8px;margin-bottom:20px;">
+      <tr>
+        <td style="padding:16px;font-size:14px;color:#166534;line-height:1.5;">
+          <strong>Security Notice:</strong> If you did not make this change, please contact your District Agriculture Officer or support immediately to secure your account.
+        </td>
+      </tr>
+    </table>
+    <p style="margin:0;font-size:14px;line-height:1.6;">Warm regards,<br/>The AgriConnect Team</p>
+  </div>
+</body>
+</html>
+`;
+
+  const text = `
+AgriConnect Password Changed Successfully
+
+Hi ${firstName},
+
+This is a confirmation that the password for your AgriConnect account has been changed successfully.
+
+Security Notice: If you did not make this change, please contact your District Agriculture Officer or support immediately to secure your account.
+
+Warm regards,
+The AgriConnect Team
+`;
+
+  try {
+    const transporter = createNotificationTransporter();
+    const mailOptions = {
+      from: {
+        name: "AgriConnect",
+        address: smtpFrom,
+      },
+      replyTo: smtpFrom,
+      to: email,
+      subject: "Your AgriConnect password has been changed",
+      text,
+      html,
+      headers: {
+        "Precedence": "transactional",
+        "X-Auto-Response-Suppress": "All",
+      },
+    };
+
+    try {
+      await transporter.verify();
+    } catch (vErr) {
+      console.error("[EmailService] SMTP verification failed:", vErr && vErr.message ? vErr.message : vErr);
+    }
+
+    mailOptions.envelope = { from: smtpFrom, to: email };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log(`[EmailService] Password reset confirmation email sent to ${email}. MessageId: ${info.messageId}`);
+  } catch (error) {
+    console.error(`[EmailService] Failed to send password reset confirmation email to ${email}:`, error.message, error.code || "");
+  }
+}
