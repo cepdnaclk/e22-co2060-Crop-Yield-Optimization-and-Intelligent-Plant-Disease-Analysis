@@ -517,7 +517,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
     try {
       const response = await userAPI.forgotPassword(forgotEmail);
       toast.success(response.message || 'Verification code sent to your email.');
-      setCooldown(response.cooldownSeconds || 60);
+      setCooldown(response.cooldownSeconds !== undefined ? response.cooldownSeconds : 60);
       setOtpCode('');
       setNewPassword('');
       setConfirmPassword('');
@@ -540,7 +540,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
     try {
       const response = await userAPI.forgotPassword(forgotEmail);
       toast.success(response.message || 'Verification code resent.');
-      setCooldown(response.cooldownSeconds || 60);
+      setCooldown(response.cooldownSeconds !== undefined ? response.cooldownSeconds : 60);
     } catch (err: any) {
       console.error('Resend code error:', err);
       let errorMessage = 'Failed to resend verification code.';
