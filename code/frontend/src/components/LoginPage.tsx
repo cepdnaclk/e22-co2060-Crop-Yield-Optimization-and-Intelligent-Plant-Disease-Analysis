@@ -391,6 +391,23 @@ export function LoginPage({ onLogin }: LoginPageProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [bgPhotoUrl, setBgPhotoUrl] = useState(BG_PHOTO);
 
+  const [view, setView] = useState<'login' | 'forgot' | 'reset'>('login');
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [otpCode, setOtpCode] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [cooldown, setCooldown] = useState(0);
+
+  // Cooldown countdown timer
+  useEffect(() => {
+    if (cooldown <= 0) return;
+    const timer = setInterval(() => {
+      setCooldown(c => c - 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [cooldown]);
+
   // Fallback checker for the background image
   useEffect(() => {
     const img = new Image();
@@ -486,6 +503,79 @@ export function LoginPage({ onLogin }: LoginPageProps) {
         errorMessage = 'Cannot connect to server. Please make sure the backend is running.';
       } else if (err.code === 'ECONNABORTED') {
         errorMessage = 'Request timeout. Please try again.';
+      }
+      toast.error(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleForgotPasswordSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!forgotEmail) return;
+    setIsLoading(true);
+    try {
+      const response = await userAPI.forgotPassword(forgotEmail);
+      toast.success(response.message || 'Verification code sent to your email.');
+      setCooldown(response.cooldownSeconds || 60);
+      setOtpCode('');
+      setNewPassword('');
+      setConfirmPassword('');
+      setView('reset');
+    } catch (err: any) {
+      console.error('Forgot password error:', err);
+      let errorMessage = 'Failed to send verification code. Please check the email and try again.';
+      if (err.response?.data?.message) {
+        errorMessage = err.response.data.message;
+      }
+      toast.error(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleResendCode = async () => {
+    if (cooldown > 0) return;
+    setIsLoading(true);
+    try {
+      const response = await userAPI.forgotPassword(forgotEmail);
+      toast.success(response.message || 'Verification code resent.');
+      setCooldown(response.cooldownSeconds || 60);
+    } catch (err: any) {
+      console.error('Resend code error:', err);
+      let errorMessage = 'Failed to resend verification code.';
+      if (err.response?.data?.message) {
+        errorMessage = err.response.data.message;
+      }
+      toast.error(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleResetPasswordSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!forgotEmail || !otpCode || !newPassword || !confirmPassword) return;
+    if (newPassword !== confirmPassword) {
+      toast.error('Passwords do not match.');
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const response = await userAPI.resetPassword({
+        email: forgotEmail,
+        code: otpCode,
+        newPassword
+      });
+      toast.success(response.message || 'Password reset successfully!');
+      setEmail(forgotEmail);
+      setPassword('');
+      setView('login');
+    } catch (err: any) {
+      console.error('Reset password error:', err);
+      let errorMessage = 'Failed to reset password. Please check the code and try again.';
+      if (err.response?.data?.message) {
+        errorMessage = err.response.data.message;
       }
       toast.error(errorMessage);
     } finally {
@@ -660,165 +750,390 @@ export function LoginPage({ onLogin }: LoginPageProps) {
 
         <div style={{ width: '100%', maxWidth: 320, position: 'relative' }}>
           
-          <div className="anim-fadeup-1" style={{ marginBottom: 28 }}>
-            <h2 aria-label="Sign In" style={{ color: '#0f2e18', fontWeight: 800, fontSize: '1.55rem',
-              letterSpacing: '-0.025em', margin: '0 0 6px' }}>
-              Welcome back
-            </h2>
-            <p style={{ color: '#6b9a7b', fontSize: '0.82rem', margin: 0, lineHeight: 1.6 }}>
-              Sign in to access your AgriConnect dashboard
-            </p>
-          </div>
+          {view === 'login' && (
+            <>
+              <div className="anim-fadeup-1" style={{ marginBottom: 28 }}>
+                <h2 aria-label="Sign In" style={{ color: '#0f2e18', fontWeight: 800, fontSize: '1.55rem',
+                  letterSpacing: '-0.025em', margin: '0 0 6px' }}>
+                  Welcome back
+                </h2>
+                <p style={{ color: '#6b9a7b', fontSize: '0.82rem', margin: 0, lineHeight: 1.6 }}>
+                  Sign in to access your AgriConnect dashboard
+                </p>
+              </div>
 
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-            {/* Role selector dropdown */}
-            <div className="anim-fadeup-2" style={{ position: 'relative', zIndex: 100 }}>
-              <label style={{ display: 'block', color: '#3d6b50', fontSize: '0.78rem',
-                fontWeight: 700, marginBottom: 8, letterSpacing: '0.01em' }}>
-                Login as
-              </label>
-              <div ref={dropdownRef} style={{ position: 'relative' }}>
-                <button type="button" onClick={() => setIsDropdownOpen(o => !o)}
-                  style={{ ...inp, display: 'flex', alignItems: 'center',
-                    justifyContent: 'space-between', cursor: 'pointer', padding: '12px 16px',
-                    background: '#f7faf8', border: '1.5px solid #d4e8da' }}>
-                  <span style={{ color: '#1a3d28', fontWeight: 600 }}>
-                    {userType === 'farmer' ? '🌾  Farmer' : '🏛  District Admin / Officer'}
-                  </span>
-                  <ChevronDown style={{
-                    width: 16, height: 16, color: '#6b9a7b', flexShrink: 0,
-                    transition: 'transform 0.2s',
-                    transform: isDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                  }} />
-                </button>
-                {isDropdownOpen && (
-                  <div style={{
-                    position: 'absolute', zIndex: 9999, width: '100%', top: 'calc(100% + 6px)',
-                    left: 0, borderRadius: 12, overflow: 'hidden',
-                    background: '#ffffff', opacity: 1,
-                    border: '1.5px solid #b8d8c4',
-                    boxShadow: '0 8px 16px rgba(0,0,0,0.12), 0 24px 48px rgba(10,60,25,0.15)',
-                    animation: 'fadeUp 0.18s ease both',
-                    isolation: 'isolate',
-                  }}>
-                    {([
-                      { v: 'farmer' as const, l: '🌾  Farmer' },
-                      { v: 'admin'  as const, l: '🏛  District Admin / Officer' },
-                    ]).map(opt => (
-                      <button key={opt.v} type="button"
-                        onMouseDown={e => {
-                          e.preventDefault();
-                          setUserType(opt.v);
-                          setIsDropdownOpen(false);
-                        }}
-                        style={{
-                          width: '100%', padding: '14px 16px', textAlign: 'left',
-                          background: userType === opt.v ? '#e8f5ec' : '#ffffff',
-                          color: userType === opt.v ? '#1a6a35' : '#2a4a35',
-                          fontSize: '0.875rem', cursor: 'pointer', border: 'none',
-                          borderBottom: '1px solid #f0f5f2',
-                          fontFamily: 'inherit', fontWeight: userType === opt.v ? 700 : 500,
-                          transition: 'background 0.15s',
-                          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                        }}
-                        onMouseEnter={e => { e.currentTarget.style.background = userType === opt.v ? '#dff0e6' : '#f4fbf6'; }}
-                        onMouseLeave={e => { e.currentTarget.style.background = userType === opt.v ? '#e8f5ec' : '#ffffff'; }}
-                      >
-                        <span>{opt.l}</span>
-                        {userType === opt.v && (
-                          <span style={{ color: '#1a8a3a', fontSize: '0.8rem', marginLeft: 8 }}>✓</span>
-                        )}
-                      </button>
-                    ))}
+              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                {/* Role selector dropdown */}
+                <div className="anim-fadeup-2" style={{ position: 'relative', zIndex: 100 }}>
+                  <label style={{ display: 'block', color: '#3d6b50', fontSize: '0.78rem',
+                    fontWeight: 700, marginBottom: 8, letterSpacing: '0.01em' }}>
+                    Login as
+                  </label>
+                  <div ref={dropdownRef} style={{ position: 'relative' }}>
+                    <button type="button" onClick={() => setIsDropdownOpen(o => !o)}
+                      style={{ ...inp, display: 'flex', alignItems: 'center',
+                        justifyContent: 'space-between', cursor: 'pointer', padding: '12px 16px',
+                        background: '#f7faf8', border: '1.5px solid #d4e8da' }}>
+                      <span style={{ color: '#1a3d28', fontWeight: 600 }}>
+                        {userType === 'farmer' ? '🌾  Farmer' : '🏛  District Admin / Officer'}
+                      </span>
+                      <ChevronDown style={{
+                        width: 16, height: 16, color: '#6b9a7b', flexShrink: 0,
+                        transition: 'transform 0.2s',
+                        transform: isDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                      }} />
+                    </button>
+                    {isDropdownOpen && (
+                      <div style={{
+                        position: 'absolute', zIndex: 9999, width: '100%', top: 'calc(100% + 6px)',
+                        left: 0, borderRadius: 12, overflow: 'hidden',
+                        background: '#ffffff', opacity: 1,
+                        border: '1.5px solid #b8d8c4',
+                        boxShadow: '0 8px 16px rgba(0,0,0,0.12), 0 24px 48px rgba(10,60,25,0.15)',
+                        animation: 'fadeUp 0.18s ease both',
+                        isolation: 'isolate',
+                      }}>
+                        {([
+                          { v: 'farmer' as const, l: '🌾  Farmer' },
+                          { v: 'admin'  as const, l: '🏛  District Admin / Officer' },
+                        ]).map(opt => (
+                          <button key={opt.v} type="button"
+                            onMouseDown={e => {
+                              e.preventDefault();
+                              setUserType(opt.v);
+                              setIsDropdownOpen(false);
+                            }}
+                            style={{
+                              width: '100%', padding: '14px 16px', textAlign: 'left',
+                              background: userType === opt.v ? '#e8f5ec' : '#ffffff',
+                              color: userType === opt.v ? '#1a6a35' : '#2a4a35',
+                              fontSize: '0.875rem', cursor: 'pointer', border: 'none',
+                              borderBottom: '1px solid #f0f5f2',
+                              fontFamily: 'inherit', fontWeight: userType === opt.v ? 700 : 500,
+                              transition: 'background 0.15s',
+                              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                            }}
+                            onMouseEnter={e => { e.currentTarget.style.background = userType === opt.v ? '#dff0e6' : '#f4fbf6'; }}
+                            onMouseLeave={e => { e.currentTarget.style.background = userType === opt.v ? '#e8f5ec' : '#ffffff'; }}
+                          >
+                            <span>{opt.l}</span>
+                            {userType === opt.v && (
+                              <span style={{ color: '#1a8a3a', fontSize: '0.8rem', marginLeft: 8 }}>✓</span>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            </div>
+                </div>
 
-            {/* Email Address */}
-            <div className="anim-fadeup-3" style={{ position: 'relative', zIndex: 1 }}>
-              <label style={{ display: 'block', color: '#3d6b50', fontSize: '0.78rem',
-                fontWeight: 700, marginBottom: 8 }}>
-                Email Address
-              </label>
-              <input type="email" value={email} required
-                onChange={e => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                style={inp} onFocus={onFocus} onBlur={onBlur} />
-            </div>
+                {/* Email Address */}
+                <div className="anim-fadeup-3" style={{ position: 'relative', zIndex: 1 }}>
+                  <label style={{ display: 'block', color: '#3d6b50', fontSize: '0.78rem',
+                    fontWeight: 700, marginBottom: 8 }}>
+                    Email Address
+                  </label>
+                  <input type="email" value={email} required
+                    onChange={e => setEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    style={inp} onFocus={onFocus} onBlur={onBlur} />
+                </div>
 
-            {/* Password Field */}
-            <div className="anim-fadeup-4" style={{ position: 'relative', zIndex: 1 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                <label style={{ color: '#3d6b50', fontSize: '0.78rem', fontWeight: 700 }}>
-                  Password
-                </label>
-              </div>
-              <div style={{ position: 'relative' }}>
-                <input
-                  type={showPassword ? 'text' : 'password'} value={password} required
-                  onChange={e => setPassword(e.target.value)}
-                  placeholder="Enter your password"
-                  style={{ ...inp, paddingRight: 46 }}
-                  onFocus={onFocus} onBlur={onBlur}
-                />
-                <button type="button" onClick={() => setShowPassword(s => !s)}
+                {/* Password Field */}
+                <div className="anim-fadeup-4" style={{ position: 'relative', zIndex: 1 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                    <label style={{ color: '#3d6b50', fontSize: '0.78rem', fontWeight: 700 }}>
+                      Password
+                    </label>
+                    <button type="button" onClick={() => {
+                      setForgotEmail(email);
+                      setView('forgot');
+                    }}
+                      style={{
+                        background: 'none', border: 'none', color: '#1a8a3a',
+                        fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer',
+                        padding: 0, outline: 'none', textDecoration: 'none',
+                        fontFamily: 'inherit'
+                      }}
+                      onMouseEnter={e => (e.currentTarget.style.textDecoration = 'underline')}
+                      onMouseLeave={e => (e.currentTarget.style.textDecoration = 'none')}
+                    >
+                      Forgot Password?
+                    </button>
+                  </div>
+                  <div style={{ position: 'relative' }}>
+                    <input
+                      type={showPassword ? 'text' : 'password'} value={password} required
+                      onChange={e => setPassword(e.target.value)}
+                      placeholder="Enter your password"
+                      style={{ ...inp, paddingRight: 46 }}
+                      onFocus={onFocus} onBlur={onBlur}
+                    />
+                    <button type="button" onClick={() => setShowPassword(s => !s)}
+                      style={{
+                        position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)',
+                        background: 'none', border: 'none', cursor: 'pointer',
+                        color: '#8aaa98', padding: 2, display: 'flex', lineheight: 1,
+                      }}>
+                      {showPassword
+                        ? <EyeOff style={{ width: 16, height: 16 }} />
+                        : <Eye     style={{ width: 16, height: 16 }} />}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Sign In Trigger CTA */}
+                <button type="submit" disabled={isLoading}
+                  className={isLoading ? '' : 'signin-btn anim-fadeup-5'}
                   style={{
-                    position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)',
-                    background: 'none', border: 'none', cursor: 'pointer',
-                    color: '#8aaa98', padding: 2, display: 'flex', lineheight: 1,
-                  }}>
-                  {showPassword
-                    ? <EyeOff style={{ width: 16, height: 16 }} />
-                    : <Eye     style={{ width: 16, height: 16 }} />}
+                    width: '100%', padding: '14px 0', marginTop: 4,
+                    borderRadius: 12, border: 'none',
+                    background: isLoading ? 'rgba(26,138,58,0.45)' : undefined,
+                    color: '#fff', fontWeight: 700, fontSize: '0.95rem',
+                    cursor: isLoading ? 'not-allowed' : 'pointer',
+                    transition: 'transform 0.2s, box-shadow 0.2s',
+                    fontFamily: 'inherit', letterSpacing: '0.01em',
+                  }}
+                >
+                  {isLoading ? (
+                    <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+                      <span style={{
+                        width: 16, height: 16, borderRadius: '50%',
+                        border: '2.5px solid rgba(255,255,255,0.3)', borderTopColor: '#fff',
+                        display: 'inline-block', animation: 'spin 0.75s linear infinite',
+                      }} />
+                      Signing in…
+                    </span>
+                  ) : 'Sign In →'}
                 </button>
-              </div>
-            </div>
+              </form>
 
-            {/* Sign In Trigger CTA */}
-            <button type="submit" disabled={isLoading}
-              className={isLoading ? '' : 'signin-btn anim-fadeup-5'}
-              style={{
-                width: '100%', padding: '14px 0', marginTop: 4,
-                borderRadius: 12, border: 'none',
-                background: isLoading ? 'rgba(26,138,58,0.45)' : undefined,
-                color: '#fff', fontWeight: 700, fontSize: '0.95rem',
-                cursor: isLoading ? 'not-allowed' : 'pointer',
-                transition: 'transform 0.2s, box-shadow 0.2s',
-                fontFamily: 'inherit', letterSpacing: '0.01em',
-              }}
-            >
-              {isLoading ? (
-                <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
-                  <span style={{
-                    width: 16, height: 16, borderRadius: '50%',
-                    border: '2.5px solid rgba(255,255,255,0.3)', borderTopColor: '#fff',
-                    display: 'inline-block', animation: 'spin 0.75s linear infinite',
-                  }} />
-                  Signing in…
+              {/* Footer Separator */}
+              <div className="anim-fadeup-6" style={{ margin: '24px 0', display: 'flex', alignItems: 'center', gap: 12 }}>
+                <div style={{ flex: 1, height: 1, background: '#e0ede5' }} />
+                <span style={{ color: '#a0c4ac', fontSize: '0.72rem', whiteSpace: 'nowrap' }}>
+                  New to AgriConnect?
                 </span>
-              ) : 'Sign In →'}
-            </button>
-          </form>
+                <div style={{ flex: 1, height: 1, background: '#e0ede5' }} />
+              </div>
 
-          {/* Footer Separator */}
-          <div className="anim-fadeup-6" style={{ margin: '24px 0', display: 'flex', alignItems: 'center', gap: 12 }}>
-            <div style={{ flex: 1, height: 1, background: '#e0ede5' }} />
-            <span style={{ color: '#a0c4ac', fontSize: '0.72rem', whiteSpace: 'nowrap' }}>
-              New to AgriConnect?
-            </span>
-            <div style={{ flex: 1, height: 1, background: '#e0ede5' }} />
-          </div>
+              <p style={{ textAlign: 'center', color: '#6b9a7b', fontSize: '0.83rem', margin: 0 }}>
+                {"Contact your "}
+                <a href="#" style={{ color: '#1a8a3a', fontWeight: 700, textDecoration: 'none' }}
+                  onMouseEnter={e => (e.currentTarget.style.textDecoration = 'underline')}
+                  onMouseLeave={e => (e.currentTarget.style.textDecoration = 'none')}>
+                  District Agriculture Officer
+                </a>
+                {" to register"}
+              </p>
+            </>
+          )}
 
-          <p style={{ textAlign: 'center', color: '#6b9a7b', fontSize: '0.83rem', margin: 0 }}>
-            {"Contact your "}
-            <a href="#" style={{ color: '#1a8a3a', fontWeight: 700, textDecoration: 'none' }}
-              onMouseEnter={e => (e.currentTarget.style.textDecoration = 'underline')}
-              onMouseLeave={e => (e.currentTarget.style.textDecoration = 'none')}>
-              District Agriculture Officer
-            </a>
-            {" to register"}
-          </p>
+          {view === 'forgot' && (
+            <>
+              <div className="anim-fadeup-1" style={{ marginBottom: 28 }}>
+                <h2 style={{ color: '#0f2e18', fontWeight: 800, fontSize: '1.55rem',
+                  letterSpacing: '-0.025em', margin: '0 0 6px' }}>
+                  Forgot Password
+                </h2>
+                <p style={{ color: '#6b9a7b', fontSize: '0.82rem', margin: 0, lineHeight: 1.6 }}>
+                  Enter your registered email address to receive a verification code
+                </p>
+              </div>
+
+              <form onSubmit={handleForgotPasswordSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                {/* Email Address */}
+                <div className="anim-fadeup-2" style={{ position: 'relative', zIndex: 1 }}>
+                  <label style={{ display: 'block', color: '#3d6b50', fontSize: '0.78rem',
+                    fontWeight: 700, marginBottom: 8 }}>
+                    Email Address
+                  </label>
+                  <input type="email" value={forgotEmail} required
+                    onChange={e => setForgotEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    style={inp} onFocus={onFocus} onBlur={onBlur} />
+                </div>
+
+                {/* Submit Code Trigger */}
+                <button type="submit" disabled={isLoading}
+                  className={isLoading ? '' : 'signin-btn anim-fadeup-3'}
+                  style={{
+                    width: '100%', padding: '14px 0', marginTop: 4,
+                    borderRadius: 12, border: 'none',
+                    background: isLoading ? 'rgba(26,138,58,0.45)' : undefined,
+                    color: '#fff', fontWeight: 700, fontSize: '0.95rem',
+                    cursor: isLoading ? 'not-allowed' : 'pointer',
+                    transition: 'transform 0.2s, box-shadow 0.2s',
+                    fontFamily: 'inherit', letterSpacing: '0.01em',
+                  }}
+                >
+                  {isLoading ? (
+                    <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+                      <span style={{
+                        width: 16, height: 16, borderRadius: '50%',
+                        border: '2.5px solid rgba(255,255,255,0.3)', borderTopColor: '#fff',
+                        display: 'inline-block', animation: 'spin 0.75s linear infinite',
+                      }} />
+                      Sending code…
+                    </span>
+                  ) : 'Send Verification Code →'}
+                </button>
+              </form>
+
+              <div className="anim-fadeup-4" style={{ margin: '24px 0', display: 'flex', alignItems: 'center', gap: 12 }}>
+                <div style={{ flex: 1, height: 1, background: '#e0ede5' }} />
+              </div>
+
+              <p style={{ textAlign: 'center', color: '#6b9a7b', fontSize: '0.83rem', margin: 0 }}>
+                <button type="button" onClick={() => setView('login')}
+                  style={{
+                    background: 'none', border: 'none', color: '#1a8a3a',
+                    fontWeight: 700, cursor: 'pointer', padding: 0, textDecoration: 'none',
+                    fontFamily: 'inherit'
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.textDecoration = 'underline')}
+                  onMouseLeave={e => (e.currentTarget.style.textDecoration = 'none')}
+                >
+                  ← Back to Sign In
+                </button>
+              </p>
+            </>
+          )}
+
+          {view === 'reset' && (
+            <>
+              <div className="anim-fadeup-1" style={{ marginBottom: 28 }}>
+                <h2 style={{ color: '#0f2e18', fontWeight: 800, fontSize: '1.55rem',
+                  letterSpacing: '-0.025em', margin: '0 0 6px' }}>
+                  Reset Password
+                </h2>
+                <p style={{ color: '#6b9a7b', fontSize: '0.82rem', margin: 0, lineHeight: 1.6 }}>
+                  Enter the verification code sent to <strong>{forgotEmail}</strong> and your new password
+                </p>
+              </div>
+
+              <form onSubmit={handleResetPasswordSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                {/* Verification Code */}
+                <div className="anim-fadeup-2" style={{ position: 'relative', zIndex: 1 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                    <label style={{ color: '#3d6b50', fontSize: '0.78rem', fontWeight: 700 }}>
+                      Verification Code
+                    </label>
+                    <button type="button" onClick={handleResendCode} disabled={isLoading || cooldown > 0}
+                      style={{
+                        background: 'none', border: 'none',
+                        color: cooldown > 0 || isLoading ? '#a0c4ac' : '#1a8a3a',
+                        fontSize: '0.78rem', fontWeight: 700,
+                        cursor: cooldown > 0 || isLoading ? 'not-allowed' : 'pointer',
+                        padding: 0, outline: 'none', textDecoration: 'none',
+                        fontFamily: 'inherit'
+                      }}
+                      onMouseEnter={e => {
+                        if (cooldown === 0 && !isLoading) {
+                          e.currentTarget.style.textDecoration = 'underline';
+                        }
+                      }}
+                      onMouseLeave={e => {
+                        e.currentTarget.style.textDecoration = 'none';
+                      }}
+                    >
+                      {cooldown > 0 ? `Resend in ${cooldown}s` : 'Resend Code'}
+                    </button>
+                  </div>
+                  <input type="text" value={otpCode} required maxLength={6}
+                    onChange={e => setOtpCode(e.target.value.replace(/\D/g, ''))}
+                    placeholder="Enter 6-digit code"
+                    style={{ ...inp, letterSpacing: '4px', textAlign: 'center', fontWeight: 'bold', fontSize: '1.1rem' }}
+                    onFocus={onFocus} onBlur={onBlur} />
+                </div>
+
+                {/* New Password */}
+                <div className="anim-fadeup-3" style={{ position: 'relative', zIndex: 1 }}>
+                  <label style={{ display: 'block', color: '#3d6b50', fontSize: '0.78rem',
+                    fontWeight: 700, marginBottom: 8 }}>
+                    New Password
+                  </label>
+                  <div style={{ position: 'relative' }}>
+                    <input
+                      type={showNewPassword ? 'text' : 'password'} value={newPassword} required
+                      onChange={e => setNewPassword(e.target.value)}
+                      placeholder="Enter new password"
+                      style={{ ...inp, paddingRight: 46 }}
+                      onFocus={onFocus} onBlur={onBlur}
+                    />
+                    <button type="button" onClick={() => setShowNewPassword(s => !s)}
+                      style={{
+                        position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)',
+                        background: 'none', border: 'none', cursor: 'pointer',
+                        color: '#8aaa98', padding: 2, display: 'flex', lineheight: 1,
+                      }}>
+                      {showNewPassword
+                        ? <EyeOff style={{ width: 16, height: 16 }} />
+                        : <Eye     style={{ width: 16, height: 16 }} />}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Confirm Password */}
+                <div className="anim-fadeup-4" style={{ position: 'relative', zIndex: 1 }}>
+                  <label style={{ display: 'block', color: '#3d6b50', fontSize: '0.78rem',
+                    fontWeight: 700, marginBottom: 8 }}>
+                    Confirm Password
+                  </label>
+                  <input
+                    type={showNewPassword ? 'text' : 'password'} value={confirmPassword} required
+                    onChange={e => setConfirmPassword(e.target.value)}
+                    placeholder="Confirm new password"
+                    style={inp}
+                    onFocus={onFocus} onBlur={onBlur}
+                  />
+                </div>
+
+                {/* Submit Reset Password */}
+                <button type="submit" disabled={isLoading}
+                  className={isLoading ? '' : 'signin-btn anim-fadeup-5'}
+                  style={{
+                    width: '100%', padding: '14px 0', marginTop: 4,
+                    borderRadius: 12, border: 'none',
+                    background: isLoading ? 'rgba(26,138,58,0.45)' : undefined,
+                    color: '#fff', fontWeight: 700, fontSize: '0.95rem',
+                    cursor: isLoading ? 'not-allowed' : 'pointer',
+                    transition: 'transform 0.2s, box-shadow 0.2s',
+                    fontFamily: 'inherit', letterSpacing: '0.01em',
+                  }}
+                >
+                  {isLoading ? (
+                    <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+                      <span style={{
+                        width: 16, height: 16, borderRadius: '50%',
+                        border: '2.5px solid rgba(255,255,255,0.3)', borderTopColor: '#fff',
+                        display: 'inline-block', animation: 'spin 0.75s linear infinite',
+                      }} />
+                      Resetting password…
+                    </span>
+                  ) : 'Reset Password'}
+                </button>
+              </form>
+
+              <div className="anim-fadeup-6" style={{ margin: '24px 0', display: 'flex', alignItems: 'center', gap: 12 }}>
+                <div style={{ flex: 1, height: 1, background: '#e0ede5' }} />
+              </div>
+
+              <p style={{ textAlign: 'center', color: '#6b9a7b', fontSize: '0.83rem', margin: 0 }}>
+                <button type="button" onClick={() => setView('login')}
+                  style={{
+                    background: 'none', border: 'none', color: '#1a8a3a',
+                    fontWeight: 700, cursor: 'pointer', padding: 0, textDecoration: 'none',
+                    fontFamily: 'inherit'
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.textDecoration = 'underline')}
+                  onMouseLeave={e => (e.currentTarget.style.textDecoration = 'none')}
+                >
+                  ← Back to Sign In
+                </button>
+              </p>
+            </>
+          )}
 
           {/* Secure details badges */}
           <div style={{ marginTop: 28, paddingTop: 22, borderTop: '1px solid #e0ede5',
