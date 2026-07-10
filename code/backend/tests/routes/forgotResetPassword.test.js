@@ -155,4 +155,3 @@ describe("Forgot & Reset Password Routes", () => {
     });
   });
 });
-});
