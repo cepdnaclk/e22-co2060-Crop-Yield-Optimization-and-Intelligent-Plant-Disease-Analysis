@@ -21,7 +21,7 @@
 import bcrypt from "bcrypt";
 import { randomInt } from "node:crypto";
 import User from "../models/user.js";
-import { sendOtpEmail } from "../services/emailService.js";
+import { sendOtpEmail, sendPasswordResetSuccessEmail } from "../services/emailService.js";
 
 const OTP_VALIDITY_MS   = 15 * 60 * 1000; // 15 minutes
 const RESEND_COOLDOWN_MS = 60 * 1000;      // 1 minute resend cooldown
@@ -324,4 +324,132 @@ export function consumePendingVerification(email) {
   pendingOtps.delete(normalizedEmail);
 
   return pending.verified === true;
+}
+
+/**
+ * POST /api/users/forgot-password
+ * Body: { email }
+ *
+ * Sends a password reset OTP to an existing user.
+ * Returns 404 if the user doesn't exist.
+ */
+export async function forgotPassword(req, res) {
+  const { email } = req.body;
+
+  if (!email || typeof email !== "string") {
+    return res.status(400).json({ message: "Email is required." });
+  }
+
+  const normalizedEmail = email.toLowerCase().trim();
+
+  try {
+    const user = await User.findOne({ email: normalizedEmail });
+    if (!user) {
+      return res.status(404).json({ message: "No account exists with this email address." });
+    }
+
+    // Cooldown check (same as sendOtp)
+    if (
+      user.emailOtp?.cooldownUntil &&
+      new Date() < new Date(user.emailOtp.cooldownUntil)
+    ) {
+      const remaining = Math.ceil(
+        (new Date(user.emailOtp.cooldownUntil) - new Date()) / 1000
+      );
+      return res.status(429).json({
+        message: `Please wait ${remaining} second(s) before requesting a new code.`,
+        cooldownSeconds: remaining,
+      });
+    }
+
+    const code = generateOtpCode();
+    const hashedCode = await bcrypt.hash(code, BCRYPT_ROUNDS);
+    const now = Date.now();
+    const expiresAt = new Date(now + OTP_VALIDITY_MS);
+    const cooldownUntil = new Date(now + RESEND_COOLDOWN_MS);
+
+    user.emailOtp = { code: hashedCode, expiresAt, cooldownUntil };
+    await user.save();
+
+    await sendOtpEmail({
+      email: normalizedEmail,
+      code,
+      firstName: user.firstName || "there",
+    });
+
+    return res.json({
+      message: "Verification code sent to your email. Please check your inbox.",
+      cooldownSeconds: Math.ceil(RESEND_COOLDOWN_MS / 1000),
+    });
+  } catch (error) {
+    console.error("[OtpController] Error in forgotPassword:", error);
+    return res.status(500).json({ message: "Failed to send reset code. Please try again." });
+  }
+}
+
+/**
+ * POST /api/users/reset-password
+ * Body: { email, code, newPassword }
+ *
+ * Verifies OTP and updates the user's password.
+ */
+export async function resetPassword(req, res) {
+  const { email, code, newPassword } = req.body;
+
+  if (!email || !code || !newPassword) {
+    return res.status(400).json({ message: "Email, code, and new password are required." });
+  }
+
+  const normalizedEmail = email.toLowerCase().trim();
+  const trimmedCode = String(code).trim();
+
+  try {
+    const user = await User.findOne({ email: normalizedEmail });
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    if (!user.emailOtp?.code || !user.emailOtp?.expiresAt) {
+      return res.status(400).json({ message: "No verification code found. Please request a new one." });
+    }
+
+    if (new Date() > new Date(user.emailOtp.expiresAt)) {
+      user.emailOtp = { code: null, expiresAt: null, cooldownUntil: null };
+      await user.save();
+      return res.status(400).json({
+        message: "Verification code expired. Please request a new one.",
+        expired: true,
+      });
+    }
+
+    const isMatch = await bcrypt.compare(trimmedCode, user.emailOtp.code);
+    if (!isMatch) {
+      return res.status(400).json({
+        message: "Invalid verification code. Please try again.",
+        invalid: true,
+      });
+    }
+
+    // Hash the new password (using 10 rounds as in userController.js)
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update password, mark email verified, and clear OTP fields
+    user.password = hashedNewPassword;
+    user.emailVerified = true;
+    user.emailOtp = { code: null, expiresAt: null, cooldownUntil: null };
+    await user.save();
+
+    // Send confirmation email
+    sendPasswordResetSuccessEmail({
+      email: normalizedEmail,
+      firstName: user.firstName,
+    }).catch((err) =>
+      console.error("[OtpController] Failed to send password reset success email:", err.message)
+    );
+
+    return res.json({ message: "Password reset successfully. You can now login." });
+  } catch (error) {
+    console.error("[OtpController] Error in resetPassword:", error);
+    return res.status(500).json({ message: "Failed to reset password. Please try again." });
+  }
 }

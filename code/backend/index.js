@@ -63,6 +63,8 @@ app.use(
             '/api/users',
             '/api/users/send-otp',
             '/api/users/verify-otp',
+            '/api/users/forgot-password',
+            '/api/users/reset-password',
         ]
         
         // Skip token verification for public endpoints (including geocode proxy)
