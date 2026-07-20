@@ -175,6 +175,13 @@
     "locationPlaceholder": "Search address or click on map...",
     "notes": "Additional Notes",
     "notesPlaceholder": "Add any additional observations or symptoms...",
+    "notesOptional": "Additional Notes (Optional)",
+    "selectedCropImage": "Selected crop image",
+    "quickTips": "Quick Tips",
+    "quickTipClearPhotos": "Take clear, well-lit photos of affected leaves",
+    "quickTipCloseWide": "Capture both close and wide views of the affected area",
+    "quickTipLocation": "Include the field location to improve diagnosis",
+    "quickTipSymptomDate": "Note when symptoms were first observed",
     "diseaseDetails": "Disease Details & Recommendations",
     "analyzeButton": "Analyze Crop Image",
     "analyzing": "Analyzing image...",
@@ -188,7 +195,27 @@
     "diseaseHistory": "Disease History for This Farm",
     "noFarmsMessage": "Please add a farm first to report diseases.",
     "failedToLoad": "Failed to load your farms",
+    "diseasePredictionFailed": "Disease prediction failed",
+    "analyzedButFailedToSave": "Analysis completed, but failed to save the report",
     "analysisError": "Failed to analyze the image",
+    "selectFarmBeforeAnalyze": "Select a farm before analysis",
+    "crop": "Crop",
+    "district": "District",
+    "dsDivision": "Division",
+    "farm": "farm",
+    "farms": "farms",
+    "chooseFarm": "Choose Farm",
+    "unnamedFarm": "Unnamed farm",
+    "notAvailable": "Not available",
+    "farmId": "Farm ID",
+    "selected": "Selected",
+    "uploadingAndAnalyzing": "Uploading and analyzing...",
+    "analyzeDisease": "Analyze Disease",
+    "analysisComplete": "Analysis complete",
+    "aiIdentifiedDisease": "AI has identified the likely disease.",
+    "detectedDisease": "Detected disease",
+    "recommendedTreatment": "Recommended treatment",
+    "backendProbabilities": "Model probabilities",
     "diseasesList": {
       "bacterialLeafBlight": "Bacterial Leaf Blight",
       "bacterialLeafBlightDesc": "A bacterial disease that causes wilting, yellowing, and leaf drying.",
@@ -268,7 +295,20 @@
     "harvestTrend": "Harvest Trend (Last 6 Months)",
     "harvestQty": "Harvest Qty",
     "cropVarietyBreakdown": "Crop Variety Breakdown",
-    "noData": "No data"
+    "noData": "No data",
+    "requiresAttention": "Requires attention",
+    "export": "Export",
+    "cropVarietyDistribution": "Crop Variety Distribution",
+    "cropVarietiesSummary": "Crop Varieties Summary",
+    "variety": "Variety",
+    "acres": "Acres",
+    "percentage": "Percentage",
+    "diseaseReportsSummary": "Disease Reports Summary",
+    "diseaseType": "Disease Type",
+    "downloadReports": "Download Reports",
+    "cropDataReport": "Crop Data Report",
+    "harvestSummary": "Harvest Summary",
+    "diseaseReportsBtn": "Disease Reports"
   },
   "sidebar": {
     "portal": "Farmer Portal",
@@ -311,7 +351,14 @@
     "statusResolved": "Resolved",
     "statusUnderReview": "Under Review",
     "statusPending": "Pending",
-    "dateSubmitted": "Date Submitted"
+    "dateSubmitted": "Date Submitted",
+    "submitReport": "Submit Report",
+    "totalSubmissions": "{{count}} total submissions",
+    "loadingMessages": "Loading messages...",
+    "noMessages": "No messages yet",
+    "submitFirstReport": "Submit your first report using the form above",
+    "attachment": "Attachment",
+    "browse": "browse"
   },
   "composeMessage": {
     "newMessage": "New Message",
@@ -387,6 +434,7 @@
   "diseaseLocationPicker": {
     "location": "Location / Plot Details",
     "searchAddress": "Search address or click on map...",
+    "mapHelp": "Click to pinpoint your location on the map",
     "noSuggestions": "No suggestions found"
   },
   "emailVerification": {
@@ -439,5 +487,14 @@
     "created": "Created successfully",
     "submitted": "Submitted successfully"
   },
-  "auto": {}
+  "auto": {},
+  "reportFilters": {
+    "year": "Year",
+    "season": "Season",
+    "crop": "Crop",
+    "allYears": "All Years",
+    "allSeasons": "All Seasons",
+    "allCrops": "All Crops",
+    "resetFilters": "Reset Filters"
+  }
 }
