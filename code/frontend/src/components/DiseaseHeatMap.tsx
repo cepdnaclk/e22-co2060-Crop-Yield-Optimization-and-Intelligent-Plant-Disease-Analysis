@@ -1,21 +1,23 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { svgPaths } from 'srilanka-districts-map/dist/districtData';
 import { farmAPI } from '../services/api';
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { translateDistrict } from '../utils/locationTranslations';
 
-// Tier definitions: color hex and label
+// Tier definitions: color hex and key for i18n
 const TIERS = [
-  { max: 0, color: '#ffffff', label: 'None' },
-  { max: 124, color: '#fff7ec', label: 'Very Low' },
-  { max: 249, color: '#fee8c8', label: 'Low' },
-  { max: 374, color: '#fdd49e', label: 'Warning' },
-  { max: 499, color: '#fdbb84', label: 'Alert' },
-  { max: 624, color: '#fc8d59', label: 'Moderate' },
-  { max: 749, color: '#ef6548', label: 'Elevated' },
-  { max: 874, color: '#d7301f', label: 'High' },
-  { max: 999, color: '#b30000', label: 'Very High' },
-  { max: Infinity, color: '#7f0000', label: 'Critical' },
+  { max: 0, color: '#ffffff', key: 'none' },
+  { max: 124, color: '#fff7ec', key: 'veryLow' },
+  { max: 249, color: '#fee8c8', key: 'low' },
+  { max: 374, color: '#fdd49e', key: 'warning' },
+  { max: 499, color: '#fdbb84', key: 'alert' },
+  { max: 624, color: '#fc8d59', key: 'moderate' },
+  { max: 749, color: '#ef6548', key: 'elevated' },
+  { max: 874, color: '#d7301f', key: 'high' },
+  { max: 999, color: '#b30000', key: 'veryHigh' },
+  { max: Infinity, color: '#7f0000', key: 'critical' },
 ];
 
 const getTier = (count: number) => {
@@ -27,14 +29,21 @@ const getTier = (count: number) => {
 
 const getColorByCount = (count: number): string => getTier(count).color;
 
-const DISPLAY_NAME_OVERRIDES: Record<string, string> = {
-  'moneragala': 'Monaragala',
-  'rathnapura': 'Ratnapura',
+const translateDiseaseName = (
+  disease: string,
+  t: any
+) => {
+  switch (disease) {
+    case "Bacterial leaf blight":
+      return t("heatmap.bacterialLeafBlight");
+    case "Brown spot":
+      return t("heatmap.brownSpot");
+    case "Leaf smut":
+      return t("heatmap.leafSmut");
+    default:
+      return disease;
+  }
 };
-
-const getDistrictName = (key: string) =>
-  DISPLAY_NAME_OVERRIDES[key] ||
-  key.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
 interface DistrictStats {
   total: number;
@@ -42,6 +51,7 @@ interface DistrictStats {
 }
 
 export const DiseaseHeatMap: React.FC = () => {
+  const { t, i18n } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<Record<string, DistrictStats>>({});
   const [hoveredDistrict, setHoveredDistrict] = useState<string | null>(null);
@@ -82,7 +92,7 @@ export const DiseaseHeatMap: React.FC = () => {
 
   const handleStartChange = (value: string) => {
     if (customEnd && value && new Date(value) > new Date(customEnd)) {
-      toast.error('Start date cannot be later than end date');
+      toast.error(t('heatmap.invalidStartDate'));
       return;
     }
     setCustomStart(value);
@@ -90,7 +100,7 @@ export const DiseaseHeatMap: React.FC = () => {
 
   const handleEndChange = (value: string) => {
     if (customStart && value && new Date(value) < new Date(customStart)) {
-      toast.error('End date cannot be earlier than start date');
+      toast.error(t('heatmap.invalidEndDate'));
       return;
     }
     setCustomEnd(value);
@@ -171,65 +181,218 @@ export const DiseaseHeatMap: React.FC = () => {
       <div className="flex flex-col sm:flex-row gap-4">
         {/* Filters panel */}
         <div className="sm:w-52 flex-shrink-0 space-y-3">
+
           {/* Disease filter */}
           <div>
-            <label className="block text-xs font-semibold text-gray-600 mb-1.5">Disease Type</label>
-            <select
-              value={diseaseFilter}
-              onChange={(e) => setDiseaseFilter(e.target.value)}
-              className="bg-white border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 shadow-sm cursor-pointer"
-            >
-              <option value="all">All Diseases</option>
-              <option value="Bacterial leaf blight">Bacterial leaf blight</option>
-              <option value="Brown spot">Brown spot</option>
-              <option value="Leaf smut">Leaf smut</option>
-            </select>
+            <label style={{
+              display: 'flex', alignItems: 'center', gap: '5px',
+              fontSize: '11px', fontWeight: 700, color: '#374151',
+              textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '6px',
+            }}>
+              <span style={{
+                width: '16px', height: '16px', borderRadius: '4px',
+                background: 'linear-gradient(135deg, #059669, #10b981)',
+                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                flexShrink: 0,
+              }}>
+                <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+              </span>
+              {t('heatmap.diseaseType')}
+            </label>
+            <div style={{ position: 'relative' }}>
+              <select
+                value={diseaseFilter}
+                onChange={(e) => setDiseaseFilter(e.target.value)}
+                style={{
+                  width: '100%', padding: '9px 36px 9px 12px',
+                  background: 'linear-gradient(to bottom, #ffffff, #f9fafb)',
+                  border: '1.5px solid #d1d5db',
+                  borderRadius: '10px',
+                  fontSize: '13px', fontWeight: 500, color: '#111827',
+                  cursor: 'pointer', outline: 'none',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+                  appearance: 'none' as const,
+                  WebkitAppearance: 'none' as const,
+                  transition: 'border-color 0.2s, box-shadow 0.2s',
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#10b981';
+                  e.target.style.boxShadow = '0 0 0 3px rgba(16,185,129,0.12)';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#d1d5db';
+                  e.target.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)';
+                }}
+              >
+                <option value="all">{t('heatmap.allDiseases')}</option>
+                <option value="Bacterial leaf blight">{t('heatmap.bacterialLeafBlight')}</option>
+                <option value="Brown spot">{t('heatmap.brownSpot')}</option>
+                <option value="Leaf smut">{t('heatmap.leafSmut')}</option>
+              </select>
+              {/* Custom chevron */}
+              <div style={{
+                position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)',
+                pointerEvents: 'none', color: '#6b7280',
+              }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </div>
+            </div>
           </div>
 
           {/* Time filter */}
           <div>
-            <label className="block text-xs font-semibold text-gray-600 mb-1.5">Time Range</label>
-            <select
-              value={timeFilter}
-              onChange={(e) => setTimeFilter(e.target.value)}
-              className="bg-white border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 shadow-sm cursor-pointer"
-            >
-              <option value="1">Last 1 Month</option>
-              <option value="3">Last 3 Months</option>
-              <option value="6">Last 6 Months</option>
-              <option value="custom">Custom Range</option>
-            </select>
+            <label style={{
+              display: 'flex', alignItems: 'center', gap: '5px',
+              fontSize: '11px', fontWeight: 700, color: '#374151',
+              textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '6px',
+            }}>
+              <span style={{
+                width: '16px', height: '16px', borderRadius: '4px',
+                background: 'linear-gradient(135deg, #0ea5e9, #3b82f6)',
+                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                flexShrink: 0,
+              }}>
+                <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                </svg>
+              </span>
+              {t('heatmap.timeRange')}
+            </label>
+            <div style={{ position: 'relative' }}>
+              <select
+                value={timeFilter}
+                onChange={(e) => setTimeFilter(e.target.value)}
+                style={{
+                  width: '100%', padding: '9px 36px 9px 12px',
+                  background: 'linear-gradient(to bottom, #ffffff, #f9fafb)',
+                  border: '1.5px solid #d1d5db',
+                  borderRadius: '10px',
+                  fontSize: '13px', fontWeight: 500, color: '#111827',
+                  cursor: 'pointer', outline: 'none',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+                  appearance: 'none' as const,
+                  WebkitAppearance: 'none' as const,
+                  transition: 'border-color 0.2s, box-shadow 0.2s',
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#3b82f6';
+                  e.target.style.boxShadow = '0 0 0 3px rgba(59,130,246,0.12)';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#d1d5db';
+                  e.target.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)';
+                }}
+              >
+                <option value="1">{t('heatmap.last1Month')}</option>
+                <option value="3">{t('heatmap.last3Months')}</option>
+                <option value="6">{t('heatmap.last6Months')}</option>
+                <option value="custom">{t('heatmap.customRange')}</option>
+              </select>
+              {/* Custom chevron */}
+              <div style={{
+                position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)',
+                pointerEvents: 'none', color: '#6b7280',
+              }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </div>
+            </div>
           </div>
 
           {/* Custom date range picker */}
           {timeFilter === 'custom' && (
-            <div className="bg-gray-50 p-3 rounded-lg border border-gray-200 space-y-3">
+            <div style={{
+              background: 'linear-gradient(135deg, #f0fdf4, #f8fafc)',
+              border: '1.5px solid #bbf7d0',
+              borderRadius: '12px',
+              padding: '12px',
+              display: 'flex', flexDirection: 'column', gap: '10px',
+            }}>
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">Start Date</label>
+                <label style={{
+                  display: 'flex', alignItems: 'center', gap: '4px',
+                  fontSize: '11px', fontWeight: 600, color: '#374151', marginBottom: '5px',
+                }}>
+                  <span style={{
+                    fontSize: '10px', background: '#dcfce7', color: '#15803d',
+                    borderRadius: '4px', padding: '1px 5px', fontWeight: 700,
+                  }}>{t('heatmap.from')}</span>
+                </label>
                 <input
                   type="date"
                   value={customStart}
                   max={customEnd || undefined}
                   onChange={(e) => handleStartChange(e.target.value)}
-                  className="w-full text-sm border border-gray-300 rounded-lg p-2 focus:ring-green-500 focus:border-green-500"
+                  style={{
+                    width: '100%', fontSize: '12px', fontWeight: 500,
+                    border: '1.5px solid #d1d5db', borderRadius: '8px',
+                    padding: '7px 10px', outline: 'none', background: '#fff',
+                    color: '#111827', boxSizing: 'border-box' as const,
+                    transition: 'border-color 0.2s, box-shadow 0.2s',
+                  }}
+                  onFocus={(e) => { e.target.style.borderColor = '#10b981'; e.target.style.boxShadow = '0 0 0 3px rgba(16,185,129,0.1)'; }}
+                  onBlur={(e) => { e.target.style.borderColor = '#d1d5db'; e.target.style.boxShadow = 'none'; }}
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">End Date</label>
+                <label style={{
+                  display: 'flex', alignItems: 'center', gap: '4px',
+                  fontSize: '11px', fontWeight: 600, color: '#374151', marginBottom: '5px',
+                }}>
+                  <span style={{
+                    fontSize: '10px', background: '#dbeafe', color: '#1d4ed8',
+                    borderRadius: '4px', padding: '1px 5px', fontWeight: 700,
+                  }}>{t('heatmap.to')}</span>
+                </label>
                 <input
                   type="date"
                   value={customEnd}
                   min={customStart || undefined}
                   onChange={(e) => handleEndChange(e.target.value)}
-                  className="w-full text-sm border border-gray-300 rounded-lg p-2 focus:ring-green-500 focus:border-green-500"
+                  style={{
+                    width: '100%', fontSize: '12px', fontWeight: 500,
+                    border: '1.5px solid #d1d5db', borderRadius: '8px',
+                    padding: '7px 10px', outline: 'none', background: '#fff',
+                    color: '#111827', boxSizing: 'border-box' as const,
+                    transition: 'border-color 0.2s, box-shadow 0.2s',
+                  }}
+                  onFocus={(e) => { e.target.style.borderColor = '#3b82f6'; e.target.style.boxShadow = '0 0 0 3px rgba(59,130,246,0.1)'; }}
+                  onBlur={(e) => { e.target.style.borderColor = '#d1d5db'; e.target.style.boxShadow = 'none'; }}
                 />
               </div>
               <button
                 onClick={handleApplyCustomDate}
                 disabled={!customStart || !customEnd}
-                className="w-full bg-green-600 hover:bg-green-700 text-white text-sm font-medium py-2 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                style={{
+                  width: '100%', padding: '9px',
+                  background: customStart && customEnd
+                    ? 'linear-gradient(135deg, #059669, #10b981)'
+                    : '#e5e7eb',
+                  color: customStart && customEnd ? 'white' : '#9ca3af',
+                  border: 'none', borderRadius: '9px',
+                  fontSize: '13px', fontWeight: 700,
+                  cursor: customStart && customEnd ? 'pointer' : 'not-allowed',
+                  boxShadow: customStart && customEnd ? '0 2px 8px rgba(16,185,129,0.3)' : 'none',
+                  transition: 'all 0.2s ease',
+                  letterSpacing: '0.03em',
+                }}
+                onMouseEnter={(e) => {
+                  if (customStart && customEnd) {
+                    e.currentTarget.style.boxShadow = '0 4px 14px rgba(16,185,129,0.4)';
+                    e.currentTarget.style.transform = 'translateY(-1px)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.boxShadow = customStart && customEnd ? '0 2px 8px rgba(16,185,129,0.3)' : 'none';
+                  e.currentTarget.style.transform = 'none';
+                }}
               >
-                Apply
+                {t('heatmap.applyFilter')}
               </button>
             </div>
           )}
@@ -241,7 +404,7 @@ export const DiseaseHeatMap: React.FC = () => {
             {loading && (
               <div className="absolute inset-0 bg-white/75 backdrop-blur-[1.5px] flex flex-col items-center justify-center z-20 rounded-lg transition-opacity duration-200">
                 <Loader2 className="w-7 h-7 text-green-600 animate-spin mb-1.5" />
-                <p className="text-xs text-gray-500 font-medium">Loading map…</p>
+                <p className="text-xs text-gray-500 font-medium">{t('heatmap.loadingMap')}</p>
               </div>
             )}
 
@@ -296,7 +459,7 @@ export const DiseaseHeatMap: React.FC = () => {
           >
             {[...TIERS].reverse().map((tier) => (
               <div
-                key={tier.label}
+                key={tier.key}
                 style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
               >
                 <span
@@ -311,7 +474,7 @@ export const DiseaseHeatMap: React.FC = () => {
                   }}
                 />
                 <span style={{ fontSize: '11px', color: '#4b5563', lineHeight: 1 }}>
-                  {tier.label}
+                  {t(`heatmap.legend.${tier.key}`)}
                 </span>
               </div>
             ))}
@@ -362,16 +525,16 @@ export const DiseaseHeatMap: React.FC = () => {
             >
               <div>
                 <span style={{ fontWeight: 700, color: '#fff' }}>
-                  {getDistrictName(activeDistrict)}
+                  {translateDistrict(activeDistrict, i18n.language as 'en' | 'si')}
                 </span>
                 <span style={{ margin: '0 6px', color: '#64748b' }}>|</span>
                 <span style={{ fontWeight: 600, color: '#f1f5f9' }}>
                   {stats[activeDistrict]?.total || 0}
                 </span>
-                <span style={{ color: '#94a3b8', marginLeft: '3px' }}>reports</span>
+                <span style={{ color: '#94a3b8', marginLeft: '3px' }}>{t('heatmap.reports')}</span>
                 <span style={{ margin: '0 6px', color: '#64748b' }}>|</span>
                 <span style={{ fontWeight: 700, color: '#fff' }}>
-                  {getTier(stats[activeDistrict]?.total || 0).label}
+                  {t(`heatmap.legend.${getTier(stats[activeDistrict]?.total || 0).key}`)}
                 </span>
               </div>
               {diseaseFilter === 'all' && stats[activeDistrict]?.breakdown && (
@@ -380,12 +543,12 @@ export const DiseaseHeatMap: React.FC = () => {
                     .filter(([_, count]) => count > 0)
                     .map(([diseaseName, count]) => (
                       <div key={diseaseName} className="flex justify-between gap-4 text-[11px] text-slate-300">
-                        <span>{diseaseName}:</span>
+                        <span>{translateDiseaseName(diseaseName, t)}:</span>
                         <span className="font-semibold text-white">{count}</span>
                       </div>
                     ))}
                   {Object.values(stats[activeDistrict].breakdown).every(count => count === 0) && (
-                    <div className="text-slate-500 italic text-[11px]">No active disease cases</div>
+                    <div className="text-slate-500 italic text-[11px]">{t('heatmap.noCases')}</div>
                   )}
                 </div>
               )}

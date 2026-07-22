@@ -62,6 +62,13 @@ export function AddressLocationPicker({
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
+  // The map's click handler is bound once (empty-dep effect), so it would otherwise
+  // capture the props from the first render. Keep the latest ones in a ref.
+  const onAddressChangeRef = useRef(onAddressChange);
+  useEffect(() => {
+    onAddressChangeRef.current = onAddressChange;
+  }, [onAddressChange]);
+
   // Click outside to close suggestions
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -159,14 +166,14 @@ export function AddressLocationPicker({
 
         // Update state
         setQuery(addr);
-        onAddressChange(addr);
+        onAddressChangeRef.current(addr);
         setSelectedLocation({ lat, lng, address: addr });
         setConfirmed(false);
       } catch (err) {
         console.error('Reverse geocode error:', err);
         const fallbackAddr = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
         setQuery(fallbackAddr);
-        onAddressChange(fallbackAddr);
+        onAddressChangeRef.current(fallbackAddr);
         setSelectedLocation({ lat, lng, address: fallbackAddr });
         setConfirmed(false);
       } finally {

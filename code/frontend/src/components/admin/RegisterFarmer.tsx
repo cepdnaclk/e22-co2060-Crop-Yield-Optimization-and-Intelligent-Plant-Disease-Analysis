@@ -840,13 +840,13 @@ export function RegisterFarmer() {
 
                 <AddressLocationPicker
                   address={farmerData.address}
-                  onAddressChange={(addr) => setFarmerData({ ...farmerData, address: addr })}
-                  onLocationConfirm={(data) => setFarmerData({
-                    ...farmerData,
+                  onAddressChange={(addr) => setFarmerData(prev => ({ ...prev, address: addr }))}
+                  onLocationConfirm={(data) => setFarmerData(prev => ({
+                    ...prev,
                     address: data.address,
                     latitude: data.latitude,
                     longitude: data.longitude,
-                  })}
+                  }))}
                   latitude={farmerData.latitude}
                   longitude={farmerData.longitude}
                 />
