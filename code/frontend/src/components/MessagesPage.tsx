@@ -2,8 +2,11 @@ import { useState, useEffect } from 'react';
 import { Send, Upload, FileText, Trash2, AlertCircle, CheckCircle2, Clock, Loader2, MessageSquare, Shield, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import { inquiryAPI } from '../services/api';
+import { useTranslation } from 'react-i18next';
 
 export function MessagesPage() {
+  const { t } = useTranslation();
+
   const [subject, setSubject] = useState('');
   const [category, setCategory] = useState('');
   const [message, setMessage] = useState('');
@@ -28,17 +31,17 @@ export function MessagesPage() {
       }
     } catch (error) {
       console.error("Failed to fetch inquiries", error);
-      toast.error("Failed to load your previous messages");
+      toast.error(t('messagesPage.loadingMessages'));
     } finally { setLoading(false); }
   };
 
   const categories = [
-    { value: 'Natural Disaster', icon: '🌪️', color: '#F97316' },
-    { value: 'Technical Issue', icon: '⚙️', color: '#3B82F6' },
-    { value: 'Complaint', icon: '📋', color: '#8B5CF6' },
-    { value: 'Subsidy Inquiry', icon: '💰', color: '#10B981' },
-    { value: 'Equipment Damage', icon: '🔧', color: '#EF4444' },
-    { value: 'Other', icon: '📝', color: '#6B7280' },
+    { value: 'Natural Disaster',  label: t('composeMessage.naturalDisaster'),  icon: '🌪️', color: '#F97316' },
+    { value: 'Technical Issue',   label: t('composeMessage.technicalIssue'),   icon: '⚙️', color: '#3B82F6' },
+    { value: 'Complaint',         label: t('composeMessage.complaint'),         icon: '📋', color: '#8B5CF6' },
+    { value: 'Subsidy Inquiry',   label: t('composeMessage.subsidyInquiry'),   icon: '💰', color: '#10B981' },
+    { value: 'Equipment Damage',  label: t('composeMessage.equipmentDamage'),  icon: '🔧', color: '#EF4444' },
+    { value: 'Other',             label: t('composeMessage.other'),             icon: '📝', color: '#6B7280' },
   ];
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,39 +69,39 @@ export function MessagesPage() {
             newInquiry = uploadResponse.inquiry || newInquiry;
           } catch (uploadError) {
             console.error('Error uploading document:', uploadError);
-            toast.error('Message submitted but document upload failed');
+            toast.error(t('messagesPage.documentUploadFailed'));
           }
         }
         setSubmittedMessages([newInquiry, ...submittedMessages]);
         setSubject(''); setCategory(''); setMessage(''); setUploadedFile(null);
-        toast.success('Message submitted successfully!');
+        toast.success(t('messagesPage.submitted'));
       } catch (error) {
         console.error("Failed to submit inquiry", error);
-        toast.error("Failed to submit message. Please try again.");
+        toast.error(t('messagesPage.failedToSubmit'));
       } finally { setSubmitting(false); }
     }
   };
 
-  const pendingCount = submittedMessages.filter(m => m.status === 'Pending').length;
+  const pendingCount  = submittedMessages.filter(m => m.status === 'Pending').length;
   const resolvedCount = submittedMessages.filter(m => m.status === 'Resolved').length;
-  const totalCount = submittedMessages.length;
-  const formComplete = subject.trim() && category && message.trim();
+  const totalCount    = submittedMessages.length;
+  const formComplete  = subject.trim() && category && message.trim();
 
   const getCategoryStyle = (cat: string) => {
     const found = categories.find(c => c.value === cat);
-    return found || { icon: '📝', color: '#6B7280' };
+    return found || { label: cat, icon: '📝', color: '#6B7280' };
   };
 
   const statusConfig: Record<string, { bg: string; text: string; border: string; icon: any; label: string }> = {
-    Resolved: { bg: '#ECFDF5', text: '#065F46', border: '#6EE7B7', icon: CheckCircle2, label: 'Resolved' },
-    'Under Review': { bg: '#EFF6FF', text: '#1E40AF', border: '#93C5FD', icon: Clock, label: 'Under Review' },
-    Pending: { bg: '#FFFBEB', text: '#92400E', border: '#FCD34D', icon: AlertCircle, label: 'Pending' },
+    Resolved:     { bg: '#ECFDF5', text: '#065F46', border: '#6EE7B7', icon: CheckCircle2, label: t('messagesPage.statusResolved') },
+    'Under Review': { bg: '#EFF6FF', text: '#1E40AF', border: '#93C5FD', icon: Clock,         label: t('messagesPage.statusUnderReview') },
+    Pending:      { bg: '#FFFBEB', text: '#92400E', border: '#FCD34D', icon: AlertCircle,   label: t('messagesPage.statusPending') },
   };
 
   const timeAgo = (dateStr: string) => {
     const diff = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
-    if (diff < 60) return 'just now';
-    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+    if (diff < 60)    return 'just now';
+    if (diff < 3600)  return `${Math.floor(diff / 60)}m ago`;
     if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
     return `${Math.floor(diff / 86400)}d ago`;
   };
@@ -127,18 +130,20 @@ export function MessagesPage() {
             <Shield style={{ width: '24px', height: '24px', color: 'white' }} />
           </div>
           <div>
-            <h2 style={{ color: 'white', fontSize: 'clamp(16px, 4vw, 22px)', fontWeight: '700', margin: 0 }}>Contact Admin</h2>
+            <h2 style={{ color: 'white', fontSize: 'clamp(16px, 4vw, 22px)', fontWeight: '700', margin: 0 }}>
+              {t('messagesPage.title')}
+            </h2>
             <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '13px', margin: 0 }}>
-              Report issues, request support, or submit inquiries
+              {t('messagesPage.subtitle')}
             </p>
           </div>
         </div>
         {/* Mini Stats */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '16px', position: 'relative' }}>
           {[
-            { label: 'Total', value: totalCount, bg: 'rgba(255,255,255,0.12)' },
-            { label: 'Pending', value: pendingCount, bg: 'rgba(251,191,36,0.2)' },
-            { label: 'Resolved', value: resolvedCount, bg: 'rgba(52,211,153,0.2)' },
+            { label: t('messagesPage.totalLabel'),    value: totalCount,    bg: 'rgba(255,255,255,0.12)' },
+            { label: t('messagesPage.pendingLabel'),  value: pendingCount,  bg: 'rgba(251,191,36,0.2)' },
+            { label: t('messagesPage.resolvedLabel'), value: resolvedCount, bg: 'rgba(52,211,153,0.2)' },
           ].map(s => (
             <div key={s.label} style={{
               background: s.bg, borderRadius: '12px', padding: '8px 14px',
@@ -160,7 +165,9 @@ export function MessagesPage() {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '24px' }}>
           <Sparkles style={{ width: '20px', height: '20px', color: '#10B981' }} />
-          <h3 style={{ fontSize: '17px', fontWeight: '700', color: '#111827', margin: 0 }}>New Report</h3>
+          <h3 style={{ fontSize: '17px', fontWeight: '700', color: '#111827', margin: 0 }}>
+            {t('messagesPage.newReport')}
+          </h3>
           <div style={{ marginLeft: 'auto', display: 'flex', gap: '6px' }}>
             {[subject.trim(), category, message.trim()].map((v, i) => (
               <div key={i} style={{
@@ -178,24 +185,24 @@ export function MessagesPage() {
           {/* Subject */}
           <div>
             <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#374151', marginBottom: '6px' }}>
-              Subject <span style={{ color: '#EF4444' }}>*</span>
+              {t('messagesPage.subject')} <span style={{ color: '#EF4444' }}>*</span>
             </label>
             <input type="text" value={subject} onChange={(e) => setSubject(e.target.value)}
-              placeholder="Brief subject of your message"
+              placeholder={t('messagesPage.subjectPlaceholder')}
               style={{
                 width: '100%', padding: '12px 16px', border: '1.5px solid #E5E7EB', borderRadius: '12px',
                 fontSize: '14px', outline: 'none', transition: 'all 0.2s ease', boxSizing: 'border-box',
                 background: '#FAFAFA',
               }}
               onFocus={(e) => { e.target.style.borderColor = '#10B981'; e.target.style.background = '#fff'; e.target.style.boxShadow = '0 0 0 3px rgba(16,185,129,0.1)'; }}
-              onBlur={(e) => { e.target.style.borderColor = '#E5E7EB'; e.target.style.background = '#FAFAFA'; e.target.style.boxShadow = 'none'; }}
+              onBlur={(e)  => { e.target.style.borderColor = '#E5E7EB'; e.target.style.background = '#FAFAFA'; e.target.style.boxShadow = 'none'; }}
             />
           </div>
 
           {/* Category Pills */}
           <div>
             <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#374151', marginBottom: '10px' }}>
-              Category <span style={{ color: '#EF4444' }}>*</span>
+              {t('messagesPage.category')} <span style={{ color: '#EF4444' }}>*</span>
             </label>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
               {categories.map(cat => {
@@ -213,7 +220,7 @@ export function MessagesPage() {
                     onMouseEnter={(e) => { if (!isActive) { e.currentTarget.style.borderColor = cat.color; e.currentTarget.style.background = `${cat.color}08`; }}}
                     onMouseLeave={(e) => { if (!isActive) { e.currentTarget.style.borderColor = '#E5E7EB'; e.currentTarget.style.background = '#FAFAFA'; }}}
                   >
-                    <span>{cat.icon}</span> {cat.value}
+                    <span>{cat.icon}</span> {cat.label}
                   </button>
                 );
               })}
@@ -224,14 +231,14 @@ export function MessagesPage() {
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
               <label style={{ fontSize: '13px', fontWeight: '600', color: '#374151' }}>
-                Message <span style={{ color: '#EF4444' }}>*</span>
+                {t('messagesPage.message')} <span style={{ color: '#EF4444' }}>*</span>
               </label>
               <span style={{ fontSize: '11px', color: message.length > 500 ? '#EF4444' : '#9CA3AF' }}>
                 {message.length}/1000
               </span>
             </div>
             <textarea value={message} onChange={(e) => setMessage(e.target.value)}
-              placeholder="Describe your issue, complaint, or inquiry in detail..."
+              placeholder={t('messagesPage.messagePlaceholder')}
               rows={5} maxLength={1000}
               style={{
                 width: '100%', padding: '12px 16px', border: '1.5px solid #E5E7EB', borderRadius: '12px',
@@ -239,14 +246,15 @@ export function MessagesPage() {
                 boxSizing: 'border-box', background: '#FAFAFA', lineHeight: '1.6',
               }}
               onFocus={(e) => { e.target.style.borderColor = '#10B981'; e.target.style.background = '#fff'; e.target.style.boxShadow = '0 0 0 3px rgba(16,185,129,0.1)'; }}
-              onBlur={(e) => { e.target.style.borderColor = '#E5E7EB'; e.target.style.background = '#FAFAFA'; e.target.style.boxShadow = 'none'; }}
+              onBlur={(e)  => { e.target.style.borderColor = '#E5E7EB'; e.target.style.background = '#FAFAFA'; e.target.style.boxShadow = 'none'; }}
             />
           </div>
 
           {/* File Upload */}
           <div>
             <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#374151', marginBottom: '6px' }}>
-              Supporting Documents <span style={{ color: '#9CA3AF', fontWeight: '400' }}>(Optional)</span>
+              {t('messagesPage.supportingDocuments')}{' '}
+              <span style={{ color: '#9CA3AF', fontWeight: '400' }}>{t('messagesPage.optional')}</span>
             </label>
             <div
               onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
@@ -288,9 +296,10 @@ export function MessagesPage() {
                 <label htmlFor="document-upload" style={{ cursor: 'pointer', display: 'block' }}>
                   <Upload style={{ width: '32px', height: '32px', color: dragOver ? '#10B981' : '#9CA3AF', margin: '0 auto 8px' }} />
                   <p style={{ fontSize: '13px', color: '#6B7280', margin: '0 0 4px' }}>
-                    Drag & drop or <span style={{ color: '#10B981', fontWeight: '600' }}>browse</span>
+                    {t('messagesPage.dragAndDrop')}{' '}
+                    <span style={{ color: '#10B981', fontWeight: '600' }}>{t('messagesPage.browse')}</span>
                   </p>
-                  <p style={{ fontSize: '11px', color: '#9CA3AF', margin: 0 }}>PDF, DOC, JPG, PNG (Max 10MB)</p>
+                  <p style={{ fontSize: '11px', color: '#9CA3AF', margin: 0 }}>{t('messagesPage.fileFormats')}</p>
                 </label>
               )}
             </div>
@@ -311,8 +320,10 @@ export function MessagesPage() {
             onMouseEnter={(e) => { if (formComplete && !submitting) { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 20px rgba(16,185,129,0.35)'; }}}
             onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = formComplete ? '0 4px 14px rgba(16,185,129,0.3)' : 'none'; }}
           >
-            {submitting ? <Loader2 style={{ width: '18px', height: '18px', animation: 'spin 1s linear infinite' }} /> : <Send style={{ width: '18px', height: '18px' }} />}
-            {submitting ? 'Submitting...' : 'Submit Report'}
+            {submitting
+              ? <Loader2 style={{ width: '18px', height: '18px', animation: 'spin 1s linear infinite' }} />
+              : <Send style={{ width: '18px', height: '18px' }} />}
+            {submitting ? t('messagesPage.submitting') : t('messagesPage.submitReport')}
           </button>
         </div>
       </div>
@@ -330,8 +341,12 @@ export function MessagesPage() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <MessageSquare style={{ width: '20px', height: '20px', color: '#10B981' }} />
             <div>
-              <h3 style={{ fontSize: '17px', fontWeight: '700', color: '#111827', margin: 0 }}>Your Messages</h3>
-              <p style={{ fontSize: '12px', color: '#9CA3AF', margin: 0 }}>{totalCount} total submissions</p>
+              <h3 style={{ fontSize: '17px', fontWeight: '700', color: '#111827', margin: 0 }}>
+                {t('messagesPage.previousMessages')}
+              </h3>
+              <p style={{ fontSize: '12px', color: '#9CA3AF', margin: 0 }}>
+                {t('messagesPage.totalSubmissions', { count: totalCount })}
+              </p>
             </div>
           </div>
         </div>
@@ -340,17 +355,17 @@ export function MessagesPage() {
           {loading ? (
             <div style={{ textAlign: 'center', padding: '48px 0' }}>
               <Loader2 style={{ width: '36px', height: '36px', color: '#10B981', margin: '0 auto', animation: 'spin 1s linear infinite' }} />
-              <p style={{ fontSize: '13px', color: '#9CA3AF', marginTop: '12px' }}>Loading messages...</p>
+              <p style={{ fontSize: '13px', color: '#9CA3AF', marginTop: '12px' }}>{t('messagesPage.loadingMessages')}</p>
             </div>
           ) : submittedMessages.length > 0 ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               {submittedMessages.map((msg) => {
-                let displaySubject = msg.subject;
+                let displaySubject  = msg.subject;
                 let displayCategory = 'Other';
                 const match = msg.subject.match(/^\[(.*?)\] (.*)$/);
                 if (match) { displayCategory = match[1]; displaySubject = match[2]; }
-                const catStyle = getCategoryStyle(displayCategory);
-                const status = statusConfig[msg.status] || statusConfig.Pending;
+                const catStyle  = getCategoryStyle(displayCategory);
+                const status    = statusConfig[msg.status] || statusConfig.Pending;
                 const StatusIcon = status.icon;
 
                 return (
@@ -369,7 +384,7 @@ export function MessagesPage() {
                           padding: '3px 10px', borderRadius: '99px', fontSize: '11px', fontWeight: '600',
                           background: `${catStyle.color}15`, color: catStyle.color, whiteSpace: 'nowrap',
                         }}>
-                          {catStyle.icon} {displayCategory}
+                          {catStyle.icon} {catStyle.label}
                         </span>
                         <h4 style={{ fontSize: '15px', fontWeight: '600', color: '#111827', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                           {displaySubject}
@@ -405,7 +420,7 @@ export function MessagesPage() {
                             display: 'inline-flex', alignItems: 'center', gap: '4px',
                             fontSize: '11px', color: '#059669', fontWeight: '500',
                           }}>
-                            <FileText style={{ width: '12px', height: '12px' }} /> Attachment
+                            <FileText style={{ width: '12px', height: '12px' }} /> {t('messagesPage.attachment')}
                           </span>
                         </>
                       )}
@@ -422,8 +437,12 @@ export function MessagesPage() {
               }}>
                 <MessageSquare style={{ width: '28px', height: '28px', color: '#10B981' }} />
               </div>
-              <p style={{ fontSize: '15px', fontWeight: '600', color: '#374151', margin: '0 0 4px' }}>No messages yet</p>
-              <p style={{ fontSize: '13px', color: '#9CA3AF', margin: 0 }}>Submit your first report using the form above</p>
+              <p style={{ fontSize: '15px', fontWeight: '600', color: '#374151', margin: '0 0 4px' }}>
+                {t('messagesPage.noMessages')}
+              </p>
+              <p style={{ fontSize: '13px', color: '#9CA3AF', margin: 0 }}>
+                {t('messagesPage.submitFirstReport')}
+              </p>
             </div>
           )}
         </div>

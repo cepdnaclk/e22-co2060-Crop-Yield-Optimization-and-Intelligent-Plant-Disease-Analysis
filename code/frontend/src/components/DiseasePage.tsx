@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Upload, Loader2, CheckCircle, Microscope, FileText, Shield, Leaf, MapPin } from 'lucide-react';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 import uploadfile from '../utils/mediaUpload';
 import { DiseaseLocationPicker } from './DiseaseLocationPicker';
 import { farmAPI, userAPI } from '../services/api';
@@ -79,14 +80,46 @@ const DISEASE_DETAILS: Record<string, { label: string; description: string; trea
   },
 };
 
-function formatDiseaseName(disease: string) {
-  return DISEASE_DETAILS[disease]?.label ?? disease.replace(/_/g, ' ');
+const DISEASE_TRANSLATION_KEYS: Record<string, string> = {
+  bacterial_leaf_blight: 'bacterialLeafBlight',
+  brown_spot: 'brownSpot',
+  healthy: 'healthy',
+  leaf_blast: 'leafBlast',
+  leaf_scald: 'leafScald',
+  narrow_brown_spot: 'narrowBrownSpot',
+};
+
+function getDiseaseTranslationKey(disease: string) {
+  return DISEASE_TRANSLATION_KEYS[disease];
 }
 
-function getSeverity(confidence: number) {
-  if (confidence >= 0.9) return 'High';
-  if (confidence >= 0.7) return 'Medium';
-  return 'Low';
+function formatDiseaseName(disease: string, t: any) {
+  const translationKey = getDiseaseTranslationKey(disease);
+  const fallback = DISEASE_DETAILS[disease]?.label ?? disease.replace(/_/g, ' ');
+
+  return translationKey
+    ? t(`diseasePage.diseasesList.${translationKey}`, { defaultValue: fallback })
+    : fallback;
+}
+
+function getDiseaseText(disease: string, field: 'description' | 'treatment' | 'prevention', t: any) {
+  const translationKey = getDiseaseTranslationKey(disease);
+  const suffix = field === 'description' ? 'Desc' : field === 'treatment' ? 'Treatment' : 'Prevention';
+  const fallback = DISEASE_DETAILS[disease]?.[field];
+
+  if (translationKey) {
+    return t(`diseasePage.diseasesList.${translationKey}${suffix}`, {
+      defaultValue: fallback || t(`diseasePage.fallback.${field}`),
+    });
+  }
+
+  return fallback || t(`diseasePage.fallback.${field}`);
+}
+
+function getSeverityKey(confidence: number) {
+  if (confidence >= 0.9) return 'high';
+  if (confidence >= 0.7) return 'medium';
+  return 'low';
 }
 
 const PREDICT_URL_ENDPOINTS = [
@@ -95,6 +128,7 @@ const PREDICT_URL_ENDPOINTS = [
 ];
 
 export function DiseasePage() {
+  const { t } = useTranslation();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -106,7 +140,6 @@ export function DiseasePage() {
   const [analysisError, setAnalysisError] = useState('');
   const [myFarms, setMyFarms] = useState<FarmOption[]>([]);
   const [selectedFarmId, setSelectedFarmId] = useState('');
-  const [showAllFarms, setShowAllFarms] = useState(true);
   const [farmLoadError, setFarmLoadError] = useState('');
 
   useEffect(() => {
@@ -135,12 +168,12 @@ export function DiseasePage() {
           setSelectedFarmId(getFarmIdentifier(farmsForUser[0]));
         }
       } catch (error: any) {
-        setFarmLoadError(error?.response?.data?.message || 'Failed to load your farms');
+        setFarmLoadError(error?.response?.data?.message || t('diseasePage.failedToLoad'));
       }
     };
 
     fetchMyFarms();
-  }, []);
+  }, [t]);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -166,7 +199,7 @@ export function DiseasePage() {
 
       const imageUrl = await uploadfile(selectedFile);
       let prediction: any = null;
-      let lastError = 'Disease prediction failed';
+      let lastError = t('diseasePage.diseasePredictionFailed');
 
       for (const endpoint of PREDICT_URL_ENDPOINTS) {
         try {
@@ -227,18 +260,18 @@ export function DiseasePage() {
 
           toast.success(
             savedCount
-              ? `Disease report saved. History entries: ${savedCount}`
-              : 'Disease report saved successfully'
+              ? t('diseasePage.diseaseReportSavedWithCount', { count: savedCount })
+              : t('diseasePage.diseaseReported')
           );
         }
       } catch (err: any) {
         // Non-fatal: show console and set analysisError for visibility
         console.error('Failed saving disease report:', err?.response?.data || err?.message || err);
-        setAnalysisError((err?.response?.data?.message) || 'Analyzed but failed to save report');
+        setAnalysisError((err?.response?.data?.message) || t('diseasePage.analyzedButFailedToSave'));
       }
       setIsAnalyzing(false);
     } catch (error: any) {
-      setAnalysisError(error?.message || 'Failed to analyze the image');
+      setAnalysisError(error?.message || t('diseasePage.analysisError'));
       setIsAnalyzing(false);
     }
   };
@@ -254,8 +287,8 @@ export function DiseasePage() {
             <Microscope style={{ width: '24px', height: '24px' }} />
           </div>
           <div>
-            <h2 style={{ fontSize: 'clamp(16px,4vw,22px)', fontWeight: '700', margin: 0 }}>Disease Detection &amp; Analysis</h2>
-            <p style={{ fontSize: '13px', opacity: 0.85, margin: '2px 0 0' }}>Upload a leaf image for AI-powered disease identification</p>
+            <h2 style={{ fontSize: 'clamp(16px,4vw,22px)', fontWeight: '700', margin: 0 }}>{t('diseasePage.title')}</h2>
+            <p style={{ fontSize: '13px', opacity: 0.85, margin: '2px 0 0' }}>{t('diseasePage.subtitle')}</p>
           </div>
         </div>
       </div>
@@ -270,9 +303,9 @@ export function DiseasePage() {
               <div className="flex flex-col items-center justify-center pt-5 pb-6">
                 <Upload className="w-12 h-12 md:w-16 md:h-16 text-gray-400 mb-4" />
                 <p className="mb-2 text-xs md:text-sm text-gray-600 font-medium text-center px-4">
-                  Click to upload or drag and drop
+                  {t('diseasePage.uploadImage')}
                 </p>
-                <p className="text-xs text-gray-500">PNG, JPG or JPEG (MAX. 10MB)</p>
+                <p className="text-xs text-gray-500">{t('diseasePage.imageFormats')}</p>
               </div>
               <input
                 type="file"
@@ -286,7 +319,7 @@ export function DiseasePage() {
               <div className="relative">
                 <img
                   src={selectedImage}
-                  alt="Selected crop"
+                  alt={t('diseasePage.selectedCropImage')}
                   className="w-full h-64 md:h-80 object-cover rounded-xl"
                 />
                 <button
@@ -331,11 +364,11 @@ export function DiseasePage() {
         {/* Additional Notes */}
         <div className="bg-white rounded-xl border border-gray-200 p-4 md:p-6">
           <label className="block">
-            <span className="text-gray-700 font-medium mb-2 block text-sm md:text-base flex items-center gap-2"><FileText className="w-4 h-4 text-green-600" />Additional Notes (Optional)</span>
+            <span className="text-gray-700 font-medium mb-2 block text-sm md:text-base flex items-center gap-2"><FileText className="w-4 h-4 text-green-600" />{t('diseasePage.notesOptional')}</span>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="Describe symptoms, when noticed, affected area size, etc."
+              placeholder={t('diseasePage.notesPlaceholder')}
               rows={4}
               className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none text-sm md:text-base"
             />
@@ -344,12 +377,12 @@ export function DiseasePage() {
 
         {/* Advisory Tips */}
         <div className="bg-white rounded-xl border border-gray-200 p-4 md:p-6">
-          <h3 className="font-semibold text-gray-800 mb-3 text-sm md:text-base flex items-center gap-2"><Shield className="w-4 h-4 text-green-600" />Quick Tips</h3>
+          <h3 className="font-semibold text-gray-800 mb-3 text-sm md:text-base flex items-center gap-2"><Shield className="w-4 h-4 text-green-600" />{t('diseasePage.quickTips')}</h3>
           <ul className="space-y-2.5 text-xs md:text-sm text-gray-700">
-            <li className="flex items-start gap-2"><Leaf className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" /><span>Take clear, well-lit photos of affected leaves</span></li>
-            <li className="flex items-start gap-2"><Leaf className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" /><span>Include both close-up and wide shots</span></li>
-            <li className="flex items-start gap-2"><Leaf className="w-4 h-4 text-teal-500 mt-0.5 flex-shrink-0" /><span>Mark exact location for field officer visits</span></li>
-            <li className="flex items-start gap-2"><Leaf className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" /><span>Note when symptoms first appeared</span></li>
+            <li className="flex items-start gap-2"><Leaf className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" /><span>{t('diseasePage.quickTipClearPhotos')}</span></li>
+            <li className="flex items-start gap-2"><Leaf className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" /><span>{t('diseasePage.quickTipCloseWide')}</span></li>
+            <li className="flex items-start gap-2"><Leaf className="w-4 h-4 text-teal-500 mt-0.5 flex-shrink-0" /><span>{t('diseasePage.quickTipLocation')}</span></li>
+            <li className="flex items-start gap-2"><Leaf className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" /><span>{t('diseasePage.quickTipSymptomDate')}</span></li>
           </ul>
         </div>
 
@@ -358,15 +391,15 @@ export function DiseasePage() {
             <div className="flex items-center justify-between gap-3 flex-wrap">
               <h3 className="font-semibold text-gray-800 text-sm md:text-base flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-green-600" />
-                Select Farm Before Analyze
+                {t('diseasePage.selectFarmBeforeAnalyze')}
               </h3>
               <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium text-green-700 bg-green-100">
-                {myFarms.length} Farm{myFarms.length > 1 ? 's' : ''}
+                {myFarms.length} {t(myFarms.length === 1 ? 'diseasePage.farm' : 'diseasePage.farms')}
               </span>
             </div>
 
             <div className="space-y-3">
-              <label className="block text-sm font-medium text-gray-700">Choose a farm</label>
+              <label className="block text-sm font-medium text-gray-700">{t('diseasePage.chooseFarm')}</label>
               <select
                 value={selectedFarmId}
                 onChange={(e) => setSelectedFarmId(e.target.value)}
@@ -374,10 +407,10 @@ export function DiseasePage() {
               >
                 {myFarms.map((farm) => {
                   const id = getFarmIdentifier(farm);
-                  const name = farm.farmName || 'Unnamed Farm';
-                  const crop = farm.crop || 'N/A';
-                  const district = (farm as any).district || 'N/A';
-                  const division = (farm as any).division || (farm as any).dsDivision || 'N/A';
+                  const name = farm.farmName || t('diseasePage.unnamedFarm');
+                  const crop = farm.crop || t('diseasePage.notAvailable');
+                  const district = (farm as any).district || t('diseasePage.notAvailable');
+                  const division = (farm as any).division || (farm as any).dsDivision || t('diseasePage.notAvailable');
                   return (
                     <option key={id} value={id}>
                       {`${name} (${id}) — ${crop} — ${district} / ${division}`}
@@ -393,26 +426,26 @@ export function DiseasePage() {
                   <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <p className="font-semibold text-gray-900 text-sm md:text-base">{sf.farmName || 'Unnamed Farm'}</p>
-                        <p className="text-xs md:text-sm text-gray-600 mt-1">Farm ID: <span className="font-mono">{getFarmIdentifier(sf)}</span></p>
+                        <p className="font-semibold text-gray-900 text-sm md:text-base">{sf.farmName || t('diseasePage.unnamedFarm')}</p>
+                        <p className="text-xs md:text-sm text-gray-600 mt-1">{t('diseasePage.farmId')}: <span className="font-mono">{getFarmIdentifier(sf)}</span></p>
                       </div>
                       <span className="text-[11px] md:text-xs font-medium text-indigo-700 bg-indigo-100 px-2 py-1 rounded-full">
-                        Selected
+                        {t('diseasePage.selected')}
                       </span>
                     </div>
 
                     <ul className="mt-3 space-y-2 text-xs md:text-sm text-gray-700">
                       <li className="flex items-start gap-2">
                         <Leaf className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                        <span><span className="font-medium text-gray-900">Crop:</span> {sf.crop || 'N/A'}</span>
+                        <span><span className="font-medium text-gray-900">{t('diseasePage.crop')}:</span> {sf.crop || t('diseasePage.notAvailable')}</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <Leaf className="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" />
-                        <span><span className="font-medium text-gray-900">District:</span> {(sf as any).district || 'N/A'}</span>
+                        <span><span className="font-medium text-gray-900">{t('diseasePage.district')}:</span> {(sf as any).district || t('diseasePage.notAvailable')}</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <Leaf className="w-4 h-4 text-teal-600 mt-0.5 flex-shrink-0" />
-                        <span><span className="font-medium text-gray-900">DS Division:</span> {(sf as any).division || (sf as any).dsDivision || 'N/A'}</span>
+                        <span><span className="font-medium text-gray-900">{t('diseasePage.dsDivision')}:</span> {(sf as any).division || (sf as any).dsDivision || t('diseasePage.notAvailable')}</span>
                       </li>
                     </ul>
                   </div>
@@ -456,9 +489,9 @@ export function DiseasePage() {
           className="w-full py-3 md:py-4 disabled:cursor-not-allowed text-white rounded-xl font-medium flex items-center justify-center gap-3 transition-all text-sm md:text-base"
         >
           {isAnalyzing ? (
-            <><Loader2 className="w-4 h-4 md:w-5 md:h-5 animate-spin" />Uploading and Analyzing...</>
+            <><Loader2 className="w-4 h-4 md:w-5 md:h-5 animate-spin" />{t('diseasePage.uploadingAndAnalyzing')}</>
           ) : (
-            <><Microscope className="w-4 h-4 md:w-5 md:h-5" />Analyze Disease</>
+            <><Microscope className="w-4 h-4 md:w-5 md:h-5" />{t('diseasePage.analyzeDisease')}</>
           )}
         </button>
 
@@ -476,58 +509,58 @@ export function DiseasePage() {
                 <CheckCircle className="w-6 h-6 md:w-7 md:h-7 text-green-600" />
               </div>
               <div className="flex-1">
-                <h3 className="text-base md:text-lg font-semibold text-gray-800 mb-1">Analysis Complete</h3>
-                <p className="text-xs md:text-sm text-gray-600">AI model has identified the disease</p>
+                <h3 className="text-base md:text-lg font-semibold text-gray-800 mb-1">{t('diseasePage.analysisComplete')}</h3>
+                <p className="text-xs md:text-sm text-gray-600">{t('diseasePage.aiIdentifiedDisease')}</p>
               </div>
             </div>
 
             <div className="space-y-4">
               <div>
-                <p className="text-xs md:text-sm text-gray-600 mb-1">Detected Disease</p>
-                <p className="text-xl md:text-2xl font-bold text-gray-900">{formatDiseaseName(analysisResult.disease)}</p>
+                <p className="text-xs md:text-sm text-gray-600 mb-1">{t('diseasePage.detectedDisease')}</p>
+                <p className="text-xl md:text-2xl font-bold text-gray-900">{formatDiseaseName(analysisResult.disease, t)}</p>
               </div>
 
               <div className="flex gap-4 md:gap-6">
                 <div>
-                  <p className="text-xs md:text-sm text-gray-600 mb-1">Confidence</p>
+                  <p className="text-xs md:text-sm text-gray-600 mb-1">{t('diseasePage.confidence')}</p>
                   <p className="text-base md:text-lg font-semibold text-green-600">{(analysisResult.confidence * 100).toFixed(2)}%</p>
                 </div>
                 <div>
-                  <p className="text-xs md:text-sm text-gray-600 mb-1">Severity</p>
-                  <span className={`inline-flex px-2 md:px-3 py-0.5 md:py-1 rounded-full text-xs md:text-sm font-medium ${getSeverity(analysisResult.confidence) === 'High'
+                  <p className="text-xs md:text-sm text-gray-600 mb-1">{t('diseasePage.severity')}</p>
+                  <span className={`inline-flex px-2 md:px-3 py-0.5 md:py-1 rounded-full text-xs md:text-sm font-medium ${getSeverityKey(analysisResult.confidence) === 'high'
                       ? 'bg-red-100 text-red-700'
-                      : getSeverity(analysisResult.confidence) === 'Medium'
+                      : getSeverityKey(analysisResult.confidence) === 'medium'
                         ? 'bg-orange-100 text-orange-700'
                         : 'bg-yellow-100 text-yellow-700'
                     }`}>
-                    {getSeverity(analysisResult.confidence)}
+                    {t(`diseasePage.severityLevels.${getSeverityKey(analysisResult.confidence)}`)}
                   </span>
                 </div>
               </div>
 
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 md:p-4">
-                <h4 className="font-semibold text-gray-800 mb-2 text-xs md:text-sm">Description</h4>
-                <p className="text-xs md:text-sm text-gray-700">{DISEASE_DETAILS[analysisResult.disease]?.description ?? 'No description available for this prediction.'}</p>
+                <h4 className="font-semibold text-gray-800 mb-2 text-xs md:text-sm">{t('diseasePage.description')}</h4>
+                <p className="text-xs md:text-sm text-gray-700">{getDiseaseText(analysisResult.disease, 'description', t)}</p>
               </div>
 
               <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 md:p-4">
-                <h4 className="font-semibold text-gray-800 mb-2 text-xs md:text-sm">Recommended Treatment</h4>
-                <p className="text-xs md:text-sm text-gray-700">{DISEASE_DETAILS[analysisResult.disease]?.treatment ?? 'Follow agricultural guidance for treatment.'}</p>
+                <h4 className="font-semibold text-gray-800 mb-2 text-xs md:text-sm">{t('diseasePage.recommendedTreatment')}</h4>
+                <p className="text-xs md:text-sm text-gray-700">{getDiseaseText(analysisResult.disease, 'treatment', t)}</p>
               </div>
 
               <div className="bg-green-50 border border-green-200 rounded-lg p-3 md:p-4">
-                <h4 className="font-semibold text-gray-800 mb-2 text-xs md:text-sm">Prevention</h4>
-                <p className="text-xs md:text-sm text-gray-700">{DISEASE_DETAILS[analysisResult.disease]?.prevention ?? 'Continue monitoring and follow local crop protection practices.'}</p>
+                <h4 className="font-semibold text-gray-800 mb-2 text-xs md:text-sm">{t('diseasePage.prevention')}</h4>
+                <p className="text-xs md:text-sm text-gray-700">{getDiseaseText(analysisResult.disease, 'prevention', t)}</p>
               </div>
 
               <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 md:p-4">
-                <h4 className="font-semibold text-gray-800 mb-3 text-xs md:text-sm">Backend Probabilities</h4>
+                <h4 className="font-semibold text-gray-800 mb-3 text-xs md:text-sm">{t('diseasePage.backendProbabilities')}</h4>
                 <div className="space-y-2">
                   {Object.entries(analysisResult.all_probabilities)
                     .sort((a, b) => b[1] - a[1])
                     .map(([label, value]) => (
                       <div key={label} className="flex items-center justify-between gap-3 text-xs md:text-sm">
-                        <span className="text-gray-700">{formatDiseaseName(label)}</span>
+                        <span className="text-gray-700">{formatDiseaseName(label, t)}</span>
                         <span className="font-medium text-gray-900">{(value * 100).toFixed(2)}%</span>
                       </div>
                     ))}

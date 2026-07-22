@@ -175,6 +175,16 @@ export const userAPI = {
     const response = await api.post('/api/users/change-email', { newEmail });
     return response.data;
   },
+
+  forgotPassword: async (email: string) => {
+    const response = await api.post('/api/users/forgot-password', { email });
+    return response.data;
+  },
+
+  resetPassword: async (resetData: { email: string; code: string; newPassword?: string }) => {
+    const response = await api.post('/api/users/reset-password', resetData);
+    return response.data;
+  },
 };
 
 // Farm API endpoints

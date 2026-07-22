@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { MapPin, Search, X, Navigation, Loader2, MousePointer } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -26,6 +27,7 @@ interface Props {
 }
 
 export function DiseaseLocationPicker({ location, onLocationChange, onLocationSelect, latitude, longitude }: Props) {
+  const { t } = useTranslation();
   const [query, setQuery] = useState(location || '');
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -68,8 +70,8 @@ export function DiseaseLocationPicker({ location, onLocationChange, onLocationSe
 
     map.on('click', async (e: L.LeafletMouseEvent) => {
       const { lat, lng } = e.latlng;
-      if (markerRef.current) markerRef.current.setLatLng([lat, lng]).setPopupContent('Loading...').openPopup();
-      else { const m = L.marker([lat, lng], { icon: defaultIcon }).addTo(map); m.bindPopup('Loading...').openPopup(); markerRef.current = m; }
+      if (markerRef.current) markerRef.current.setLatLng([lat, lng]).setPopupContent(t('common.loading')).openPopup();
+      else { const m = L.marker([lat, lng], { icon: defaultIcon }).addTo(map); m.bindPopup(t('common.loading')).openPopup(); markerRef.current = m; }
       try {
         const res = await fetch(`${API_BASE_URL}/api/geocode/reverse?lat=${lat}&lon=${lng}`);
         const data = await res.json();
@@ -81,7 +83,7 @@ export function DiseaseLocationPicker({ location, onLocationChange, onLocationSe
     });
 
     mapRef.current = map;
-    if (latitude && longitude) { placeMarker(latitude, longitude, location || 'Selected'); map.setView([latitude, longitude], 15); }
+    if (latitude && longitude) { placeMarker(latitude, longitude, location || t('diseaseLocationPicker.selectedLocation')); map.setView([latitude, longitude], 15); }
     setTimeout(() => map.invalidateSize(), 200);
     return () => { map.remove(); mapRef.current = null; markerRef.current = null; };
   }, []);
@@ -114,14 +116,14 @@ export function DiseaseLocationPicker({ location, onLocationChange, onLocationSe
   return (
     <div ref={wrapperRef}>
       <span className="text-gray-700 font-medium mb-2 block text-sm md:text-base flex items-center gap-2">
-        <MapPin className="w-4 h-4 text-green-600" />Location / Plot Details
+        <MapPin className="w-4 h-4 text-green-600" />{t('diseaseLocationPicker.location')}
       </span>
 
       <div style={{ position: 'relative', marginBottom: '8px' }}>
         <MapPin style={{ position: 'absolute', left: '12px', top: '11px', width: '18px', height: '18px', color: '#9CA3AF', zIndex: 2 }} />
         <input type="text" value={query} onChange={(e) => handleInput(e.target.value)}
           onFocus={() => { if (suggestions.length > 0) setShowSuggestions(true); }}
-          placeholder="Search address or click on map..."
+          placeholder={t('diseaseLocationPicker.searchAddress')}
           style={{ width: '100%', padding: '10px 70px 10px 38px', border: '1.5px solid #D1D5DB', borderRadius: '10px', fontSize: '13px', outline: 'none', boxSizing: 'border-box' }}
           onFocusCapture={(e) => { (e.target as HTMLInputElement).style.borderColor = '#10B981'; (e.target as HTMLInputElement).style.boxShadow = '0 0 0 3px rgba(16,185,129,0.12)'; }}
           onBlurCapture={(e) => { (e.target as HTMLInputElement).style.borderColor = '#D1D5DB'; (e.target as HTMLInputElement).style.boxShadow = 'none'; }}
@@ -149,7 +151,7 @@ export function DiseaseLocationPicker({ location, onLocationChange, onLocationSe
       </div>
 
       <p style={{ fontSize: '11px', color: '#9CA3AF', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-        <MousePointer style={{ width: '11px', height: '11px' }} />Search above or click on the map to pick location
+        <MousePointer style={{ width: '11px', height: '11px' }} />{t('diseaseLocationPicker.mapHelp')}
       </p>
 
       <div style={{ position: 'relative' }}>
