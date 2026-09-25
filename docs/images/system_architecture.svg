@@ -1,0 +1,268 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" width="100%" height="100%" style="background:#0b1120; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="bgGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#064e3b" stroke-opacity="0.3" />
+      <stop offset="100%" stop-color="#0b1120" />
+    </linearGradient>
+    <linearGradient id="clientGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#0369a1" />
+    </linearGradient>
+    <linearGradient id="frontendGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+    <linearGradient id="backendGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#4338ca" />
+    </linearGradient>
+    <linearGradient id="aiGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ec4899" />
+      <stop offset="100%" stop-color="#be185d" />
+    </linearGradient>
+    <linearGradient id="dbGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14b8a6" />
+      <stop offset="100%" stop-color="#0f766e" />
+    </linearGradient>
+    <linearGradient id="devopsGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#b45309" />
+    </linearGradient>
+
+    <!-- Filters -->
+    <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="125%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+
+    <!-- Markers -->
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#10b981" />
+    </marker>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#38bdf8" />
+    </marker>
+    <marker id="arrowPink" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#f472b6" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="720" fill="url(#bgGlow)" />
+  
+  <!-- Subtle Grid -->
+  <g opacity="0.07" stroke="#ffffff" stroke-width="1">
+    <line x1="100" y1="0" x2="100" y2="720" />
+    <line x1="320" y1="0" x2="320" y2="720" />
+    <line x1="600" y1="0" x2="600" y2="720" />
+    <line x1="880" y1="0" x2="880" y2="720" />
+    <line x1="1100" y1="0" x2="1100" y2="720" />
+  </g>
+
+  <!-- Header -->
+  <g transform="translate(60, 40)">
+    <text x="0" y="0" font-size="12" font-weight="700" fill="#10b981" letter-spacing="1.5">CO2060 SOFTWARE SYSTEMS DESIGN PROJECT • UOP CE</text>
+    <text x="0" y="28" font-size="22" font-weight="800" fill="#f8fafc">AgriConnect System Architecture &amp; Core Modules Interconnection</text>
+  </g>
+
+  <!-- ==================== COLUMN 1: 6 CORE SYSTEM MODULES ==================== -->
+  <g transform="translate(50, 105)">
+    <rect width="250" height="470" rx="16" fill="#1e293b" fill-opacity="0.45" stroke="#38bdf8" stroke-width="1.5" filter="url(#cardShadow)"/>
+    <rect width="250" height="38" rx="16" fill="url(#clientGrad)" />
+    <text x="125" y="24" font-size="12" font-weight="800" fill="#ffffff" text-anchor="middle" letter-spacing="0.5">6 CORE SYSTEM MODULES</text>
+
+    <!-- Module 1: AgriBot Advisory -->
+    <g transform="translate(12, 48)">
+      <rect width="226" height="60" rx="8" fill="#0f172a" stroke="#0284c7" stroke-width="1"/>
+      <text x="12" y="20" font-size="12" font-weight="700" fill="#38bdf8">🤖 AGRIBOT ADVISORY</text>
+      <text x="12" y="38" font-size="10" fill="#94a3b8">Seeding, modern practices, input use &amp;</text>
+      <text x="12" y="50" font-size="10" fill="#94a3b8">common crop queries in local languages</text>
+    </g>
+
+    <!-- Module 2: AI Disease Analysis -->
+    <g transform="translate(12, 116)">
+      <rect width="226" height="60" rx="8" fill="#0f172a" stroke="#0284c7" stroke-width="1"/>
+      <text x="12" y="20" font-size="12" font-weight="700" fill="#38bdf8">🔬 AI DISEASE ANALYSIS</text>
+      <text x="12" y="38" font-size="10" fill="#94a3b8">Photo screening with confidence,</text>
+      <text x="12" y="50" font-size="10" fill="#94a3b8">prevention guidance &amp; expert escalation</text>
+    </g>
+
+    <!-- Module 3: Flood Alerts -->
+    <g transform="translate(12, 184)">
+      <rect width="226" height="60" rx="8" fill="#0f172a" stroke="#0284c7" stroke-width="1"/>
+      <text x="12" y="20" font-size="12" font-weight="700" fill="#38bdf8">🌊 FLOOD ALERTS</text>
+      <text x="12" y="38" font-size="10" fill="#94a3b8">Location-based flood-risk updates</text>
+      <text x="12" y="50" font-size="10" fill="#94a3b8">help farmers prepare early &amp; reduce loss</text>
+    </g>
+
+    <!-- Module 4: Disaster Reporting -->
+    <g transform="translate(12, 252)">
+      <rect width="226" height="60" rx="8" fill="#0f172a" stroke="#0284c7" stroke-width="1"/>
+      <text x="12" y="20" font-size="12" font-weight="700" fill="#38bdf8">🚨 DISASTER REPORTING</text>
+      <text x="12" y="38" font-size="10" fill="#94a3b8">Farmers submit flood, drought or crop-</text>
+      <text x="12" y="50" font-size="10" fill="#94a3b8">damage reports with status tracking</text>
+    </g>
+
+    <!-- Module 5: Inquiries -->
+    <g transform="translate(12, 320)">
+      <rect width="226" height="64" rx="8" fill="#0f172a" stroke="#0284c7" stroke-width="1"/>
+      <text x="12" y="20" font-size="12" font-weight="700" fill="#38bdf8">📩 INQUIRIES</text>
+      <text x="12" y="38" font-size="10" fill="#94a3b8">Report cultivation loss with proof quickly;</text>
+      <text x="12" y="50" font-size="10" fill="#94a3b8">monitor status of claims via the system</text>
+    </g>
+
+    <!-- Module 6: Yield + Points -->
+    <g transform="translate(12, 392)">
+      <rect width="226" height="66" rx="8" fill="#0f172a" stroke="#0284c7" stroke-width="1"/>
+      <text x="12" y="20" font-size="12" font-weight="700" fill="#38bdf8">🏆 YIELD + POINTS</text>
+      <text x="12" y="38" font-size="10" fill="#94a3b8">Verified yield + disaster context supports</text>
+      <text x="12" y="50" font-size="10" fill="#94a3b8">fair recognition, subsidies &amp; incentives</text>
+    </g>
+  </g>
+
+  <!-- ==================== COLUMN 2: FRONTEND LAYER (REACT / VITE) ==================== -->
+  <g transform="translate(330, 105)">
+    <rect width="240" height="470" rx="16" fill="#1e293b" fill-opacity="0.45" stroke="#10b981" stroke-width="1.5" filter="url(#cardShadow)"/>
+    <rect width="240" height="38" rx="16" fill="url(#frontendGrad)" />
+    <text x="120" y="24" font-size="12" font-weight="800" fill="#ffffff" text-anchor="middle" letter-spacing="0.5">FRONTEND (VERCEL)</text>
+
+    <g transform="translate(15, 52)">
+      <rect width="210" height="110" rx="8" fill="#0f172a" stroke="#10b981" stroke-opacity="0.5" stroke-width="1"/>
+      <text x="14" y="22" font-size="13" font-weight="700" fill="#34d399">React 18 + TypeScript</text>
+      <text x="14" y="42" font-size="11" fill="#94a3b8">• Vite 6 Bundler &amp; SWC</text>
+      <text x="14" y="60" font-size="11" fill="#94a3b8">• Tailwind CSS v4 + Radix UI</text>
+      <text x="14" y="78" font-size="11" fill="#94a3b8">• Lucide Icons &amp; Recharts</text>
+      <text x="14" y="96" font-size="11" fill="#94a3b8">• i18next (English, Sinhala, Tamil)</text>
+    </g>
+
+    <g transform="translate(15, 178)">
+      <rect width="210" height="110" rx="8" fill="#0f172a" stroke="#10b981" stroke-opacity="0.5" stroke-width="1"/>
+      <text x="14" y="22" font-size="13" font-weight="700" fill="#34d399">Module UI Services</text>
+      <text x="14" y="42" font-size="11" fill="#94a3b8">• Axios Interceptors (JWT Bearer)</text>
+      <text x="14" y="60" font-size="11" fill="#94a3b8">• Leaflet GIS Heatmap Component</text>
+      <text x="14" y="78" font-size="11" fill="#94a3b8">• jsPDF &amp; html2canvas Reports</text>
+      <text x="14" y="96" font-size="11" fill="#94a3b8">• Camera &amp; File Media Uploaders</text>
+    </g>
+
+    <g transform="translate(15, 304)">
+      <rect width="210" height="145" rx="8" fill="#0f172a" stroke="#10b981" stroke-opacity="0.5" stroke-width="1"/>
+      <text x="14" y="22" font-size="13" font-weight="700" fill="#34d399">Production Live URL</text>
+      <text x="14" y="44" font-size="11" font-weight="700" fill="#38bdf8">▲ agriconnectsl.vercel.app</text>
+      <text x="14" y="64" font-size="11" fill="#94a3b8">• Edge Network Delivery</text>
+      <text x="14" y="82" font-size="11" fill="#94a3b8">• Zero Downtime Git CI/CD</text>
+      <text x="14" y="100" font-size="11" fill="#94a3b8">• Playwright E2E Validated</text>
+      <text x="14" y="118" font-size="11" fill="#94a3b8">• Responsive Mobile / Desktop</text>
+    </g>
+  </g>
+
+  <!-- ==================== COLUMN 3: BACKEND API GATEWAY (NODE / EXPRESS) ==================== -->
+  <g transform="translate(600, 105)">
+    <rect width="260" height="470" rx="16" fill="#1e293b" fill-opacity="0.45" stroke="#6366f1" stroke-width="1.5" filter="url(#cardShadow)"/>
+    <rect width="260" height="38" rx="16" fill="url(#backendGrad)" />
+    <text x="130" y="24" font-size="12" font-weight="800" fill="#ffffff" text-anchor="middle" letter-spacing="0.5">BACKEND API (RENDER)</text>
+
+    <g transform="translate(15, 52)">
+      <rect width="230" height="110" rx="8" fill="#0f172a" stroke="#6366f1" stroke-opacity="0.5" stroke-width="1"/>
+      <text x="14" y="22" font-size="13" font-weight="700" fill="#a5b4fc">Node.js + Express 5 API</text>
+      <text x="14" y="42" font-size="11" fill="#94a3b8">• Helmet Security &amp; Rate Limiter</text>
+      <text x="14" y="60" font-size="11" fill="#94a3b8">• Global JWT Bearer Token Guard</text>
+      <text x="14" y="78" font-size="11" fill="#94a3b8">• CORS Whitelist &amp; Sanitization</text>
+      <text x="14" y="96" font-size="11" fill="#94a3b8">• Nodemailer OTP Service</text>
+    </g>
+
+    <g transform="translate(15, 178)">
+      <rect width="230" height="145" rx="8" fill="#0f172a" stroke="#6366f1" stroke-opacity="0.5" stroke-width="1"/>
+      <text x="14" y="22" font-size="13" font-weight="700" fill="#a5b4fc">Module API Endpoints</text>
+      <text x="14" y="42" font-size="11" fill="#cbd5e1">/api/chatbot - AgriBot Relay</text>
+      <text x="14" y="60" font-size="11" fill="#cbd5e1">/api/farms/report-disease - AI Scan</text>
+      <text x="14" y="78" font-size="11" fill="#cbd5e1">/api/flood - Geo Flood Risk</text>
+      <text x="14" y="96" font-size="11" fill="#cbd5e1">/api/inquiries - Loss &amp; Claims</text>
+      <text x="14" y="114" font-size="11" fill="#cbd5e1">/api/farms/addharvestandpoints</text>
+      <text x="14" y="132" font-size="11" fill="#cbd5e1">/api/avg-yields - Benchmark Engine</text>
+    </g>
+
+    <g transform="translate(15, 338)">
+      <rect width="230" height="110" rx="8" fill="#0f172a" stroke="#6366f1" stroke-opacity="0.5" stroke-width="1"/>
+      <text x="14" y="22" font-size="13" font-weight="700" fill="#a5b4fc">Deployment &amp; Docker</text>
+      <text x="14" y="42" font-size="11" fill="#cbd5e1">⚡ Render Cloud Service</text>
+      <text x="14" y="62" font-size="11" fill="#94a3b8">• Docker &amp; Docker Compose</text>
+      <text x="14" y="80" font-size="11" fill="#94a3b8">• Nginx Reverse Proxy Config</text>
+      <text x="14" y="98" font-size="11" fill="#94a3b8">• Supertest &amp; Jest Test Suite</text>
+    </g>
+  </g>
+
+  <!-- ==================== COLUMN 4: DATABASE & AI SERVICES ==================== -->
+  <g transform="translate(890, 105)">
+    <rect width="260" height="470" rx="16" fill="#1e293b" fill-opacity="0.45" stroke="#ec4899" stroke-width="1.5" filter="url(#cardShadow)"/>
+    <rect width="260" height="38" rx="16" fill="url(#aiGrad)" />
+    <text x="130" y="24" font-size="12" font-weight="800" fill="#ffffff" text-anchor="middle" letter-spacing="0.5">AI, DATABASE &amp; CLOUD</text>
+
+    <!-- AI Microservice -->
+    <g transform="translate(15, 52)">
+      <rect width="230" height="110" rx="8" fill="#0f172a" stroke="#ec4899" stroke-opacity="0.5" stroke-width="1"/>
+      <text x="14" y="22" font-size="13" font-weight="700" fill="#f472b6">🤖 Python AI Disease Engine</text>
+      <text x="14" y="42" font-size="11" fill="#94a3b8">• PyTorch / TF Deep CNN Model</text>
+      <text x="14" y="60" font-size="11" fill="#94a3b8">• OpenCV Preprocessing Pipeline</text>
+      <text x="14" y="78" font-size="11" fill="#94a3b8">• 6 Rice Leaf Pathology Classes</text>
+      <text x="14" y="96" font-size="11" fill="#94a3b8">• Microservice: /api/predict_url</text>
+    </g>
+
+    <!-- MongoDB Atlas -->
+    <g transform="translate(15, 178)">
+      <rect width="230" height="135" rx="8" fill="#0f172a" stroke="#14b8a6" stroke-opacity="0.5" stroke-width="1"/>
+      <text x="14" y="22" font-size="13" font-weight="700" fill="#2dd4bf">🍃 MongoDB Atlas (Cloud)</text>
+      <text x="14" y="42" font-size="11" fill="#94a3b8">• Compound Indexes for High Scale</text>
+      <text x="14" y="60" font-size="11" fill="#94a3b8">• Collections:</text>
+      <text x="24" y="76" font-size="10" fill="#cbd5e1">- users, farms, avgYields</text>
+      <text x="24" y="92" font-size="10" fill="#cbd5e1">- diseaseReports, inquiries</text>
+      <text x="14" y="114" font-size="11" fill="#94a3b8">• Dynamic Aggregation Pipelines</text>
+    </g>
+
+    <!-- External Services -->
+    <g transform="translate(15, 328)">
+      <rect width="230" height="120" rx="8" fill="#0f172a" stroke="#f59e0b" stroke-opacity="0.5" stroke-width="1"/>
+      <text x="14" y="22" font-size="13" font-weight="700" fill="#fbbf24">⚡ Automation &amp; Storage</text>
+      <text x="14" y="42" font-size="11" fill="#94a3b8">• n8n AI Chatbot Webhooks</text>
+      <text x="14" y="60" font-size="11" fill="#94a3b8">• Supabase Storage (Crop Photos)</text>
+      <text x="14" y="78" font-size="11" fill="#94a3b8">• Open-Meteo &amp; Sri Lanka Flood APIs</text>
+      <text x="14" y="96" font-size="11" fill="#94a3b8">• Nodemailer Transactional Mail</text>
+    </g>
+  </g>
+
+  <!-- Connectors -->
+  <path d="M 300 280 L 330 280" fill="none" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrowBlue)" />
+  <path d="M 570 280 L 600 280" fill="none" stroke="#10b981" stroke-width="2.5" marker-end="url(#arrowGreen)" />
+  <path d="M 860 170 L 890 170" fill="none" stroke="#f472b6" stroke-width="2.5" marker-end="url(#arrowPink)" />
+  <path d="M 860 250 L 890 250" fill="none" stroke="#10b981" stroke-width="2.5" marker-end="url(#arrowGreen)" />
+  <path d="M 860 380 L 890 380" fill="none" stroke="#10b981" stroke-width="2.5" marker-end="url(#arrowGreen)" />
+
+  <!-- Bottom QA Bar -->
+  <g transform="translate(50, 595)">
+    <rect width="1100" height="95" rx="14" fill="#0f172a" stroke="#334155" stroke-width="1.5" filter="url(#cardShadow)"/>
+    <g transform="translate(25, 20)">
+      <rect width="140" height="26" rx="6" fill="#f59e0b" fill-opacity="0.2" stroke="#f59e0b" stroke-width="1"/>
+      <text x="70" y="17" font-size="12" font-weight="700" fill="#fbbf24" text-anchor="middle">DEVOPS &amp; CI/CD</text>
+      <text x="0" y="44" font-size="11" fill="#cbd5e1">• GitHub Actions Pipeline</text>
+      <text x="0" y="60" font-size="11" fill="#cbd5e1">• Vercel + Render Auto-Deploy</text>
+    </g>
+    <g transform="translate(260, 20)">
+      <rect width="160" height="26" rx="6" fill="#10b981" fill-opacity="0.2" stroke="#10b981" stroke-width="1"/>
+      <text x="80" y="17" font-size="12" font-weight="700" fill="#34d399" text-anchor="middle">QUALITY ASSURANCE</text>
+      <text x="0" y="44" font-size="11" fill="#cbd5e1">• Vitest &amp; RTL Unit Tests</text>
+      <text x="0" y="60" font-size="11" fill="#cbd5e1">• Jest &amp; Supertest Integration</text>
+    </g>
+    <g transform="translate(515, 20)">
+      <rect width="170" height="26" rx="6" fill="#6366f1" fill-opacity="0.2" stroke="#6366f1" stroke-width="1"/>
+      <text x="85" y="17" font-size="12" font-weight="700" fill="#a5b4fc" text-anchor="middle">E2E TESTING</text>
+      <text x="0" y="44" font-size="11" fill="#cbd5e1">• Playwright Browser Flows</text>
+      <text x="0" y="60" font-size="11" fill="#cbd5e1">• Multi-Role Session Guards</text>
+    </g>
+    <g transform="translate(780, 20)">
+      <rect width="280" height="26" rx="6" fill="#ec4899" fill-opacity="0.2" stroke="#ec4899" stroke-width="1"/>
+      <text x="140" y="17" font-size="12" font-weight="700" fill="#f472b6" text-anchor="middle">APACHE JMETER LOAD TESTING</text>
+      <text x="0" y="44" font-size="11" fill="#cbd5e1">• Stress, Breakpoint &amp; Spike Tests</text>
+      <text x="0" y="60" font-size="11" fill="#cbd5e1">• Upload &amp; Security Regression Verification</text>
+    </g>
+  </g>
+</svg>
