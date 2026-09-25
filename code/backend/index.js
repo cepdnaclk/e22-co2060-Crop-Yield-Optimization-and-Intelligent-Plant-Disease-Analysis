@@ -9,6 +9,7 @@ import mongoose from "mongoose"
 import dotenv from "dotenv"
 import bodyParser from "body-parser"
 import cors from "cors"
+import helmet from "helmet"
 import path from "path"
 import { fileURLToPath } from "url"
 import axios from "axios"
@@ -33,6 +34,8 @@ const CHATBOT_WEBHOOK_TEST_URL = process.env.CHATBOT_WEBHOOK_TEST_URL || ''
 
 
 const app = express()
+
+app.use(helmet())
 
 // Enable CORS for frontend
 const allowedOrigins = [
@@ -123,6 +126,7 @@ mongoose.connect(connectionString).then(
 app.use("/api/users", userRouter)
 app.use("/api/farms", farmRouter)
 app.use("/api/avgYields", avgYieldRouter)
+app.use("/api/avg-yields", avgYieldRouter)
 app.use("/api/inquiries", inquiryRouter)
 app.use("/api/geocode", geocodeRouter)
 app.use("/api/flood", floodRouter)

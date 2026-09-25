@@ -4,15 +4,22 @@
  * Base path: /api/users
  */
 import express from "express";
+import rateLimit from "express-rate-limit";
 import { createUser, loginUser, fetchUser, getRecentFarmers, updateProfile } from "../controllers/userController.js";
 import { sendOtp, verifyOtp, changeEmail, forgotPassword, resetPassword } from "../controllers/otpController.js";
 import { requireAuth, requireEmailVerified } from "../middleware/authMiddleware.js";
 
 const userRouter = express.Router()
 
+const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 10, // Limit each IP to 10 login requests per window
+    message: { message: "Too many login attempts. Please try again later." }
+});
+
 // ── Public: no auth required ─────────────────────────────────────────────────
 userRouter.post("/", createUser)
-userRouter.post("/login", loginUser)
+userRouter.post("/login", loginLimiter, loginUser)
 userRouter.post("/forgot-password", forgotPassword)
 userRouter.post("/reset-password", resetPassword)
 
