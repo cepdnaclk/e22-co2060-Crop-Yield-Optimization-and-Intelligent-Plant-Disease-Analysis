@@ -88,5 +88,9 @@ const farmSchema = new mongoose.Schema({
     }
 });
 
+// Indexes for query optimization
+farmSchema.index({ status: 1, createdDate: -1 });
+farmSchema.index({ farmer: 1 });
+
 const Farm = mongoose.model("farms", farmSchema);
 export default Farm
