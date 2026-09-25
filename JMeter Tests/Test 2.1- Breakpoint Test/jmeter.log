@@ -1,0 +1,1065 @@
+2026-09-25 13:39:07,904 INFO o.a.j.u.JMeterUtils: Setting Locale to en_EN
+2026-09-25 13:39:07,928 INFO o.a.j.JMeter: Loading user properties from: E:\apache-jmeter-5.6.3\bin\user.properties
+2026-09-25 13:39:07,929 INFO o.a.j.JMeter: Loading system properties from: E:\apache-jmeter-5.6.3\bin\system.properties
+2026-09-25 13:39:07,938 INFO o.a.j.JMeter: Copyright (c) 1998-2024 The Apache Software Foundation
+2026-09-25 13:39:07,938 INFO o.a.j.JMeter: Version 5.6.3
+2026-09-25 13:39:07,938 INFO o.a.j.JMeter: java.version=17.0.12
+2026-09-25 13:39:07,938 INFO o.a.j.JMeter: java.vm.name=Java HotSpot(TM) 64-Bit Server VM
+2026-09-25 13:39:07,938 INFO o.a.j.JMeter: os.name=Windows 11
+2026-09-25 13:39:07,938 INFO o.a.j.JMeter: os.arch=amd64
+2026-09-25 13:39:07,938 INFO o.a.j.JMeter: os.version=10.0
+2026-09-25 13:39:07,939 INFO o.a.j.JMeter: file.encoding=Cp1252
+2026-09-25 13:39:07,939 INFO o.a.j.JMeter: java.awt.headless=true
+2026-09-25 13:39:07,939 INFO o.a.j.JMeter: Max memory     =1073741824
+2026-09-25 13:39:07,939 INFO o.a.j.JMeter: Available Processors =12
+2026-09-25 13:39:07,949 INFO o.a.j.JMeter: Default Locale=English (EN)
+2026-09-25 13:39:07,949 INFO o.a.j.JMeter: JMeter  Locale=English (EN)
+2026-09-25 13:39:07,949 INFO o.a.j.JMeter: JMeterHome=E:\apache-jmeter-5.6.3
+2026-09-25 13:39:07,949 INFO o.a.j.JMeter: user.dir  =D:\University sem 3\2yp\test  plan\Test 2.1
+2026-09-25 13:39:07,949 INFO o.a.j.JMeter: PWD       =D:\University sem 3\2yp\test  plan\Test 2.1
+2026-09-25 13:39:12,898 INFO o.a.j.JMeter: IP: 192.168.56.1 Name: MSI FullName: MSI
+2026-09-25 13:39:12,918 INFO o.a.j.JMeter: Setting property 'jmeter.reportgenerator.outputdir' to:'D:\University sem 3\2yp\test  plan\Test 2.1\breakpoint_report'
+2026-09-25 13:39:12,922 INFO o.a.j.s.FileServer: Default base='D:\University sem 3\2yp\test  plan\Test 2.1'
+2026-09-25 13:39:12,925 INFO o.a.j.s.FileServer: Set new base='D:\University sem 3\2yp\test  plan\Test 2.1'
+2026-09-25 13:39:13,247 INFO o.a.j.s.SaveService: Testplan (JMX) version: 2.2. Testlog (JTL) version: 2.2
+2026-09-25 13:39:13,308 INFO o.a.j.s.SaveService: Using SaveService properties version 5.0
+2026-09-25 13:39:13,313 INFO o.a.j.s.SaveService: Using SaveService properties file encoding UTF-8
+2026-09-25 13:39:13,320 INFO o.a.j.s.SaveService: Loading file: AgriConnect_BreakpointTest.jmx
+2026-09-25 13:39:13,450 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/html is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2026-09-25 13:39:13,450 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xhtml+xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2026-09-25 13:39:13,450 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2026-09-25 13:39:13,450 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2026-09-25 13:39:13,450 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/vnd.wap.wml is org.apache.jmeter.protocol.http.parser.RegexpHTMLParser
+2026-09-25 13:39:13,450 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/css is org.apache.jmeter.protocol.http.parser.CssParser
+2026-09-25 13:39:13,483 INFO o.a.j.JMeter: Creating summariser <summary>
+2026-09-25 13:39:13,500 INFO o.a.j.r.d.ReportGenerator: ReportGenerator will use for Parsing the separator: ','
+2026-09-25 13:39:13,500 INFO o.a.j.r.d.ReportGenerator: Will generate report at end of test from  results file: breakpoint_results.jtl
+2026-09-25 13:39:13,500 INFO o.a.j.r.d.ReportGenerator: Reading report generator properties from: E:\apache-jmeter-5.6.3\bin\reportgenerator.properties
+2026-09-25 13:39:13,501 INFO o.a.j.r.d.ReportGenerator: Merging with JMeter properties
+2026-09-25 13:39:13,506 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.temp_dir' not found, using default value 'temp' instead.
+2026-09-25 13:39:13,510 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.apdex_per_transaction' not found, using default value 'null' instead.
+2026-09-25 13:39:13,510 INFO o.a.j.r.c.ReportGeneratorConfiguration: apdex_per_transaction is empty, not APDEX per transaction customization
+2026-09-25 13:39:13,510 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.sample_filter' not found, using default value 'null' instead.
+2026-09-25 13:39:13,510 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.report_title' not found, using default value 'null' instead.
+2026-09-25 13:39:13,511 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.start_date' not found, using default value 'null' instead.
+2026-09-25 13:39:13,511 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.end_date' not found, using default value 'null' instead.
+2026-09-25 13:39:13,511 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.date_format' not found, using default value 'null' instead.
+2026-09-25 13:39:13,512 INFO o.a.j.r.c.ReportGeneratorConfiguration: Will use date range start date: null, end date: null
+2026-09-25 13:39:13,515 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.totalTPS.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:39:13,515 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.activeThreadsOverTime.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:39:13,515 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.timeVsThreads.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:39:13,515 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.responseTimeDistribution.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:39:13,515 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.transactionsPerSecond.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:39:13,515 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.responseTimePercentiles.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:39:13,515 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.responseTimePercentilesOverTime.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:39:13,515 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.responseTimesOverTime.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:39:13,516 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.connectTimeOverTime.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:39:13,516 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.latenciesOverTime.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:39:13,518 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.json.filters_only_sample_series' not found, using default value 'true' instead.
+2026-09-25 13:39:13,519 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.json.series_filter' not found, using default value '' instead.
+2026-09-25 13:39:13,520 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.json.show_controllers_only' not found, using default value 'false' instead.
+2026-09-25 13:39:13,521 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.html.filters_only_sample_series' not found, using default value 'true' instead.
+2026-09-25 13:39:13,521 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.html.series_filter' not found, using default value '' instead.
+2026-09-25 13:39:13,521 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.html.show_controllers_only' not found, using default value 'false' instead.
+2026-09-25 13:39:13,540 INFO o.a.j.e.StandardJMeterEngine: Running the test!
+2026-09-25 13:39:13,540 INFO o.a.j.s.SampleEvent: List of sample_variables: []
+2026-09-25 13:39:13,542 INFO o.a.j.s.SampleEvent: List of sample_variables: []
+2026-09-25 13:39:13,545 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must contain the string: '.functions.'
+2026-09-25 13:39:13,547 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must not contain the string: '.gui.'
+2026-09-25 13:39:13,650 INFO o.a.j.JMeter: Running test (1790323753650)
+2026-09-25 13:39:13,675 INFO o.a.j.e.StandardJMeterEngine: Starting ThreadGroup: 1 : Breakpoint Ramp - 300 Users
+2026-09-25 13:39:13,675 INFO o.a.j.e.StandardJMeterEngine: Starting 300 threads for group Breakpoint Ramp - 300 Users.
+2026-09-25 13:39:13,675 INFO o.a.j.e.StandardJMeterEngine: Thread will continue on error
+2026-09-25 13:39:13,675 INFO o.a.j.t.ThreadGroup: Starting thread group... number=1 threads=300 ramp-up=300 delayedStart=false
+2026-09-25 13:39:13,689 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-1
+2026-09-25 13:39:13,713 INFO o.a.j.p.h.s.HTTPHCAbstractImpl: Local host = MSI
+2026-09-25 13:39:13,728 INFO o.a.j.p.h.s.HTTPHC4Impl: HTTP request retry count = 0
+2026-09-25 13:39:13,732 INFO o.a.j.s.SampleResult: Note: Sample TimeStamps are START times
+2026-09-25 13:39:13,732 INFO o.a.j.s.SampleResult: sampleresult.default.encoding is set to UTF-8
+2026-09-25 13:39:13,732 INFO o.a.j.s.SampleResult: sampleresult.useNanoTime=true
+2026-09-25 13:39:13,732 INFO o.a.j.s.SampleResult: sampleresult.nanoThreadSleep=5000
+2026-09-25 13:39:13,841 INFO o.a.j.t.ThreadGroup: Started thread group number 1
+2026-09-25 13:39:13,841 INFO o.a.j.e.StandardJMeterEngine: All thread groups have been started
+2026-09-25 13:39:14,065 INFO o.a.j.p.h.s.h.LazyLayeredConnectionSocketFactory: Setting up HTTPS TrustAll Socket Factory
+2026-09-25 13:39:14,102 INFO o.a.j.u.JsseSSLManager: Using default SSL protocol: TLS
+2026-09-25 13:39:14,103 INFO o.a.j.u.JsseSSLManager: SSL session context: per-thread
+2026-09-25 13:39:14,225 INFO o.a.j.u.SSLManager: JmeterKeyStore Location:  type JKS
+2026-09-25 13:39:14,230 INFO o.a.j.u.SSLManager: KeyStore created OK
+2026-09-25 13:39:14,230 WARN o.a.j.u.SSLManager: Keystore file not found, loading empty keystore
+2026-09-25 13:39:14,688 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-2
+2026-09-25 13:39:15,683 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-3
+2026-09-25 13:39:16,691 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-4
+2026-09-25 13:39:17,682 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-5
+2026-09-25 13:39:18,680 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-6
+2026-09-25 13:39:19,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-7
+2026-09-25 13:39:20,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-8
+2026-09-25 13:39:21,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-9
+2026-09-25 13:39:22,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-10
+2026-09-25 13:39:23,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-11
+2026-09-25 13:39:24,682 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-12
+2026-09-25 13:39:25,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-13
+2026-09-25 13:39:26,680 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-14
+2026-09-25 13:39:27,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-15
+2026-09-25 13:39:28,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-16
+2026-09-25 13:39:29,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-17
+2026-09-25 13:39:30,041 INFO o.a.j.r.Summariser: summary +    103 in 00:00:16 =    6.3/s Avg:  1031 Min:   502 Max:  2001 Err:     0 (0.00%) Active: 17 Started: 17 Finished: 0
+2026-09-25 13:39:30,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-18
+2026-09-25 13:39:31,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-19
+2026-09-25 13:39:32,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-20
+2026-09-25 13:39:33,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-21
+2026-09-25 13:39:34,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-22
+2026-09-25 13:39:35,680 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-23
+2026-09-25 13:39:36,724 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-24
+2026-09-25 13:39:37,680 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-25
+2026-09-25 13:39:38,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-26
+2026-09-25 13:39:39,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-27
+2026-09-25 13:39:40,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-28
+2026-09-25 13:39:41,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-29
+2026-09-25 13:39:42,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-30
+2026-09-25 13:39:43,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-31
+2026-09-25 13:39:44,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-32
+2026-09-25 13:39:45,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-33
+2026-09-25 13:39:46,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-34
+2026-09-25 13:39:47,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-35
+2026-09-25 13:39:48,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-36
+2026-09-25 13:39:49,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-37
+2026-09-25 13:39:50,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-38
+2026-09-25 13:39:51,679 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-39
+2026-09-25 13:39:52,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-40
+2026-09-25 13:39:53,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-41
+2026-09-25 13:39:54,679 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-42
+2026-09-25 13:39:55,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-43
+2026-09-25 13:39:56,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-44
+2026-09-25 13:39:57,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-45
+2026-09-25 13:39:58,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-46
+2026-09-25 13:39:59,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-47
+2026-09-25 13:40:00,037 INFO o.a.j.r.Summariser: summary +    432 in 00:00:30 =   14.4/s Avg:  1779 Min:   485 Max:  4903 Err:     0 (0.00%) Active: 47 Started: 47 Finished: 0
+2026-09-25 13:40:00,038 INFO o.a.j.r.Summariser: summary =    535 in 00:00:46 =   11.5/s Avg:  1635 Min:   485 Max:  4903 Err:     0 (0.00%)
+2026-09-25 13:40:00,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-48
+2026-09-25 13:40:01,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-49
+2026-09-25 13:40:02,679 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-50
+2026-09-25 13:40:03,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-51
+2026-09-25 13:40:04,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-52
+2026-09-25 13:40:05,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-53
+2026-09-25 13:40:06,676 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-54
+2026-09-25 13:40:07,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-55
+2026-09-25 13:40:08,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-56
+2026-09-25 13:40:09,675 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-57
+2026-09-25 13:40:10,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-58
+2026-09-25 13:40:11,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-59
+2026-09-25 13:40:12,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-60
+2026-09-25 13:40:13,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-61
+2026-09-25 13:40:14,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-62
+2026-09-25 13:40:15,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-63
+2026-09-25 13:40:16,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-64
+2026-09-25 13:40:17,682 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-65
+2026-09-25 13:40:18,681 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-66
+2026-09-25 13:40:19,679 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-67
+2026-09-25 13:40:20,690 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-68
+2026-09-25 13:40:21,690 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-69
+2026-09-25 13:40:22,683 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-70
+2026-09-25 13:40:23,680 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-71
+2026-09-25 13:40:24,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-72
+2026-09-25 13:40:25,676 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-73
+2026-09-25 13:40:26,689 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-74
+2026-09-25 13:40:27,689 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-75
+2026-09-25 13:40:28,688 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-76
+2026-09-25 13:40:29,679 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-77
+2026-09-25 13:40:30,067 INFO o.a.j.r.Summariser: summary +    588 in 00:00:30 =   19.6/s Avg:  2809 Min:   573 Max:  5834 Err:     0 (0.00%) Active: 77 Started: 77 Finished: 0
+2026-09-25 13:40:30,071 INFO o.a.j.r.Summariser: summary =   1123 in 00:01:16 =   14.7/s Avg:  2250 Min:   485 Max:  5834 Err:     0 (0.00%)
+2026-09-25 13:40:30,691 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-78
+2026-09-25 13:40:31,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-79
+2026-09-25 13:40:32,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-80
+2026-09-25 13:40:33,679 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-81
+2026-09-25 13:40:34,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-82
+2026-09-25 13:40:35,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-83
+2026-09-25 13:40:36,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-84
+2026-09-25 13:40:37,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-85
+2026-09-25 13:40:38,676 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-86
+2026-09-25 13:40:39,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-87
+2026-09-25 13:40:40,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-88
+2026-09-25 13:40:41,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-89
+2026-09-25 13:40:42,679 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-90
+2026-09-25 13:40:43,683 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-91
+2026-09-25 13:40:44,675 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-92
+2026-09-25 13:40:45,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-93
+2026-09-25 13:40:46,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-94
+2026-09-25 13:40:47,676 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-95
+2026-09-25 13:40:48,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-96
+2026-09-25 13:40:49,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-97
+2026-09-25 13:40:50,679 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-98
+2026-09-25 13:40:51,675 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-99
+2026-09-25 13:40:52,676 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-100
+2026-09-25 13:40:53,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-101
+2026-09-25 13:40:54,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-102
+2026-09-25 13:40:55,676 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-103
+2026-09-25 13:40:56,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-104
+2026-09-25 13:40:57,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-105
+2026-09-25 13:40:58,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-106
+2026-09-25 13:40:59,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-107
+2026-09-25 13:41:00,141 INFO o.a.j.r.Summariser: summary +    653 in 00:00:30 =   21.7/s Avg:  3625 Min:   586 Max:  7983 Err:     0 (0.00%) Active: 107 Started: 107 Finished: 0
+2026-09-25 13:41:00,143 INFO o.a.j.r.Summariser: summary =   1776 in 00:01:46 =   16.7/s Avg:  2755 Min:   485 Max:  7983 Err:     0 (0.00%)
+2026-09-25 13:41:00,676 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-108
+2026-09-25 13:41:01,676 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-109
+2026-09-25 13:41:02,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-110
+2026-09-25 13:41:03,681 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-111
+2026-09-25 13:41:04,676 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-112
+2026-09-25 13:41:05,679 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-113
+2026-09-25 13:41:06,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-114
+2026-09-25 13:41:07,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-115
+2026-09-25 13:41:08,676 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-116
+2026-09-25 13:41:09,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-117
+2026-09-25 13:41:10,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-118
+2026-09-25 13:41:11,676 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-119
+2026-09-25 13:41:12,679 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-120
+2026-09-25 13:41:13,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-121
+2026-09-25 13:41:14,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-122
+2026-09-25 13:41:15,675 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-123
+2026-09-25 13:41:16,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-124
+2026-09-25 13:41:17,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-125
+2026-09-25 13:41:18,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-126
+2026-09-25 13:41:19,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-127
+2026-09-25 13:41:20,679 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-128
+2026-09-25 13:41:21,676 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-129
+2026-09-25 13:41:22,688 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-130
+2026-09-25 13:41:23,686 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-131
+2026-09-25 13:41:24,679 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-132
+2026-09-25 13:41:25,679 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-133
+2026-09-25 13:41:26,675 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-134
+2026-09-25 13:41:27,688 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-135
+2026-09-25 13:41:28,695 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-136
+2026-09-25 13:41:29,685 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-137
+2026-09-25 13:41:30,007 INFO o.a.j.r.Summariser: summary +    694 in 00:00:30 =   23.2/s Avg:  4736 Min:   667 Max:  9579 Err:     0 (0.00%) Active: 137 Started: 137 Finished: 0
+2026-09-25 13:41:30,013 INFO o.a.j.r.Summariser: summary =   2470 in 00:02:16 =   18.1/s Avg:  3312 Min:   485 Max:  9579 Err:     0 (0.00%)
+2026-09-25 13:41:30,681 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-138
+2026-09-25 13:41:31,690 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-139
+2026-09-25 13:41:32,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-140
+2026-09-25 13:41:33,688 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-141
+2026-09-25 13:41:34,688 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-142
+2026-09-25 13:41:35,687 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-143
+2026-09-25 13:41:36,689 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-144
+2026-09-25 13:41:37,687 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-145
+2026-09-25 13:41:38,685 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-146
+2026-09-25 13:41:39,684 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-147
+2026-09-25 13:41:40,680 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-148
+2026-09-25 13:41:41,681 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-149
+2026-09-25 13:41:42,679 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-150
+2026-09-25 13:41:43,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-151
+2026-09-25 13:41:44,691 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-152
+2026-09-25 13:41:45,691 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-153
+2026-09-25 13:41:46,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-154
+2026-09-25 13:41:47,691 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-155
+2026-09-25 13:41:48,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-156
+2026-09-25 13:41:49,690 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-157
+2026-09-25 13:41:50,679 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-158
+2026-09-25 13:41:51,676 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-159
+2026-09-25 13:41:52,690 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-160
+2026-09-25 13:41:53,687 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-161
+2026-09-25 13:41:54,687 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-162
+2026-09-25 13:41:55,685 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-163
+2026-09-25 13:41:56,683 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-164
+2026-09-25 13:41:57,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-165
+2026-09-25 13:41:58,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-166
+2026-09-25 13:41:59,675 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-167
+2026-09-25 13:42:00,060 INFO o.a.j.r.Summariser: summary +    733 in 00:00:30 =   24.4/s Avg:  5314 Min:   547 Max: 10909 Err:     0 (0.00%) Active: 167 Started: 167 Finished: 0
+2026-09-25 13:42:00,063 INFO o.a.j.r.Summariser: summary =   3203 in 00:02:46 =   19.2/s Avg:  3770 Min:   485 Max: 10909 Err:     0 (0.00%)
+2026-09-25 13:42:00,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-168
+2026-09-25 13:42:01,688 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-169
+2026-09-25 13:42:02,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-170
+2026-09-25 13:42:03,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-171
+2026-09-25 13:42:04,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-172
+2026-09-25 13:42:05,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-173
+2026-09-25 13:42:06,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-174
+2026-09-25 13:42:07,679 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-175
+2026-09-25 13:42:08,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-176
+2026-09-25 13:42:09,676 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-177
+2026-09-25 13:42:10,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-178
+2026-09-25 13:42:11,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-179
+2026-09-25 13:42:12,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-180
+2026-09-25 13:42:13,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-181
+2026-09-25 13:42:14,679 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-182
+2026-09-25 13:42:15,676 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-183
+2026-09-25 13:42:16,675 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-184
+2026-09-25 13:42:17,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-185
+2026-09-25 13:42:18,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-186
+2026-09-25 13:42:19,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-187
+2026-09-25 13:42:20,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-188
+2026-09-25 13:42:21,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-189
+2026-09-25 13:42:22,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-190
+2026-09-25 13:42:23,676 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-191
+2026-09-25 13:42:24,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-192
+2026-09-25 13:42:25,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-193
+2026-09-25 13:42:26,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-194
+2026-09-25 13:42:27,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-195
+2026-09-25 13:42:28,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-196
+2026-09-25 13:42:29,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-197
+2026-09-25 13:42:30,058 INFO o.a.j.r.Summariser: summary +    713 in 00:00:30 =   23.8/s Avg:  6882 Min:   573 Max: 13871 Err:     0 (0.00%) Active: 197 Started: 197 Finished: 0
+2026-09-25 13:42:30,061 INFO o.a.j.r.Summariser: summary =   3916 in 00:03:16 =   19.9/s Avg:  4336 Min:   485 Max: 13871 Err:     0 (0.00%)
+2026-09-25 13:42:30,676 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-198
+2026-09-25 13:42:31,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-199
+2026-09-25 13:42:32,676 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-200
+2026-09-25 13:42:33,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-201
+2026-09-25 13:42:34,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-202
+2026-09-25 13:42:35,676 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-203
+2026-09-25 13:42:36,676 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-204
+2026-09-25 13:42:37,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-205
+2026-09-25 13:42:38,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-206
+2026-09-25 13:42:39,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-207
+2026-09-25 13:42:40,680 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-208
+2026-09-25 13:42:41,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-209
+2026-09-25 13:42:42,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-210
+2026-09-25 13:42:43,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-211
+2026-09-25 13:42:44,690 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-212
+2026-09-25 13:42:45,685 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-213
+2026-09-25 13:42:46,686 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-214
+2026-09-25 13:42:47,685 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-215
+2026-09-25 13:42:48,683 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-216
+2026-09-25 13:42:49,682 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-217
+2026-09-25 13:42:50,681 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-218
+2026-09-25 13:42:51,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-219
+2026-09-25 13:42:52,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-220
+2026-09-25 13:42:53,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-221
+2026-09-25 13:42:54,679 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-222
+2026-09-25 13:42:55,675 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-223
+2026-09-25 13:42:56,683 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-224
+2026-09-25 13:42:57,679 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-225
+2026-09-25 13:42:58,690 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-226
+2026-09-25 13:42:59,679 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-227
+2026-09-25 13:43:00,153 INFO o.a.j.r.Summariser: summary +    799 in 00:00:30 =   26.5/s Avg:  7600 Min:   583 Max: 14988 Err:     0 (0.00%) Active: 227 Started: 227 Finished: 0
+2026-09-25 13:43:00,155 INFO o.a.j.r.Summariser: summary =   4715 in 00:03:47 =   20.8/s Avg:  4889 Min:   485 Max: 14988 Err:     0 (0.00%)
+2026-09-25 13:43:00,679 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-228
+2026-09-25 13:43:01,691 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-229
+2026-09-25 13:43:02,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-230
+2026-09-25 13:43:03,690 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-231
+2026-09-25 13:43:04,685 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-232
+2026-09-25 13:43:05,684 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-233
+2026-09-25 13:43:06,691 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-234
+2026-09-25 13:43:07,690 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-235
+2026-09-25 13:43:08,690 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-236
+2026-09-25 13:43:09,686 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-237
+2026-09-25 13:43:10,684 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-238
+2026-09-25 13:43:11,687 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-239
+2026-09-25 13:43:12,684 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-240
+2026-09-25 13:43:13,682 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-241
+2026-09-25 13:43:14,681 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-242
+2026-09-25 13:43:15,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-243
+2026-09-25 13:43:16,694 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-244
+2026-09-25 13:43:17,688 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-245
+2026-09-25 13:43:18,689 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-246
+2026-09-25 13:43:19,679 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-247
+2026-09-25 13:43:20,679 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-248
+2026-09-25 13:43:21,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-249
+2026-09-25 13:43:22,691 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-250
+2026-09-25 13:43:23,685 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-251
+2026-09-25 13:43:24,683 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-252
+2026-09-25 13:43:25,691 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-253
+2026-09-25 13:43:26,685 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-254
+2026-09-25 13:43:27,686 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-255
+2026-09-25 13:43:28,684 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-256
+2026-09-25 13:43:29,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-257
+2026-09-25 13:43:30,021 INFO o.a.j.r.Summariser: summary +    705 in 00:00:30 =   23.6/s Avg:  8677 Min:   593 Max: 17083 Err:     0 (0.00%) Active: 257 Started: 257 Finished: 0
+2026-09-25 13:43:30,025 INFO o.a.j.r.Summariser: summary =   5420 in 00:04:16 =   21.1/s Avg:  5382 Min:   485 Max: 17083 Err:     0 (0.00%)
+2026-09-25 13:43:30,679 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-258
+2026-09-25 13:43:31,688 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-259
+2026-09-25 13:43:32,689 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-260
+2026-09-25 13:43:33,688 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-261
+2026-09-25 13:43:34,683 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-262
+2026-09-25 13:43:35,681 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-263
+2026-09-25 13:43:36,680 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-264
+2026-09-25 13:43:37,685 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-265
+2026-09-25 13:43:38,680 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-266
+2026-09-25 13:43:39,690 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-267
+2026-09-25 13:43:40,687 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-268
+2026-09-25 13:43:41,682 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-269
+2026-09-25 13:43:42,680 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-270
+2026-09-25 13:43:43,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-271
+2026-09-25 13:43:44,688 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-272
+2026-09-25 13:43:45,688 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-273
+2026-09-25 13:43:46,686 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-274
+2026-09-25 13:43:47,683 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-275
+2026-09-25 13:43:48,687 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-276
+2026-09-25 13:43:49,681 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-277
+2026-09-25 13:43:50,679 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-278
+2026-09-25 13:43:51,688 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-279
+2026-09-25 13:43:52,683 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-280
+2026-09-25 13:43:53,675 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-281
+2026-09-25 13:43:54,685 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-282
+2026-09-25 13:43:55,684 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-283
+2026-09-25 13:43:56,680 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-284
+2026-09-25 13:43:57,677 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-285
+2026-09-25 13:43:58,690 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-286
+2026-09-25 13:43:59,687 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-287
+2026-09-25 13:44:00,021 INFO o.a.j.r.Summariser: summary +    737 in 00:00:30 =   24.6/s Avg: 11226 Min:   572 Max: 21319 Err:     0 (0.00%) Active: 287 Started: 287 Finished: 0
+2026-09-25 13:44:00,022 INFO o.a.j.r.Summariser: summary =   6157 in 00:04:46 =   21.5/s Avg:  6082 Min:   485 Max: 21319 Err:     0 (0.00%)
+2026-09-25 13:44:00,685 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-288
+2026-09-25 13:44:01,682 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-289
+2026-09-25 13:44:02,688 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-290
+2026-09-25 13:44:03,683 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-291
+2026-09-25 13:44:04,679 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-292
+2026-09-25 13:44:05,679 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-293
+2026-09-25 13:44:06,679 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-294
+2026-09-25 13:44:07,689 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-295
+2026-09-25 13:44:08,687 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-296
+2026-09-25 13:44:09,682 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-297
+2026-09-25 13:44:10,680 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-298
+2026-09-25 13:44:11,678 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-299
+2026-09-25 13:44:12,689 INFO o.a.j.t.JMeterThread: Thread started: Breakpoint Ramp - 300 Users 1-300
+2026-09-25 13:44:30,050 INFO o.a.j.r.Summariser: summary +    911 in 00:00:30 =   30.3/s Avg:  9949 Min:   585 Max: 19220 Err:     0 (0.00%) Active: 300 Started: 300 Finished: 0
+2026-09-25 13:44:30,050 INFO o.a.j.r.Summariser: summary =   7068 in 00:05:16 =   22.3/s Avg:  6580 Min:   485 Max: 21319 Err:     0 (0.00%)
+2026-09-25 13:45:00,050 INFO o.a.j.r.Summariser: summary +   1280 in 00:00:30 =   42.7/s Avg:  6839 Min:   578 Max: 13402 Err:     0 (0.00%) Active: 300 Started: 300 Finished: 0
+2026-09-25 13:45:00,054 INFO o.a.j.r.Summariser: summary =   8348 in 00:05:46 =   24.1/s Avg:  6620 Min:   485 Max: 21319 Err:     0 (0.00%)
+2026-09-25 13:45:30,054 INFO o.a.j.r.Summariser: summary +   1214 in 00:00:30 =   40.5/s Avg:  6996 Min:   575 Max: 12817 Err:     0 (0.00%) Active: 300 Started: 300 Finished: 0
+2026-09-25 13:45:30,056 INFO o.a.j.r.Summariser: summary =   9562 in 00:06:16 =   25.4/s Avg:  6668 Min:   485 Max: 21319 Err:     0 (0.00%)
+2026-09-25 13:46:00,142 INFO o.a.j.r.Summariser: summary +   1264 in 00:00:30 =   42.0/s Avg:  6786 Min:   564 Max: 12522 Err:     0 (0.00%) Active: 300 Started: 300 Finished: 0
+2026-09-25 13:46:00,148 INFO o.a.j.r.Summariser: summary =  10826 in 00:06:46 =   26.6/s Avg:  6681 Min:   485 Max: 21319 Err:     0 (0.00%)
+2026-09-25 13:46:30,003 INFO o.a.j.r.Summariser: summary +   1293 in 00:00:30 =   43.3/s Avg:  6652 Min:   554 Max: 11134 Err:     0 (0.00%) Active: 300 Started: 300 Finished: 0
+2026-09-25 13:46:30,008 INFO o.a.j.r.Summariser: summary =  12119 in 00:07:16 =   27.8/s Avg:  6678 Min:   485 Max: 21319 Err:     0 (0.00%)
+2026-09-25 13:47:00,053 INFO o.a.j.r.Summariser: summary +   1280 in 00:00:30 =   42.6/s Avg:  6818 Min:   543 Max: 11021 Err:     0 (0.00%) Active: 300 Started: 300 Finished: 0
+2026-09-25 13:47:00,055 INFO o.a.j.r.Summariser: summary =  13399 in 00:07:46 =   28.7/s Avg:  6692 Min:   485 Max: 21319 Err:     0 (0.00%)
+2026-09-25 13:47:30,012 INFO o.a.j.r.Summariser: summary +   1228 in 00:00:30 =   41.0/s Avg:  6907 Min:   569 Max: 11911 Err:     0 (0.00%) Active: 300 Started: 300 Finished: 0
+2026-09-25 13:47:30,012 INFO o.a.j.r.Summariser: summary =  14627 in 00:08:16 =   29.5/s Avg:  6710 Min:   485 Max: 21319 Err:     0 (0.00%)
+2026-09-25 13:48:00,094 INFO o.a.j.r.Summariser: summary +   1293 in 00:00:30 =   43.0/s Avg:  6736 Min:   561 Max: 11743 Err:     0 (0.00%) Active: 300 Started: 300 Finished: 0
+2026-09-25 13:48:00,095 INFO o.a.j.r.Summariser: summary =  15920 in 00:08:46 =   30.2/s Avg:  6712 Min:   485 Max: 21319 Err:     0 (0.00%)
+2026-09-25 13:48:30,017 INFO o.a.j.r.Summariser: summary +   1296 in 00:00:30 =   43.3/s Avg:  6648 Min:   554 Max: 10927 Err:     0 (0.00%) Active: 300 Started: 300 Finished: 0
+2026-09-25 13:48:30,021 INFO o.a.j.r.Summariser: summary =  17216 in 00:09:16 =   30.9/s Avg:  6707 Min:   485 Max: 21319 Err:     0 (0.00%)
+2026-09-25 13:49:00,056 INFO o.a.j.r.Summariser: summary +   1248 in 00:00:30 =   41.5/s Avg:  6874 Min:   541 Max: 11595 Err:     0 (0.00%) Active: 300 Started: 300 Finished: 0
+2026-09-25 13:49:00,058 INFO o.a.j.r.Summariser: summary =  18464 in 00:09:46 =   31.5/s Avg:  6718 Min:   485 Max: 21319 Err:     0 (0.00%)
+2026-09-25 13:49:13,468 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-107
+2026-09-25 13:49:13,477 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-34
+2026-09-25 13:49:13,495 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-181
+2026-09-25 13:49:13,671 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-195
+2026-09-25 13:49:13,689 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-271
+2026-09-25 13:49:13,789 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-213
+2026-09-25 13:49:13,791 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-115
+2026-09-25 13:49:13,791 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-115
+2026-09-25 13:49:13,874 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-13
+2026-09-25 13:49:13,874 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-13
+2026-09-25 13:49:13,875 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-175
+2026-09-25 13:49:13,875 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-89
+2026-09-25 13:49:13,877 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-175
+2026-09-25 13:49:13,877 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-89
+2026-09-25 13:49:13,879 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-62
+2026-09-25 13:49:13,879 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-62
+2026-09-25 13:49:13,882 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-176
+2026-09-25 13:49:13,882 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-93
+2026-09-25 13:49:13,883 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-176
+2026-09-25 13:49:13,883 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-93
+2026-09-25 13:49:13,884 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-124
+2026-09-25 13:49:13,885 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-124
+2026-09-25 13:49:13,885 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-182
+2026-09-25 13:49:13,885 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-182
+2026-09-25 13:49:13,897 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-144
+2026-09-25 13:49:13,897 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-144
+2026-09-25 13:49:13,942 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-37
+2026-09-25 13:49:13,943 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-37
+2026-09-25 13:49:13,968 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-44
+2026-09-25 13:49:13,968 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-106
+2026-09-25 13:49:13,968 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-44
+2026-09-25 13:49:13,969 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-106
+2026-09-25 13:49:13,971 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-145
+2026-09-25 13:49:13,971 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-188
+2026-09-25 13:49:13,971 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-145
+2026-09-25 13:49:13,971 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-188
+2026-09-25 13:49:13,972 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-261
+2026-09-25 13:49:13,972 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-261
+2026-09-25 13:49:13,975 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-146
+2026-09-25 13:49:13,975 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-146
+2026-09-25 13:49:13,970 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-211
+2026-09-25 13:49:13,977 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-211
+2026-09-25 13:49:13,983 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-193
+2026-09-25 13:49:13,983 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-166
+2026-09-25 13:49:13,984 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-166
+2026-09-25 13:49:13,984 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-164
+2026-09-25 13:49:13,983 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-257
+2026-09-25 13:49:13,985 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-32
+2026-09-25 13:49:13,985 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-257
+2026-09-25 13:49:13,986 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-232
+2026-09-25 13:49:13,983 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-193
+2026-09-25 13:49:13,987 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-232
+2026-09-25 13:49:13,985 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-164
+2026-09-25 13:49:13,987 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-32
+2026-09-25 13:49:13,993 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-134
+2026-09-25 13:49:13,994 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-134
+2026-09-25 13:49:14,027 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-186
+2026-09-25 13:49:14,027 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-186
+2026-09-25 13:49:14,052 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-19
+2026-09-25 13:49:14,052 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-283
+2026-09-25 13:49:14,052 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-19
+2026-09-25 13:49:14,052 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-283
+2026-09-25 13:49:14,056 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-256
+2026-09-25 13:49:14,056 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-256
+2026-09-25 13:49:14,060 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-289
+2026-09-25 13:49:14,060 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-289
+2026-09-25 13:49:14,077 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-88
+2026-09-25 13:49:14,077 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-88
+2026-09-25 13:49:14,082 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-83
+2026-09-25 13:49:14,082 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-83
+2026-09-25 13:49:14,082 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-142
+2026-09-25 13:49:14,082 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-142
+2026-09-25 13:49:14,093 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-219
+2026-09-25 13:49:14,093 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-219
+2026-09-25 13:49:14,187 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-223
+2026-09-25 13:49:14,187 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-223
+2026-09-25 13:49:14,285 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-227
+2026-09-25 13:49:14,287 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-227
+2026-09-25 13:49:14,291 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-1
+2026-09-25 13:49:14,292 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-1
+2026-09-25 13:49:14,295 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-184
+2026-09-25 13:49:14,296 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-184
+2026-09-25 13:49:14,314 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-190
+2026-09-25 13:49:14,314 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-190
+2026-09-25 13:49:14,378 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-200
+2026-09-25 13:49:14,378 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-200
+2026-09-25 13:49:14,381 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-204
+2026-09-25 13:49:14,382 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-204
+2026-09-25 13:49:14,405 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-273
+2026-09-25 13:49:14,405 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-273
+2026-09-25 13:49:14,479 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-137
+2026-09-25 13:49:14,480 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-137
+2026-09-25 13:49:14,487 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-143
+2026-09-25 13:49:14,487 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-143
+2026-09-25 13:49:14,561 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-269
+2026-09-25 13:49:14,561 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-269
+2026-09-25 13:49:14,613 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-246
+2026-09-25 13:49:14,614 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-246
+2026-09-25 13:49:14,669 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-120
+2026-09-25 13:49:14,670 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-259
+2026-09-25 13:49:14,670 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-120
+2026-09-25 13:49:14,670 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-259
+2026-09-25 13:49:14,685 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-138
+2026-09-25 13:49:14,685 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-138
+2026-09-25 13:49:14,758 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-25
+2026-09-25 13:49:14,759 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-25
+2026-09-25 13:49:14,759 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-133
+2026-09-25 13:49:14,760 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-133
+2026-09-25 13:49:14,775 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-101
+2026-09-25 13:49:14,776 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-101
+2026-09-25 13:49:14,791 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-90
+2026-09-25 13:49:14,791 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-90
+2026-09-25 13:49:14,869 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-23
+2026-09-25 13:49:14,870 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-23
+2026-09-25 13:49:14,881 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-250
+2026-09-25 13:49:14,881 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-250
+2026-09-25 13:49:14,884 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-18
+2026-09-25 13:49:14,884 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-18
+2026-09-25 13:49:14,889 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-296
+2026-09-25 13:49:14,889 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-296
+2026-09-25 13:49:14,893 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-152
+2026-09-25 13:49:14,893 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-152
+2026-09-25 13:49:14,921 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-14
+2026-09-25 13:49:14,921 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-14
+2026-09-25 13:49:14,992 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-241
+2026-09-25 13:49:14,992 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-241
+2026-09-25 13:49:14,993 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-45
+2026-09-25 13:49:14,994 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-45
+2026-09-25 13:49:14,994 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-170
+2026-09-25 13:49:14,994 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-170
+2026-09-25 13:49:14,996 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-220
+2026-09-25 13:49:14,996 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-220
+2026-09-25 13:49:14,997 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-128
+2026-09-25 13:49:14,998 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-128
+2026-09-25 13:49:15,252 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-235
+2026-09-25 13:49:15,254 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-235
+2026-09-25 13:49:15,270 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-56
+2026-09-25 13:49:15,271 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-56
+2026-09-25 13:49:15,274 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-287
+2026-09-25 13:49:15,275 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-287
+2026-09-25 13:49:15,284 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-140
+2026-09-25 13:49:15,285 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-140
+2026-09-25 13:49:15,285 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-197
+2026-09-25 13:49:15,286 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-197
+2026-09-25 13:49:15,290 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-267
+2026-09-25 13:49:15,290 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-267
+2026-09-25 13:49:15,290 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-214
+2026-09-25 13:49:15,291 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-214
+2026-09-25 13:49:15,292 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-249
+2026-09-25 13:49:15,292 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-249
+2026-09-25 13:49:15,707 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-110
+2026-09-25 13:49:15,707 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-110
+2026-09-25 13:49:15,877 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-68
+2026-09-25 13:49:15,877 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-68
+2026-09-25 13:49:15,898 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-239
+2026-09-25 13:49:15,898 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-239
+2026-09-25 13:49:15,901 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-87
+2026-09-25 13:49:15,901 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-87
+2026-09-25 13:49:15,901 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-27
+2026-09-25 13:49:15,902 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-27
+2026-09-25 13:49:15,905 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-293
+2026-09-25 13:49:15,905 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-293
+2026-09-25 13:49:15,910 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-276
+2026-09-25 13:49:15,911 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-276
+2026-09-25 13:49:15,913 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-254
+2026-09-25 13:49:15,913 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-254
+2026-09-25 13:49:15,921 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-238
+2026-09-25 13:49:15,921 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-238
+2026-09-25 13:49:15,925 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-263
+2026-09-25 13:49:15,925 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-263
+2026-09-25 13:49:15,976 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-209
+2026-09-25 13:49:15,976 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-209
+2026-09-25 13:49:15,978 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-46
+2026-09-25 13:49:15,978 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-46
+2026-09-25 13:49:15,983 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-299
+2026-09-25 13:49:15,983 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-299
+2026-09-25 13:49:15,988 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-75
+2026-09-25 13:49:15,988 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-75
+2026-09-25 13:49:15,990 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-148
+2026-09-25 13:49:15,990 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-148
+2026-09-25 13:49:15,992 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-221
+2026-09-25 13:49:15,992 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-221
+2026-09-25 13:49:16,011 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-229
+2026-09-25 13:49:16,011 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-229
+2026-09-25 13:49:16,175 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-161
+2026-09-25 13:49:16,176 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-161
+2026-09-25 13:49:16,191 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-139
+2026-09-25 13:49:16,192 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-139
+2026-09-25 13:49:16,192 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-215
+2026-09-25 13:49:16,193 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-215
+2026-09-25 13:49:16,194 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-108
+2026-09-25 13:49:16,195 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-108
+2026-09-25 13:49:16,195 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-264
+2026-09-25 13:49:16,196 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-264
+2026-09-25 13:49:16,197 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-8
+2026-09-25 13:49:16,200 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-57
+2026-09-25 13:49:16,200 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-202
+2026-09-25 13:49:16,200 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-8
+2026-09-25 13:49:16,201 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-202
+2026-09-25 13:49:16,200 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-57
+2026-09-25 13:49:16,207 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-180
+2026-09-25 13:49:16,207 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-180
+2026-09-25 13:49:16,207 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-109
+2026-09-25 13:49:16,208 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-109
+2026-09-25 13:49:16,273 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-3
+2026-09-25 13:49:16,274 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-3
+2026-09-25 13:49:16,305 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-149
+2026-09-25 13:49:16,305 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-79
+2026-09-25 13:49:16,305 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-149
+2026-09-25 13:49:16,305 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-79
+2026-09-25 13:49:16,312 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-82
+2026-09-25 13:49:16,312 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-82
+2026-09-25 13:49:16,321 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-281
+2026-09-25 13:49:16,322 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-281
+2026-09-25 13:49:16,417 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-243
+2026-09-25 13:49:16,417 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-165
+2026-09-25 13:49:16,419 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-243
+2026-09-25 13:49:16,419 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-165
+2026-09-25 13:49:16,421 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-290
+2026-09-25 13:49:16,422 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-290
+2026-09-25 13:49:16,426 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-116
+2026-09-25 13:49:16,426 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-116
+2026-09-25 13:49:16,434 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-150
+2026-09-25 13:49:16,435 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-150
+2026-09-25 13:49:16,444 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-286
+2026-09-25 13:49:16,445 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-286
+2026-09-25 13:49:16,483 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-160
+2026-09-25 13:49:16,483 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-160
+2026-09-25 13:49:16,506 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-222
+2026-09-25 13:49:16,507 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-222
+2026-09-25 13:49:16,598 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-35
+2026-09-25 13:49:16,598 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-35
+2026-09-25 13:49:16,715 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-172
+2026-09-25 13:49:16,717 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-172
+2026-09-25 13:49:16,724 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-242
+2026-09-25 13:49:16,724 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-242
+2026-09-25 13:49:16,797 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-15
+2026-09-25 13:49:16,797 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-15
+2026-09-25 13:49:16,819 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-72
+2026-09-25 13:49:16,820 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-72
+2026-09-25 13:49:16,823 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-179
+2026-09-25 13:49:16,823 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-179
+2026-09-25 13:49:16,829 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-92
+2026-09-25 13:49:16,830 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-92
+2026-09-25 13:49:16,837 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-77
+2026-09-25 13:49:16,838 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-77
+2026-09-25 13:49:16,840 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-189
+2026-09-25 13:49:16,841 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-189
+2026-09-25 13:49:16,843 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-123
+2026-09-25 13:49:16,844 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-123
+2026-09-25 13:49:16,892 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-135
+2026-09-25 13:49:16,892 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-135
+2026-09-25 13:49:16,898 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-21
+2026-09-25 13:49:16,898 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-21
+2026-09-25 13:49:16,903 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-24
+2026-09-25 13:49:16,903 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-24
+2026-09-25 13:49:16,913 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-36
+2026-09-25 13:49:16,913 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-98
+2026-09-25 13:49:16,913 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-36
+2026-09-25 13:49:16,913 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-98
+2026-09-25 13:49:16,918 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-85
+2026-09-25 13:49:16,918 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-85
+2026-09-25 13:49:16,996 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-169
+2026-09-25 13:49:16,996 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-169
+2026-09-25 13:49:17,013 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-53
+2026-09-25 13:49:17,014 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-53
+2026-09-25 13:49:17,018 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-111
+2026-09-25 13:49:17,018 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-74
+2026-09-25 13:49:17,018 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-111
+2026-09-25 13:49:17,018 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-74
+2026-09-25 13:49:17,023 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-201
+2026-09-25 13:49:17,023 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-201
+2026-09-25 13:49:17,024 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-131
+2026-09-25 13:49:17,024 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-131
+2026-09-25 13:49:17,080 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-97
+2026-09-25 13:49:17,080 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-97
+2026-09-25 13:49:17,112 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-58
+2026-09-25 13:49:17,112 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-58
+2026-09-25 13:49:17,115 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-210
+2026-09-25 13:49:17,115 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-210
+2026-09-25 13:49:17,118 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-298
+2026-09-25 13:49:17,118 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-298
+2026-09-25 13:49:17,199 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-129
+2026-09-25 13:49:17,199 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-129
+2026-09-25 13:49:17,212 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-155
+2026-09-25 13:49:17,212 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-155
+2026-09-25 13:49:17,278 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-141
+2026-09-25 13:49:17,278 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-141
+2026-09-25 13:49:17,278 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-49
+2026-09-25 13:49:17,279 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-49
+2026-09-25 13:49:17,309 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-198
+2026-09-25 13:49:17,309 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-284
+2026-09-25 13:49:17,311 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-203
+2026-09-25 13:49:17,311 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-203
+2026-09-25 13:49:17,311 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-284
+2026-09-25 13:49:17,312 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-198
+2026-09-25 13:49:17,313 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-73
+2026-09-25 13:49:17,313 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-86
+2026-09-25 13:49:17,314 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-73
+2026-09-25 13:49:17,314 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-86
+2026-09-25 13:49:17,316 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-22
+2026-09-25 13:49:17,316 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-22
+2026-09-25 13:49:17,389 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-279
+2026-09-25 13:49:17,389 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-279
+2026-09-25 13:49:17,407 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-154
+2026-09-25 13:49:17,407 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-154
+2026-09-25 13:49:17,479 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-4
+2026-09-25 13:49:17,479 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-205
+2026-09-25 13:49:17,479 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-4
+2026-09-25 13:49:17,479 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-205
+2026-09-25 13:49:17,481 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-105
+2026-09-25 13:49:17,481 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-105
+2026-09-25 13:49:17,507 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-237
+2026-09-25 13:49:17,509 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-237
+2026-09-25 13:49:17,523 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-206
+2026-09-25 13:49:17,524 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-206
+2026-09-25 13:49:17,601 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-230
+2026-09-25 13:49:17,601 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-230
+2026-09-25 13:49:17,612 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-147
+2026-09-25 13:49:17,612 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-147
+2026-09-25 13:49:17,618 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-212
+2026-09-25 13:49:17,618 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-212
+2026-09-25 13:49:17,630 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-216
+2026-09-25 13:49:17,631 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-216
+2026-09-25 13:49:17,638 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-60
+2026-09-25 13:49:17,638 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-60
+2026-09-25 13:49:17,682 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-163
+2026-09-25 13:49:17,682 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-163
+2026-09-25 13:49:17,701 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-234
+2026-09-25 13:49:17,701 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-234
+2026-09-25 13:49:17,706 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-226
+2026-09-25 13:49:17,706 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-226
+2026-09-25 13:49:17,791 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-100
+2026-09-25 13:49:17,791 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-100
+2026-09-25 13:49:17,791 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-178
+2026-09-25 13:49:17,792 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-178
+2026-09-25 13:49:17,894 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-174
+2026-09-25 13:49:17,894 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-174
+2026-09-25 13:49:17,902 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-54
+2026-09-25 13:49:17,902 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-54
+2026-09-25 13:49:17,906 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-127
+2026-09-25 13:49:17,906 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-127
+2026-09-25 13:49:18,336 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-207
+2026-09-25 13:49:18,337 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-207
+2026-09-25 13:49:18,349 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-288
+2026-09-25 13:49:18,349 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-288
+2026-09-25 13:49:18,354 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-192
+2026-09-25 13:49:18,354 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-192
+2026-09-25 13:49:18,458 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-64
+2026-09-25 13:49:18,459 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-64
+2026-09-25 13:49:18,464 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-194
+2026-09-25 13:49:18,464 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-194
+2026-09-25 13:49:18,468 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-153
+2026-09-25 13:49:18,470 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-153
+2026-09-25 13:49:18,540 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-300
+2026-09-25 13:49:18,540 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-300
+2026-09-25 13:49:18,552 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-157
+2026-09-25 13:49:18,552 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-157
+2026-09-25 13:49:18,572 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-28
+2026-09-25 13:49:18,572 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-28
+2026-09-25 13:49:18,657 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-183
+2026-09-25 13:49:18,658 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-183
+2026-09-25 13:49:18,658 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-47
+2026-09-25 13:49:18,658 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-47
+2026-09-25 13:49:18,662 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-156
+2026-09-25 13:49:18,662 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-156
+2026-09-25 13:49:18,663 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-245
+2026-09-25 13:49:18,663 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-245
+2026-09-25 13:49:18,667 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-59
+2026-09-25 13:49:18,667 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-17
+2026-09-25 13:49:18,668 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-59
+2026-09-25 13:49:18,668 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-66
+2026-09-25 13:49:18,668 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-66
+2026-09-25 13:49:18,668 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-17
+2026-09-25 13:49:18,671 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-233
+2026-09-25 13:49:18,671 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-233
+2026-09-25 13:49:18,677 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-231
+2026-09-25 13:49:18,677 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-231
+2026-09-25 13:49:18,680 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-40
+2026-09-25 13:49:18,681 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-40
+2026-09-25 13:49:18,682 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-258
+2026-09-25 13:49:18,682 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-84
+2026-09-25 13:49:18,682 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-84
+2026-09-25 13:49:18,682 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-258
+2026-09-25 13:49:18,684 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-278
+2026-09-25 13:49:18,684 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-278
+2026-09-25 13:49:18,689 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-262
+2026-09-25 13:49:18,689 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-262
+2026-09-25 13:49:18,689 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-248
+2026-09-25 13:49:18,689 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-248
+2026-09-25 13:49:18,691 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-65
+2026-09-25 13:49:18,691 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-7
+2026-09-25 13:49:18,691 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-65
+2026-09-25 13:49:18,691 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-7
+2026-09-25 13:49:18,692 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-282
+2026-09-25 13:49:18,692 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-282
+2026-09-25 13:49:18,694 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-2
+2026-09-25 13:49:18,694 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-2
+2026-09-25 13:49:18,762 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-266
+2026-09-25 13:49:18,762 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-266
+2026-09-25 13:49:18,765 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-48
+2026-09-25 13:49:18,766 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-48
+2026-09-25 13:49:18,773 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-217
+2026-09-25 13:49:18,773 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-104
+2026-09-25 13:49:18,773 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-217
+2026-09-25 13:49:18,773 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-104
+2026-09-25 13:49:18,775 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-12
+2026-09-25 13:49:18,775 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-12
+2026-09-25 13:49:18,777 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-80
+2026-09-25 13:49:18,777 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-80
+2026-09-25 13:49:18,867 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-121
+2026-09-25 13:49:18,867 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-121
+2026-09-25 13:49:18,870 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-10
+2026-09-25 13:49:18,870 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-10
+2026-09-25 13:49:18,882 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-251
+2026-09-25 13:49:18,882 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-251
+2026-09-25 13:49:18,889 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-244
+2026-09-25 13:49:18,889 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-20
+2026-09-25 13:49:18,889 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-244
+2026-09-25 13:49:18,889 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-20
+2026-09-25 13:49:18,893 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-218
+2026-09-25 13:49:18,893 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-218
+2026-09-25 13:49:18,894 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-16
+2026-09-25 13:49:18,894 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-16
+2026-09-25 13:49:19,036 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-38
+2026-09-25 13:49:19,036 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-38
+2026-09-25 13:49:19,056 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-41
+2026-09-25 13:49:19,057 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-41
+2026-09-25 13:49:19,064 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-275
+2026-09-25 13:49:19,065 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-275
+2026-09-25 13:49:19,069 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-50
+2026-09-25 13:49:19,069 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-50
+2026-09-25 13:49:19,120 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-199
+2026-09-25 13:49:19,121 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-199
+2026-09-25 13:49:19,130 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-132
+2026-09-25 13:49:19,130 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-272
+2026-09-25 13:49:19,130 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-132
+2026-09-25 13:49:19,130 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-272
+2026-09-25 13:49:19,134 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-61
+2026-09-25 13:49:19,134 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-61
+2026-09-25 13:49:19,136 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-33
+2026-09-25 13:49:19,137 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-33
+2026-09-25 13:49:19,137 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-6
+2026-09-25 13:49:19,137 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-6
+2026-09-25 13:49:19,137 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-78
+2026-09-25 13:49:19,138 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-78
+2026-09-25 13:49:19,137 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-39
+2026-09-25 13:49:19,139 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-162
+2026-09-25 13:49:19,139 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-39
+2026-09-25 13:49:19,139 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-162
+2026-09-25 13:49:19,226 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-76
+2026-09-25 13:49:19,227 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-76
+2026-09-25 13:49:19,227 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-185
+2026-09-25 13:49:19,228 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-185
+2026-09-25 13:49:19,319 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-228
+2026-09-25 13:49:19,320 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-228
+2026-09-25 13:49:19,321 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-96
+2026-09-25 13:49:19,321 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-96
+2026-09-25 13:49:19,327 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-119
+2026-09-25 13:49:19,328 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-119
+2026-09-25 13:49:19,331 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-63
+2026-09-25 13:49:19,331 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-63
+2026-09-25 13:49:19,332 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-113
+2026-09-25 13:49:19,333 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-113
+2026-09-25 13:49:19,439 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-191
+2026-09-25 13:49:19,439 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-191
+2026-09-25 13:49:19,528 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-52
+2026-09-25 13:49:19,528 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-52
+2026-09-25 13:49:19,629 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-295
+2026-09-25 13:49:19,629 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-295
+2026-09-25 13:49:19,629 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-292
+2026-09-25 13:49:19,630 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-292
+2026-09-25 13:49:19,630 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-29
+2026-09-25 13:49:19,632 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-29
+2026-09-25 13:49:19,634 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-240
+2026-09-25 13:49:19,634 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-240
+2026-09-25 13:49:19,704 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-126
+2026-09-25 13:49:19,705 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-126
+2026-09-25 13:49:19,725 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-81
+2026-09-25 13:49:19,725 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-81
+2026-09-25 13:49:19,762 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-297
+2026-09-25 13:49:19,762 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-136
+2026-09-25 13:49:19,762 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-297
+2026-09-25 13:49:19,763 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-136
+2026-09-25 13:49:19,767 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-11
+2026-09-25 13:49:19,768 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-11
+2026-09-25 13:49:19,774 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-291
+2026-09-25 13:49:19,774 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-291
+2026-09-25 13:49:19,777 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-118
+2026-09-25 13:49:19,779 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-118
+2026-09-25 13:49:19,781 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-42
+2026-09-25 13:49:19,781 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-42
+2026-09-25 13:49:19,781 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-112
+2026-09-25 13:49:19,783 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-112
+2026-09-25 13:49:19,784 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-99
+2026-09-25 13:49:19,785 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-99
+2026-09-25 13:49:19,785 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-253
+2026-09-25 13:49:19,785 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-253
+2026-09-25 13:49:19,785 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-171
+2026-09-25 13:49:19,787 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-171
+2026-09-25 13:49:19,855 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-114
+2026-09-25 13:49:19,855 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-69
+2026-09-25 13:49:19,855 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-114
+2026-09-25 13:49:19,855 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-69
+2026-09-25 13:49:19,857 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-70
+2026-09-25 13:49:19,859 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-70
+2026-09-25 13:49:19,880 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-247
+2026-09-25 13:49:19,880 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-247
+2026-09-25 13:49:19,883 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-31
+2026-09-25 13:49:19,884 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-294
+2026-09-25 13:49:19,884 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-31
+2026-09-25 13:49:19,884 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-294
+2026-09-25 13:49:19,884 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-196
+2026-09-25 13:49:19,886 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-196
+2026-09-25 13:49:19,890 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-187
+2026-09-25 13:49:19,890 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-122
+2026-09-25 13:49:19,890 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-187
+2026-09-25 13:49:19,890 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-122
+2026-09-25 13:49:19,895 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-168
+2026-09-25 13:49:19,895 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-168
+2026-09-25 13:49:19,896 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-91
+2026-09-25 13:49:19,897 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-91
+2026-09-25 13:49:19,917 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-173
+2026-09-25 13:49:19,918 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-173
+2026-09-25 13:49:19,971 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-95
+2026-09-25 13:49:19,971 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-95
+2026-09-25 13:49:19,992 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-55
+2026-09-25 13:49:19,992 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-55
+2026-09-25 13:49:20,012 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-274
+2026-09-25 13:49:20,012 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-274
+2026-09-25 13:49:20,119 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-252
+2026-09-25 13:49:20,119 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-252
+2026-09-25 13:49:20,142 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-285
+2026-09-25 13:49:20,142 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-285
+2026-09-25 13:49:20,145 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-225
+2026-09-25 13:49:20,145 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-225
+2026-09-25 13:49:20,223 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-224
+2026-09-25 13:49:20,223 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-224
+2026-09-25 13:49:20,279 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-94
+2026-09-25 13:49:20,280 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-94
+2026-09-25 13:49:20,281 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-5
+2026-09-25 13:49:20,282 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-270
+2026-09-25 13:49:20,282 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-125
+2026-09-25 13:49:20,282 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-5
+2026-09-25 13:49:20,282 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-103
+2026-09-25 13:49:20,282 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-103
+2026-09-25 13:49:20,282 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-270
+2026-09-25 13:49:20,282 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-167
+2026-09-25 13:49:20,284 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-167
+2026-09-25 13:49:20,282 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-125
+2026-09-25 13:49:20,321 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-159
+2026-09-25 13:49:20,321 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-159
+2026-09-25 13:49:20,340 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-130
+2026-09-25 13:49:20,340 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-130
+2026-09-25 13:49:20,365 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-265
+2026-09-25 13:49:20,365 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-265
+2026-09-25 13:49:20,430 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-280
+2026-09-25 13:49:20,431 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-280
+2026-09-25 13:49:20,437 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-71
+2026-09-25 13:49:20,437 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-71
+2026-09-25 13:49:20,439 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-67
+2026-09-25 13:49:20,440 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-67
+2026-09-25 13:49:20,444 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-30
+2026-09-25 13:49:20,445 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-30
+2026-09-25 13:49:20,452 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-268
+2026-09-25 13:49:20,453 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-268
+2026-09-25 13:49:20,471 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-236
+2026-09-25 13:49:20,471 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-236
+2026-09-25 13:49:20,475 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-51
+2026-09-25 13:49:20,475 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-51
+2026-09-25 13:49:20,483 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-26
+2026-09-25 13:49:20,483 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-26
+2026-09-25 13:49:20,618 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-260
+2026-09-25 13:49:20,619 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-260
+2026-09-25 13:49:20,628 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-102
+2026-09-25 13:49:20,628 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-102
+2026-09-25 13:49:20,629 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-208
+2026-09-25 13:49:20,629 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-208
+2026-09-25 13:49:20,630 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-151
+2026-09-25 13:49:20,630 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-151
+2026-09-25 13:49:20,665 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-177
+2026-09-25 13:49:20,665 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-177
+2026-09-25 13:49:20,668 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-43
+2026-09-25 13:49:20,668 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-43
+2026-09-25 13:49:20,669 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-158
+2026-09-25 13:49:20,669 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-158
+2026-09-25 13:49:20,688 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-255
+2026-09-25 13:49:20,688 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-255
+2026-09-25 13:49:20,702 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-117
+2026-09-25 13:49:20,702 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-117
+2026-09-25 13:49:20,759 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-9
+2026-09-25 13:49:20,759 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-9
+2026-09-25 13:49:20,950 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Breakpoint Ramp - 300 Users 1-277
+2026-09-25 13:49:20,950 INFO o.a.j.t.JMeterThread: Thread finished: Breakpoint Ramp - 300 Users 1-277
+2026-09-25 13:49:20,953 INFO o.a.j.e.StandardJMeterEngine: Notifying test listeners of end of test
+2026-09-25 13:49:20,959 INFO o.a.j.r.Summariser: summary +    862 in 00:00:21 =   41.2/s Avg:  7335 Min:   625 Max: 11374 Err:     0 (0.00%) Active: 0 Started: 300 Finished: 300
+2026-09-25 13:49:20,963 INFO o.a.j.r.Summariser: summary =  19326 in 00:10:07 =   31.8/s Avg:  6746 Min:   485 Max: 21319 Err:     0 (0.00%)
+2026-09-25 13:49:20,965 INFO o.a.j.JMeter: Generating Dashboard
+2026-09-25 13:49:20,967 INFO o.a.j.r.d.ReportGenerator: Flushing result collector before report Generation
+2026-09-25 13:49:21,064 INFO o.a.j.r.p.NormalizerSampleConsumer: Using format, 'ms', to parse timeStamp field
+2026-09-25 13:49:22,235 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.AggregateConsumer#stopProducing(): beginDate produced 0 samples
+2026-09-25 13:49:22,235 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.AggregateConsumer#stopProducing(): endDate produced 0 samples
+2026-09-25 13:49:22,243 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.ApdexSummaryConsumer#stopProducing(): apdexSummary produced 0 samples
+2026-09-25 13:49:22,243 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.RequestsSummaryConsumer#stopProducing(): requestsSummary produced 0 samples
+2026-09-25 13:49:22,265 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.StatisticsSummaryConsumer#stopProducing(): statisticsSummary produced 0 samples
+2026-09-25 13:49:22,269 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.Top5ErrorsBySamplerConsumer#stopProducing(): top5ErrorsBySampler produced 0 samples
+2026-09-25 13:49:22,270 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.ErrorsSummaryConsumer#stopProducing(): errorsSummary produced 0 samples
+2026-09-25 13:49:22,270 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.HitsPerSecondGraphConsumer#stopProducing(): hitsPerSecond produced 0 samples
+2026-09-25 13:49:22,639 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.LatencyVSRequestGraphConsumer#stopProducing(): latencyVsRequest produced 0 samples
+2026-09-25 13:49:22,642 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.SyntheticResponseTimeDistributionGraphConsumer#stopProducing(): syntheticResponseTimeDistribution produced 0 samples
+2026-09-25 13:49:22,644 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.BytesThroughputGraphConsumer#stopProducing(): bytesThroughputOverTime produced 0 samples
+2026-09-25 13:49:22,644 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.CodesPerSecondGraphConsumer#stopProducing(): codesPerSecond produced 0 samples
+2026-09-25 13:49:22,943 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimeVSRequestGraphConsumer#stopProducing(): responseTimeVsRequest produced 0 samples
+2026-09-25 13:49:22,947 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.FilterConsumer#stopProducing(): startIntervalControlerFilter produced 135282 samples
+2026-09-25 13:49:22,947 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.TotalTPSGraphConsumer#stopProducing(): totalTPS produced 0 samples
+2026-09-25 13:49:22,947 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ActiveThreadsGraphConsumer#stopProducing(): activeThreadsOverTime produced 0 samples
+2026-09-25 13:49:22,947 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.TimeVSThreadGraphConsumer#stopProducing(): timeVsThreads produced 0 samples
+2026-09-25 13:49:22,949 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimeDistributionGraphConsumer#stopProducing(): responseTimeDistribution produced 0 samples
+2026-09-25 13:49:22,951 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.TransactionsPerSecondGraphConsumer#stopProducing(): transactionsPerSecond produced 0 samples
+2026-09-25 13:49:22,951 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimePercentilesGraphConsumer#stopProducing(): responseTimePercentiles produced 0 samples
+2026-09-25 13:49:22,977 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimePercentilesOverTimeGraphConsumer#stopProducing(): responseTimePercentilesOverTime produced 0 samples
+2026-09-25 13:49:22,979 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimeOverTimeGraphConsumer#stopProducing(): responseTimesOverTime produced 0 samples
+2026-09-25 13:49:22,979 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ConnectTimeOverTimeGraphConsumer#stopProducing(): connectTimeOverTime produced 0 samples
+2026-09-25 13:49:22,979 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.LatencyOverTimeGraphConsumer#stopProducing(): latenciesOverTime produced 0 samples
+2026-09-25 13:49:22,979 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.FilterConsumer#stopProducing(): nameFilter produced 289890 samples
+2026-09-25 13:49:22,979 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.FilterConsumer#stopProducing(): dateRangeFilter produced 57978 samples
+2026-09-25 13:49:22,979 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.NormalizerSampleConsumer#stopProducing(): normalizer produced 19326 samples
+2026-09-25 13:49:22,981 INFO o.a.j.r.p.CsvFileSampleSource: produce(): 19326 samples produced in 1s 876 ms on channel 0
+2026-09-25 13:49:22,981 INFO o.a.j.r.d.ReportGenerator: Exporting data using exporter:'json' of className:'org.apache.jmeter.report.dashboard.JsonExporter'
+2026-09-25 13:49:23,220 INFO o.a.j.r.d.JsonExporter: Found data for consumer statisticsSummary in context
+2026-09-25 13:49:23,220 INFO o.a.j.r.d.JsonExporter: Creating statistics for overall
+2026-09-25 13:49:23,220 INFO o.a.j.r.d.JsonExporter: Creating statistics for other transactions
+2026-09-25 13:49:23,221 INFO o.a.j.r.d.JsonExporter: Checking output folder
+2026-09-25 13:49:23,222 INFO o.a.j.r.d.JsonExporter: Writing statistics JSON to D:\University sem 3\2yp\test  plan\Test 2.1\breakpoint_report\statistics.json
+2026-09-25 13:49:23,302 INFO o.a.j.r.d.ReportGenerator: Exporting data using exporter:'html' of className:'org.apache.jmeter.report.dashboard.HtmlTemplateExporter'
+2026-09-25 13:49:23,305 INFO o.a.j.r.d.HtmlTemplateExporter: Will generate dashboard in folder: D:\University sem 3\2yp\test  plan\Test 2.1\breakpoint_report
+2026-09-25 13:49:23,580 INFO o.a.j.r.d.HtmlTemplateExporter: Report will be generated in: D:\University sem 3\2yp\test  plan\Test 2.1\breakpoint_report, creating folder structure
+2026-09-25 13:49:23,585 INFO o.a.j.r.d.TemplateVisitor: Copying folder from 'E:\apache-jmeter-5.6.3\bin\report-template' to 'D:\University sem 3\2yp\test  plan\Test 2.1\breakpoint_report', got message: D:\University sem 3\2yp\test  plan\Test 2.1\breakpoint_report, found non empty folder with following content [D:\University sem 3\2yp\test  plan\Test 2.1\breakpoint_report\statistics.json], will be ignored
+2026-09-25 13:49:24,265 INFO o.a.j.JMeter: Dashboard generated

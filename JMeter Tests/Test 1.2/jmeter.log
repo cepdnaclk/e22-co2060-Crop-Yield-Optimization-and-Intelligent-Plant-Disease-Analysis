@@ -1,0 +1,286 @@
+2026-09-25 13:25:06,599 INFO o.a.j.u.JMeterUtils: Setting Locale to en_EN
+2026-09-25 13:25:06,620 INFO o.a.j.JMeter: Loading user properties from: E:\apache-jmeter-5.6.3\bin\user.properties
+2026-09-25 13:25:06,620 INFO o.a.j.JMeter: Loading system properties from: E:\apache-jmeter-5.6.3\bin\system.properties
+2026-09-25 13:25:06,626 INFO o.a.j.JMeter: Copyright (c) 1998-2024 The Apache Software Foundation
+2026-09-25 13:25:06,626 INFO o.a.j.JMeter: Version 5.6.3
+2026-09-25 13:25:06,627 INFO o.a.j.JMeter: java.version=17.0.12
+2026-09-25 13:25:06,627 INFO o.a.j.JMeter: java.vm.name=Java HotSpot(TM) 64-Bit Server VM
+2026-09-25 13:25:06,627 INFO o.a.j.JMeter: os.name=Windows 11
+2026-09-25 13:25:06,627 INFO o.a.j.JMeter: os.arch=amd64
+2026-09-25 13:25:06,629 INFO o.a.j.JMeter: os.version=10.0
+2026-09-25 13:25:06,629 INFO o.a.j.JMeter: file.encoding=Cp1252
+2026-09-25 13:25:06,629 INFO o.a.j.JMeter: java.awt.headless=true
+2026-09-25 13:25:06,629 INFO o.a.j.JMeter: Max memory     =1073741824
+2026-09-25 13:25:06,629 INFO o.a.j.JMeter: Available Processors =12
+2026-09-25 13:25:06,638 INFO o.a.j.JMeter: Default Locale=English (EN)
+2026-09-25 13:25:06,638 INFO o.a.j.JMeter: JMeter  Locale=English (EN)
+2026-09-25 13:25:06,638 INFO o.a.j.JMeter: JMeterHome=E:\apache-jmeter-5.6.3
+2026-09-25 13:25:06,638 INFO o.a.j.JMeter: user.dir  =D:\University sem 3\2yp\test  plan\Test 2
+2026-09-25 13:25:06,639 INFO o.a.j.JMeter: PWD       =D:\University sem 3\2yp\test  plan\Test 2
+2026-09-25 13:25:11,599 INFO o.a.j.JMeter: IP: 192.168.56.1 Name: MSI FullName: MSI
+2026-09-25 13:25:11,635 INFO o.a.j.JMeter: Setting property 'jmeter.reportgenerator.outputdir' to:'D:\University sem 3\2yp\test  plan\Test 2\report-dashboard-run2'
+2026-09-25 13:25:11,639 INFO o.a.j.s.FileServer: Default base='D:\University sem 3\2yp\test  plan\Test 2'
+2026-09-25 13:25:11,642 INFO o.a.j.s.FileServer: Set new base='D:\University sem 3\2yp\test  plan\Test 2'
+2026-09-25 13:25:12,095 INFO o.a.j.s.SaveService: Testplan (JMX) version: 2.2. Testlog (JTL) version: 2.2
+2026-09-25 13:25:12,142 INFO o.a.j.s.SaveService: Using SaveService properties version 5.0
+2026-09-25 13:25:12,148 INFO o.a.j.s.SaveService: Using SaveService properties file encoding UTF-8
+2026-09-25 13:25:12,153 INFO o.a.j.s.SaveService: Loading file: AgriConnect_StressTest.jmx
+2026-09-25 13:25:12,300 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/html is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2026-09-25 13:25:12,300 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xhtml+xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2026-09-25 13:25:12,300 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2026-09-25 13:25:12,300 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2026-09-25 13:25:12,300 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/vnd.wap.wml is org.apache.jmeter.protocol.http.parser.RegexpHTMLParser
+2026-09-25 13:25:12,300 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/css is org.apache.jmeter.protocol.http.parser.CssParser
+2026-09-25 13:25:12,347 INFO o.a.j.JMeter: Creating summariser <summary>
+2026-09-25 13:25:12,369 INFO o.a.j.r.d.ReportGenerator: ReportGenerator will use for Parsing the separator: ','
+2026-09-25 13:25:12,369 INFO o.a.j.r.d.ReportGenerator: Will generate report at end of test from  results file: results_run2.jtl
+2026-09-25 13:25:12,369 INFO o.a.j.r.d.ReportGenerator: Reading report generator properties from: E:\apache-jmeter-5.6.3\bin\reportgenerator.properties
+2026-09-25 13:25:12,371 INFO o.a.j.r.d.ReportGenerator: Merging with JMeter properties
+2026-09-25 13:25:12,378 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.temp_dir' not found, using default value 'temp' instead.
+2026-09-25 13:25:12,388 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.apdex_per_transaction' not found, using default value 'null' instead.
+2026-09-25 13:25:12,389 INFO o.a.j.r.c.ReportGeneratorConfiguration: apdex_per_transaction is empty, not APDEX per transaction customization
+2026-09-25 13:25:12,389 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.sample_filter' not found, using default value 'null' instead.
+2026-09-25 13:25:12,389 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.report_title' not found, using default value 'null' instead.
+2026-09-25 13:25:12,390 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.start_date' not found, using default value 'null' instead.
+2026-09-25 13:25:12,391 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.end_date' not found, using default value 'null' instead.
+2026-09-25 13:25:12,391 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.date_format' not found, using default value 'null' instead.
+2026-09-25 13:25:12,392 INFO o.a.j.r.c.ReportGeneratorConfiguration: Will use date range start date: null, end date: null
+2026-09-25 13:25:12,399 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.totalTPS.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:25:12,399 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.activeThreadsOverTime.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:25:12,399 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.timeVsThreads.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:25:12,399 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.responseTimeDistribution.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:25:12,399 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.transactionsPerSecond.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:25:12,400 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.responseTimePercentiles.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:25:12,401 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.responseTimePercentilesOverTime.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:25:12,401 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.responseTimesOverTime.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:25:12,402 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.connectTimeOverTime.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:25:12,403 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.latenciesOverTime.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:25:12,407 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.json.filters_only_sample_series' not found, using default value 'true' instead.
+2026-09-25 13:25:12,408 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.json.series_filter' not found, using default value '' instead.
+2026-09-25 13:25:12,408 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.json.show_controllers_only' not found, using default value 'false' instead.
+2026-09-25 13:25:12,409 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.html.filters_only_sample_series' not found, using default value 'true' instead.
+2026-09-25 13:25:12,409 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.html.series_filter' not found, using default value '' instead.
+2026-09-25 13:25:12,409 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.html.show_controllers_only' not found, using default value 'false' instead.
+2026-09-25 13:25:12,448 INFO o.a.j.e.StandardJMeterEngine: Running the test!
+2026-09-25 13:25:12,449 INFO o.a.j.s.SampleEvent: List of sample_variables: []
+2026-09-25 13:25:12,449 INFO o.a.j.s.SampleEvent: List of sample_variables: []
+2026-09-25 13:25:12,461 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must contain the string: '.functions.'
+2026-09-25 13:25:12,461 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must not contain the string: '.gui.'
+2026-09-25 13:25:12,688 INFO o.a.j.JMeter: Running test (1790322912688)
+2026-09-25 13:25:12,715 INFO o.a.j.e.StandardJMeterEngine: Starting ThreadGroup: 1 : Stress Test - Farmers
+2026-09-25 13:25:12,715 INFO o.a.j.e.StandardJMeterEngine: Starting 50 threads for group Stress Test - Farmers.
+2026-09-25 13:25:12,715 INFO o.a.j.e.StandardJMeterEngine: Thread will continue on error
+2026-09-25 13:25:12,716 INFO o.a.j.t.ThreadGroup: Starting thread group... number=1 threads=50 ramp-up=60 delayedStart=false
+2026-09-25 13:25:12,732 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-1
+2026-09-25 13:25:12,786 INFO o.a.j.p.h.s.HTTPHCAbstractImpl: Local host = MSI
+2026-09-25 13:25:12,810 INFO o.a.j.t.ThreadGroup: Started thread group number 1
+2026-09-25 13:25:12,811 INFO o.a.j.e.StandardJMeterEngine: All thread groups have been started
+2026-09-25 13:25:12,817 INFO o.a.j.p.h.s.HTTPHC4Impl: HTTP request retry count = 0
+2026-09-25 13:25:12,820 INFO o.a.j.s.SampleResult: Note: Sample TimeStamps are START times
+2026-09-25 13:25:12,820 INFO o.a.j.s.SampleResult: sampleresult.default.encoding is set to UTF-8
+2026-09-25 13:25:12,821 INFO o.a.j.s.SampleResult: sampleresult.useNanoTime=true
+2026-09-25 13:25:12,821 INFO o.a.j.s.SampleResult: sampleresult.nanoThreadSleep=5000
+2026-09-25 13:25:13,936 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-2
+2026-09-25 13:25:13,943 INFO o.a.j.p.h.s.h.LazyLayeredConnectionSocketFactory: Setting up HTTPS TrustAll Socket Factory
+2026-09-25 13:25:13,984 INFO o.a.j.u.JsseSSLManager: Using default SSL protocol: TLS
+2026-09-25 13:25:13,986 INFO o.a.j.u.JsseSSLManager: SSL session context: per-thread
+2026-09-25 13:25:14,108 INFO o.a.j.u.SSLManager: JmeterKeyStore Location:  type JKS
+2026-09-25 13:25:14,113 INFO o.a.j.u.SSLManager: KeyStore created OK
+2026-09-25 13:25:14,113 WARN o.a.j.u.SSLManager: Keystore file not found, loading empty keystore
+2026-09-25 13:25:15,137 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-3
+2026-09-25 13:25:16,332 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-4
+2026-09-25 13:25:17,536 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-5
+2026-09-25 13:25:18,734 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-6
+2026-09-25 13:25:19,936 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-7
+2026-09-25 13:25:21,124 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-8
+2026-09-25 13:25:22,322 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-9
+2026-09-25 13:25:23,523 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-10
+2026-09-25 13:25:24,739 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-11
+2026-09-25 13:25:25,922 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-12
+2026-09-25 13:25:27,137 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-13
+2026-09-25 13:25:28,340 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-14
+2026-09-25 13:25:29,538 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-15
+2026-09-25 13:25:30,091 INFO o.a.j.r.Summariser: summary +     75 in 00:00:17 =    4.3/s Avg:  1153 Min:   487 Max:  3207 Err:     0 (0.00%) Active: 15 Started: 15 Finished: 0
+2026-09-25 13:25:30,737 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-16
+2026-09-25 13:25:31,933 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-17
+2026-09-25 13:25:33,131 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-18
+2026-09-25 13:25:34,323 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-19
+2026-09-25 13:25:35,519 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-20
+2026-09-25 13:25:36,722 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-21
+2026-09-25 13:25:37,919 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-22
+2026-09-25 13:25:39,121 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-23
+2026-09-25 13:25:40,324 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-24
+2026-09-25 13:25:41,526 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-25
+2026-09-25 13:25:42,724 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-26
+2026-09-25 13:25:43,923 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-27
+2026-09-25 13:25:45,125 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-28
+2026-09-25 13:25:46,325 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-29
+2026-09-25 13:25:47,524 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-30
+2026-09-25 13:25:48,739 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-31
+2026-09-25 13:25:49,938 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-32
+2026-09-25 13:25:51,136 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-33
+2026-09-25 13:25:52,333 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-34
+2026-09-25 13:25:53,529 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-35
+2026-09-25 13:25:54,730 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-36
+2026-09-25 13:25:55,929 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-37
+2026-09-25 13:25:57,128 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-38
+2026-09-25 13:25:58,327 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-39
+2026-09-25 13:25:59,524 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-40
+2026-09-25 13:26:00,050 INFO o.a.j.r.Summariser: summary +    451 in 00:00:30 =   15.0/s Avg:  1271 Min:   485 Max:  4043 Err:     0 (0.00%) Active: 40 Started: 40 Finished: 0
+2026-09-25 13:26:00,054 INFO o.a.j.r.Summariser: summary =    526 in 00:00:47 =   11.1/s Avg:  1254 Min:   485 Max:  4043 Err:     0 (0.00%)
+2026-09-25 13:26:00,727 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-41
+2026-09-25 13:26:01,924 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-42
+2026-09-25 13:26:03,132 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-43
+2026-09-25 13:26:04,321 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-44
+2026-09-25 13:26:05,522 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-45
+2026-09-25 13:26:06,725 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-46
+2026-09-25 13:26:07,920 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-47
+2026-09-25 13:26:09,132 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-48
+2026-09-25 13:26:10,326 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-49
+2026-09-25 13:26:11,528 INFO o.a.j.t.JMeterThread: Thread started: Stress Test - Farmers 1-50
+2026-09-25 13:26:30,044 INFO o.a.j.r.Summariser: summary +    691 in 00:00:30 =   23.0/s Avg:  1541 Min:   478 Max:  5305 Err:     0 (0.00%) Active: 50 Started: 50 Finished: 0
+2026-09-25 13:26:30,046 INFO o.a.j.r.Summariser: summary =   1217 in 00:01:17 =   15.7/s Avg:  1417 Min:   478 Max:  5305 Err:     0 (0.00%)
+2026-09-25 13:27:00,058 INFO o.a.j.r.Summariser: summary +    877 in 00:00:30 =   29.2/s Avg:  1235 Min:   474 Max:  3637 Err:     0 (0.00%) Active: 50 Started: 50 Finished: 0
+2026-09-25 13:27:00,059 INFO o.a.j.r.Summariser: summary =   2094 in 00:01:47 =   19.5/s Avg:  1341 Min:   474 Max:  5305 Err:     0 (0.00%)
+2026-09-25 13:27:30,161 INFO o.a.j.r.Summariser: summary +    911 in 00:00:30 =   30.3/s Avg:  1099 Min:   472 Max:  2642 Err:     0 (0.00%) Active: 50 Started: 50 Finished: 0
+2026-09-25 13:27:30,162 INFO o.a.j.r.Summariser: summary =   3005 in 00:02:17 =   21.9/s Avg:  1268 Min:   472 Max:  5305 Err:     0 (0.00%)
+2026-09-25 13:28:00,044 INFO o.a.j.r.Summariser: summary +    989 in 00:00:30 =   33.1/s Avg:  1055 Min:   468 Max:  3962 Err:     0 (0.00%) Active: 50 Started: 50 Finished: 0
+2026-09-25 13:28:00,045 INFO o.a.j.r.Summariser: summary =   3994 in 00:02:47 =   23.9/s Avg:  1215 Min:   468 Max:  5305 Err:     0 (0.00%)
+2026-09-25 13:28:30,043 INFO o.a.j.r.Summariser: summary +    991 in 00:00:30 =   33.0/s Avg:  1015 Min:   466 Max:  2848 Err:     0 (0.00%) Active: 50 Started: 50 Finished: 0
+2026-09-25 13:28:30,059 INFO o.a.j.r.Summariser: summary =   4985 in 00:03:17 =   25.3/s Avg:  1175 Min:   466 Max:  5305 Err:     0 (0.00%)
+2026-09-25 13:29:00,062 INFO o.a.j.r.Summariser: summary +    983 in 00:00:30 =   32.7/s Avg:   991 Min:   464 Max:  1762 Err:     0 (0.00%) Active: 50 Started: 50 Finished: 0
+2026-09-25 13:29:00,066 INFO o.a.j.r.Summariser: summary =   5968 in 00:03:47 =   26.2/s Avg:  1145 Min:   464 Max:  5305 Err:     0 (0.00%)
+2026-09-25 13:29:30,046 INFO o.a.j.r.Summariser: summary +    996 in 00:00:30 =   33.2/s Avg:  1006 Min:   469 Max:  2426 Err:     0 (0.00%) Active: 50 Started: 50 Finished: 0
+2026-09-25 13:29:30,049 INFO o.a.j.r.Summariser: summary =   6964 in 00:04:17 =   27.1/s Avg:  1125 Min:   464 Max:  5305 Err:     0 (0.00%)
+2026-09-25 13:30:00,134 INFO o.a.j.r.Summariser: summary +   1019 in 00:00:30 =   33.9/s Avg:   970 Min:   470 Max:  1838 Err:     0 (0.00%) Active: 50 Started: 50 Finished: 0
+2026-09-25 13:30:00,137 INFO o.a.j.r.Summariser: summary =   7983 in 00:04:47 =   27.8/s Avg:  1105 Min:   464 Max:  5305 Err:     0 (0.00%)
+2026-09-25 13:30:12,451 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-22
+2026-09-25 13:30:12,451 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-15
+2026-09-25 13:30:12,538 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-39
+2026-09-25 13:30:12,547 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-3
+2026-09-25 13:30:12,547 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-10
+2026-09-25 13:30:12,548 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-31
+2026-09-25 13:30:12,551 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-46
+2026-09-25 13:30:12,551 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-9
+2026-09-25 13:30:12,553 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-32
+2026-09-25 13:30:12,555 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-30
+2026-09-25 13:30:12,559 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-16
+2026-09-25 13:30:12,642 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-47
+2026-09-25 13:30:12,643 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-19
+2026-09-25 13:30:12,649 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-42
+2026-09-25 13:30:12,744 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-23
+2026-09-25 13:30:12,875 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-50
+2026-09-25 13:30:12,875 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-50
+2026-09-25 13:30:12,884 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-35
+2026-09-25 13:30:12,884 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-35
+2026-09-25 13:30:12,970 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-11
+2026-09-25 13:30:12,971 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-11
+2026-09-25 13:30:12,981 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-8
+2026-09-25 13:30:12,981 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-8
+2026-09-25 13:30:13,043 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-38
+2026-09-25 13:30:13,043 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-14
+2026-09-25 13:30:13,044 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-38
+2026-09-25 13:30:13,043 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-7
+2026-09-25 13:30:13,045 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-14
+2026-09-25 13:30:13,045 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-7
+2026-09-25 13:30:13,047 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-4
+2026-09-25 13:30:13,048 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-4
+2026-09-25 13:30:13,050 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-25
+2026-09-25 13:30:13,051 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-25
+2026-09-25 13:30:13,053 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-6
+2026-09-25 13:30:13,054 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-6
+2026-09-25 13:30:13,067 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-34
+2026-09-25 13:30:13,068 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-34
+2026-09-25 13:30:13,088 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-29
+2026-09-25 13:30:13,089 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-29
+2026-09-25 13:30:13,097 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-17
+2026-09-25 13:30:13,097 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-17
+2026-09-25 13:30:13,118 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-40
+2026-09-25 13:30:13,118 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-40
+2026-09-25 13:30:13,125 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-37
+2026-09-25 13:30:13,125 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-37
+2026-09-25 13:30:13,147 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-36
+2026-09-25 13:30:13,147 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-36
+2026-09-25 13:30:13,152 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-33
+2026-09-25 13:30:13,152 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-33
+2026-09-25 13:30:13,177 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-27
+2026-09-25 13:30:13,177 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-27
+2026-09-25 13:30:13,183 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-44
+2026-09-25 13:30:13,183 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-44
+2026-09-25 13:30:13,193 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-45
+2026-09-25 13:30:13,193 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-45
+2026-09-25 13:30:13,380 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-20
+2026-09-25 13:30:13,380 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-48
+2026-09-25 13:30:13,380 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-20
+2026-09-25 13:30:13,380 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-48
+2026-09-25 13:30:13,414 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-13
+2026-09-25 13:30:13,415 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-13
+2026-09-25 13:30:13,415 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-21
+2026-09-25 13:30:13,415 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-21
+2026-09-25 13:30:13,417 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-1
+2026-09-25 13:30:13,417 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-1
+2026-09-25 13:30:13,420 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-12
+2026-09-25 13:30:13,420 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-12
+2026-09-25 13:30:13,437 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-26
+2026-09-25 13:30:13,437 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-26
+2026-09-25 13:30:13,443 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-24
+2026-09-25 13:30:13,443 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-24
+2026-09-25 13:30:13,448 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-49
+2026-09-25 13:30:13,448 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-49
+2026-09-25 13:30:13,467 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-41
+2026-09-25 13:30:13,468 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-41
+2026-09-25 13:30:13,483 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-28
+2026-09-25 13:30:13,483 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-28
+2026-09-25 13:30:13,504 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-43
+2026-09-25 13:30:13,504 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-43
+2026-09-25 13:30:13,512 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-5
+2026-09-25 13:30:13,512 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-5
+2026-09-25 13:30:13,654 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-18
+2026-09-25 13:30:13,655 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-18
+2026-09-25 13:30:13,694 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Stress Test - Farmers 1-2
+2026-09-25 13:30:13,694 INFO o.a.j.t.JMeterThread: Thread finished: Stress Test - Farmers 1-2
+2026-09-25 13:30:13,697 INFO o.a.j.e.StandardJMeterEngine: Notifying test listeners of end of test
+2026-09-25 13:30:13,699 INFO o.a.j.r.Summariser: summary +    457 in 00:00:14 =   33.7/s Avg:   989 Min:   473 Max:  1592 Err:     0 (0.00%) Active: 0 Started: 50 Finished: 50
+2026-09-25 13:30:13,705 INFO o.a.j.r.Summariser: summary =   8440 in 00:05:01 =   28.0/s Avg:  1099 Min:   464 Max:  5305 Err:     0 (0.00%)
+2026-09-25 13:30:13,711 INFO o.a.j.JMeter: Generating Dashboard
+2026-09-25 13:30:13,711 INFO o.a.j.r.d.ReportGenerator: Flushing result collector before report Generation
+2026-09-25 13:30:13,791 INFO o.a.j.r.p.NormalizerSampleConsumer: Using format, 'ms', to parse timeStamp field
+2026-09-25 13:30:14,742 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.AggregateConsumer#stopProducing(): beginDate produced 0 samples
+2026-09-25 13:30:14,743 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.AggregateConsumer#stopProducing(): endDate produced 0 samples
+2026-09-25 13:30:14,756 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.ApdexSummaryConsumer#stopProducing(): apdexSummary produced 0 samples
+2026-09-25 13:30:14,756 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.RequestsSummaryConsumer#stopProducing(): requestsSummary produced 0 samples
+2026-09-25 13:30:14,778 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.StatisticsSummaryConsumer#stopProducing(): statisticsSummary produced 0 samples
+2026-09-25 13:30:14,785 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.Top5ErrorsBySamplerConsumer#stopProducing(): top5ErrorsBySampler produced 0 samples
+2026-09-25 13:30:14,785 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.ErrorsSummaryConsumer#stopProducing(): errorsSummary produced 0 samples
+2026-09-25 13:30:14,787 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.HitsPerSecondGraphConsumer#stopProducing(): hitsPerSecond produced 0 samples
+2026-09-25 13:30:15,091 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.LatencyVSRequestGraphConsumer#stopProducing(): latencyVsRequest produced 0 samples
+2026-09-25 13:30:15,100 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.SyntheticResponseTimeDistributionGraphConsumer#stopProducing(): syntheticResponseTimeDistribution produced 0 samples
+2026-09-25 13:30:15,107 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.BytesThroughputGraphConsumer#stopProducing(): bytesThroughputOverTime produced 0 samples
+2026-09-25 13:30:15,108 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.CodesPerSecondGraphConsumer#stopProducing(): codesPerSecond produced 0 samples
+2026-09-25 13:30:15,479 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimeVSRequestGraphConsumer#stopProducing(): responseTimeVsRequest produced 0 samples
+2026-09-25 13:30:15,490 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.FilterConsumer#stopProducing(): startIntervalControlerFilter produced 59080 samples
+2026-09-25 13:30:15,490 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.TotalTPSGraphConsumer#stopProducing(): totalTPS produced 0 samples
+2026-09-25 13:30:15,491 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ActiveThreadsGraphConsumer#stopProducing(): activeThreadsOverTime produced 0 samples
+2026-09-25 13:30:15,492 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.TimeVSThreadGraphConsumer#stopProducing(): timeVsThreads produced 0 samples
+2026-09-25 13:30:15,492 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimeDistributionGraphConsumer#stopProducing(): responseTimeDistribution produced 0 samples
+2026-09-25 13:30:15,493 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.TransactionsPerSecondGraphConsumer#stopProducing(): transactionsPerSecond produced 0 samples
+2026-09-25 13:30:15,493 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimePercentilesGraphConsumer#stopProducing(): responseTimePercentiles produced 0 samples
+2026-09-25 13:30:15,515 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimePercentilesOverTimeGraphConsumer#stopProducing(): responseTimePercentilesOverTime produced 0 samples
+2026-09-25 13:30:15,520 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimeOverTimeGraphConsumer#stopProducing(): responseTimesOverTime produced 0 samples
+2026-09-25 13:30:15,521 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ConnectTimeOverTimeGraphConsumer#stopProducing(): connectTimeOverTime produced 0 samples
+2026-09-25 13:30:15,521 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.LatencyOverTimeGraphConsumer#stopProducing(): latenciesOverTime produced 0 samples
+2026-09-25 13:30:15,522 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.FilterConsumer#stopProducing(): nameFilter produced 126600 samples
+2026-09-25 13:30:15,523 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.FilterConsumer#stopProducing(): dateRangeFilter produced 25320 samples
+2026-09-25 13:30:15,523 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.NormalizerSampleConsumer#stopProducing(): normalizer produced 8440 samples
+2026-09-25 13:30:15,528 INFO o.a.j.r.p.CsvFileSampleSource: produce(): 8440 samples produced in 1s 679 ms on channel 0
+2026-09-25 13:30:15,529 INFO o.a.j.r.d.ReportGenerator: Exporting data using exporter:'json' of className:'org.apache.jmeter.report.dashboard.JsonExporter'
+2026-09-25 13:30:15,760 INFO o.a.j.r.d.JsonExporter: Found data for consumer statisticsSummary in context
+2026-09-25 13:30:15,760 INFO o.a.j.r.d.JsonExporter: Creating statistics for overall
+2026-09-25 13:30:15,762 INFO o.a.j.r.d.JsonExporter: Creating statistics for other transactions
+2026-09-25 13:30:15,763 INFO o.a.j.r.d.JsonExporter: Checking output folder
+2026-09-25 13:30:15,763 INFO o.a.j.r.d.JsonExporter: Writing statistics JSON to D:\University sem 3\2yp\test  plan\Test 2\report-dashboard-run2\statistics.json
+2026-09-25 13:30:15,837 INFO o.a.j.r.d.ReportGenerator: Exporting data using exporter:'html' of className:'org.apache.jmeter.report.dashboard.HtmlTemplateExporter'
+2026-09-25 13:30:15,842 INFO o.a.j.r.d.HtmlTemplateExporter: Will generate dashboard in folder: D:\University sem 3\2yp\test  plan\Test 2\report-dashboard-run2
+2026-09-25 13:30:16,120 INFO o.a.j.r.d.HtmlTemplateExporter: Report will be generated in: D:\University sem 3\2yp\test  plan\Test 2\report-dashboard-run2, creating folder structure
+2026-09-25 13:30:16,125 INFO o.a.j.r.d.TemplateVisitor: Copying folder from 'E:\apache-jmeter-5.6.3\bin\report-template' to 'D:\University sem 3\2yp\test  plan\Test 2\report-dashboard-run2', got message: D:\University sem 3\2yp\test  plan\Test 2\report-dashboard-run2, found non empty folder with following content [D:\University sem 3\2yp\test  plan\Test 2\report-dashboard-run2\statistics.json], will be ignored
+2026-09-25 13:30:16,913 INFO o.a.j.JMeter: Dashboard generated

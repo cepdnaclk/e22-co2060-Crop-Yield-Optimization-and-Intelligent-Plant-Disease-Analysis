@@ -1,0 +1,487 @@
+2026-09-25 13:57:48,170 INFO o.a.j.u.JMeterUtils: Setting Locale to en_EN
+2026-09-25 13:57:48,191 INFO o.a.j.JMeter: Loading user properties from: E:\apache-jmeter-5.6.3\bin\user.properties
+2026-09-25 13:57:48,191 INFO o.a.j.JMeter: Loading system properties from: E:\apache-jmeter-5.6.3\bin\system.properties
+2026-09-25 13:57:48,200 INFO o.a.j.JMeter: Copyright (c) 1998-2024 The Apache Software Foundation
+2026-09-25 13:57:48,201 INFO o.a.j.JMeter: Version 5.6.3
+2026-09-25 13:57:48,201 INFO o.a.j.JMeter: java.version=17.0.12
+2026-09-25 13:57:48,201 INFO o.a.j.JMeter: java.vm.name=Java HotSpot(TM) 64-Bit Server VM
+2026-09-25 13:57:48,201 INFO o.a.j.JMeter: os.name=Windows 11
+2026-09-25 13:57:48,201 INFO o.a.j.JMeter: os.arch=amd64
+2026-09-25 13:57:48,201 INFO o.a.j.JMeter: os.version=10.0
+2026-09-25 13:57:48,201 INFO o.a.j.JMeter: file.encoding=Cp1252
+2026-09-25 13:57:48,201 INFO o.a.j.JMeter: java.awt.headless=true
+2026-09-25 13:57:48,201 INFO o.a.j.JMeter: Max memory     =1073741824
+2026-09-25 13:57:48,201 INFO o.a.j.JMeter: Available Processors =12
+2026-09-25 13:57:48,211 INFO o.a.j.JMeter: Default Locale=English (EN)
+2026-09-25 13:57:48,211 INFO o.a.j.JMeter: JMeter  Locale=English (EN)
+2026-09-25 13:57:48,211 INFO o.a.j.JMeter: JMeterHome=E:\apache-jmeter-5.6.3
+2026-09-25 13:57:48,212 INFO o.a.j.JMeter: user.dir  =D:\University sem 3\2yp\test  plan\Test 3
+2026-09-25 13:57:48,212 INFO o.a.j.JMeter: PWD       =D:\University sem 3\2yp\test  plan\Test 3
+2026-09-25 13:57:53,176 INFO o.a.j.JMeter: IP: 192.168.56.1 Name: MSI FullName: MSI
+2026-09-25 13:57:53,227 INFO o.a.j.JMeter: Setting property 'jmeter.reportgenerator.outputdir' to:'D:\University sem 3\2yp\test  plan\Test 3\spike_report'
+2026-09-25 13:57:53,231 INFO o.a.j.s.FileServer: Default base='D:\University sem 3\2yp\test  plan\Test 3'
+2026-09-25 13:57:53,234 INFO o.a.j.s.FileServer: Set new base='D:\University sem 3\2yp\test  plan\Test 3'
+2026-09-25 13:57:53,450 INFO o.a.j.s.SaveService: Testplan (JMX) version: 2.2. Testlog (JTL) version: 2.2
+2026-09-25 13:57:53,485 INFO o.a.j.s.SaveService: Using SaveService properties version 5.0
+2026-09-25 13:57:53,489 INFO o.a.j.s.SaveService: Using SaveService properties file encoding UTF-8
+2026-09-25 13:57:53,492 INFO o.a.j.s.SaveService: Loading file: AgriConnect_SpikeTest.jmx
+2026-09-25 13:57:53,641 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/html is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2026-09-25 13:57:53,642 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xhtml+xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2026-09-25 13:57:53,642 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2026-09-25 13:57:53,642 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2026-09-25 13:57:53,642 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/vnd.wap.wml is org.apache.jmeter.protocol.http.parser.RegexpHTMLParser
+2026-09-25 13:57:53,642 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/css is org.apache.jmeter.protocol.http.parser.CssParser
+2026-09-25 13:57:53,698 INFO o.a.j.JMeter: Creating summariser <summary>
+2026-09-25 13:57:53,712 INFO o.a.j.r.d.ReportGenerator: ReportGenerator will use for Parsing the separator: ','
+2026-09-25 13:57:53,712 INFO o.a.j.r.d.ReportGenerator: Will generate report at end of test from  results file: spike_results.jtl
+2026-09-25 13:57:53,712 INFO o.a.j.r.d.ReportGenerator: Reading report generator properties from: E:\apache-jmeter-5.6.3\bin\reportgenerator.properties
+2026-09-25 13:57:53,713 INFO o.a.j.r.d.ReportGenerator: Merging with JMeter properties
+2026-09-25 13:57:53,717 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.temp_dir' not found, using default value 'temp' instead.
+2026-09-25 13:57:53,720 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.apdex_per_transaction' not found, using default value 'null' instead.
+2026-09-25 13:57:53,721 INFO o.a.j.r.c.ReportGeneratorConfiguration: apdex_per_transaction is empty, not APDEX per transaction customization
+2026-09-25 13:57:53,721 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.sample_filter' not found, using default value 'null' instead.
+2026-09-25 13:57:53,721 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.report_title' not found, using default value 'null' instead.
+2026-09-25 13:57:53,721 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.start_date' not found, using default value 'null' instead.
+2026-09-25 13:57:53,721 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.end_date' not found, using default value 'null' instead.
+2026-09-25 13:57:53,721 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.date_format' not found, using default value 'null' instead.
+2026-09-25 13:57:53,722 INFO o.a.j.r.c.ReportGeneratorConfiguration: Will use date range start date: null, end date: null
+2026-09-25 13:57:53,726 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.totalTPS.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:57:53,726 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.activeThreadsOverTime.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:57:53,727 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.timeVsThreads.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:57:53,727 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.responseTimeDistribution.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:57:53,727 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.transactionsPerSecond.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:57:53,727 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.responseTimePercentiles.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:57:53,727 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.responseTimePercentilesOverTime.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:57:53,727 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.responseTimesOverTime.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:57:53,727 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.connectTimeOverTime.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:57:53,727 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.latenciesOverTime.exclude_controllers' not found, using default value 'false' instead.
+2026-09-25 13:57:53,728 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.json.filters_only_sample_series' not found, using default value 'true' instead.
+2026-09-25 13:57:53,728 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.json.series_filter' not found, using default value '' instead.
+2026-09-25 13:57:53,728 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.json.show_controllers_only' not found, using default value 'false' instead.
+2026-09-25 13:57:53,728 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.html.filters_only_sample_series' not found, using default value 'true' instead.
+2026-09-25 13:57:53,728 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.html.series_filter' not found, using default value '' instead.
+2026-09-25 13:57:53,728 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.html.show_controllers_only' not found, using default value 'false' instead.
+2026-09-25 13:57:53,743 INFO o.a.j.e.StandardJMeterEngine: Running the test!
+2026-09-25 13:57:53,744 INFO o.a.j.s.SampleEvent: List of sample_variables: []
+2026-09-25 13:57:53,744 INFO o.a.j.s.SampleEvent: List of sample_variables: []
+2026-09-25 13:57:53,751 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must contain the string: '.functions.'
+2026-09-25 13:57:53,751 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must not contain the string: '.gui.'
+2026-09-25 13:57:53,839 INFO o.a.j.JMeter: Running test (1790324873839)
+2026-09-25 13:57:53,862 INFO o.a.j.e.StandardJMeterEngine: Starting ThreadGroup: 1 : Baseline Load (5 Users)
+2026-09-25 13:57:53,863 INFO o.a.j.e.StandardJMeterEngine: Starting 5 threads for group Baseline Load (5 Users).
+2026-09-25 13:57:53,863 INFO o.a.j.e.StandardJMeterEngine: Thread will continue on error
+2026-09-25 13:57:53,863 INFO o.a.j.t.ThreadGroup: Starting thread group... number=1 threads=5 ramp-up=5 delayedStart=false
+2026-09-25 13:57:53,871 INFO o.a.j.t.ThreadGroup: Started thread group number 1
+2026-09-25 13:57:53,871 INFO o.a.j.e.StandardJMeterEngine: Starting ThreadGroup: 2 : Traffic Surge (+115 Users Spike)
+2026-09-25 13:57:53,871 INFO o.a.j.e.StandardJMeterEngine: Starting 115 threads for group Traffic Surge (+115 Users Spike).
+2026-09-25 13:57:53,871 INFO o.a.j.e.StandardJMeterEngine: Thread will continue on error
+2026-09-25 13:57:53,871 INFO o.a.j.t.ThreadGroup: Starting thread group... number=2 threads=115 ramp-up=10 delayedStart=false
+2026-09-25 13:57:53,876 INFO o.a.j.t.JMeterThread: Thread started: Baseline Load (5 Users) 1-1
+2026-09-25 13:57:53,907 INFO o.a.j.p.h.s.HTTPHCAbstractImpl: Local host = MSI
+2026-09-25 13:57:53,917 INFO o.a.j.p.h.s.HTTPHC4Impl: HTTP request retry count = 0
+2026-09-25 13:57:53,919 INFO o.a.j.s.SampleResult: Note: Sample TimeStamps are START times
+2026-09-25 13:57:53,920 INFO o.a.j.s.SampleResult: sampleresult.default.encoding is set to UTF-8
+2026-09-25 13:57:53,920 INFO o.a.j.s.SampleResult: sampleresult.useNanoTime=true
+2026-09-25 13:57:53,920 INFO o.a.j.s.SampleResult: sampleresult.nanoThreadSleep=5000
+2026-09-25 13:57:53,922 INFO o.a.j.t.ThreadGroup: Started thread group number 2
+2026-09-25 13:57:53,922 INFO o.a.j.e.StandardJMeterEngine: All thread groups have been started
+2026-09-25 13:57:54,205 INFO o.a.j.p.h.s.h.LazyLayeredConnectionSocketFactory: Setting up HTTPS TrustAll Socket Factory
+2026-09-25 13:57:54,241 INFO o.a.j.u.JsseSSLManager: Using default SSL protocol: TLS
+2026-09-25 13:57:54,241 INFO o.a.j.u.JsseSSLManager: SSL session context: per-thread
+2026-09-25 13:57:54,390 INFO o.a.j.u.SSLManager: JmeterKeyStore Location:  type JKS
+2026-09-25 13:57:54,394 INFO o.a.j.u.SSLManager: KeyStore created OK
+2026-09-25 13:57:54,394 WARN o.a.j.u.SSLManager: Keystore file not found, loading empty keystore
+2026-09-25 13:57:54,872 INFO o.a.j.t.JMeterThread: Thread started: Baseline Load (5 Users) 1-2
+2026-09-25 13:57:55,873 INFO o.a.j.t.JMeterThread: Thread started: Baseline Load (5 Users) 1-3
+2026-09-25 13:57:56,882 INFO o.a.j.t.JMeterThread: Thread started: Baseline Load (5 Users) 1-4
+2026-09-25 13:57:57,876 INFO o.a.j.t.JMeterThread: Thread started: Baseline Load (5 Users) 1-5
+2026-09-25 13:58:00,340 INFO o.a.j.r.Summariser: summary +     11 in 00:00:06 =    1.7/s Avg:  1328 Min:   991 Max:  2208 Err:     0 (0.00%) Active: 5 Started: 5 Finished: 0
+2026-09-25 13:58:30,126 INFO o.a.j.r.Summariser: summary +     96 in 00:00:30 =    3.2/s Avg:  1050 Min:   951 Max:  1664 Err:     0 (0.00%) Active: 5 Started: 5 Finished: 0
+2026-09-25 13:58:30,130 INFO o.a.j.r.Summariser: summary =    107 in 00:00:36 =    2.9/s Avg:  1079 Min:   951 Max:  2208 Err:     0 (0.00%)
+2026-09-25 13:58:38,884 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-1
+2026-09-25 13:58:38,975 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-2
+2026-09-25 13:58:39,069 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-3
+2026-09-25 13:58:39,147 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-4
+2026-09-25 13:58:39,241 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-5
+2026-09-25 13:58:39,320 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-6
+2026-09-25 13:58:39,412 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-7
+2026-09-25 13:58:39,492 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-8
+2026-09-25 13:58:39,585 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-9
+2026-09-25 13:58:39,664 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-10
+2026-09-25 13:58:39,758 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-11
+2026-09-25 13:58:39,835 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-12
+2026-09-25 13:58:39,929 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-13
+2026-09-25 13:58:40,008 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-14
+2026-09-25 13:58:40,100 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-15
+2026-09-25 13:58:40,193 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-16
+2026-09-25 13:58:40,286 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-17
+2026-09-25 13:58:40,380 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-18
+2026-09-25 13:58:40,457 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-19
+2026-09-25 13:58:40,550 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-20
+2026-09-25 13:58:40,628 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-21
+2026-09-25 13:58:40,722 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-22
+2026-09-25 13:58:40,800 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-23
+2026-09-25 13:58:40,895 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-24
+2026-09-25 13:58:40,973 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-25
+2026-09-25 13:58:41,064 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-26
+2026-09-25 13:58:41,158 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-27
+2026-09-25 13:58:41,236 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-28
+2026-09-25 13:58:41,329 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-29
+2026-09-25 13:58:41,407 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-30
+2026-09-25 13:58:41,500 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-31
+2026-09-25 13:58:41,594 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-32
+2026-09-25 13:58:41,675 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-33
+2026-09-25 13:58:41,772 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-34
+2026-09-25 13:58:41,847 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-35
+2026-09-25 13:58:41,929 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-36
+2026-09-25 13:58:42,019 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-37
+2026-09-25 13:58:42,111 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-38
+2026-09-25 13:58:42,191 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-39
+2026-09-25 13:58:42,292 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-40
+2026-09-25 13:58:42,361 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-41
+2026-09-25 13:58:42,452 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-42
+2026-09-25 13:58:42,530 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-43
+2026-09-25 13:58:42,624 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-44
+2026-09-25 13:58:42,715 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-45
+2026-09-25 13:58:42,794 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-46
+2026-09-25 13:58:42,889 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-47
+2026-09-25 13:58:42,967 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-48
+2026-09-25 13:58:43,061 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-49
+2026-09-25 13:58:43,139 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-50
+2026-09-25 13:58:43,233 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-51
+2026-09-25 13:58:43,325 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-52
+2026-09-25 13:58:43,418 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-53
+2026-09-25 13:58:43,510 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-54
+2026-09-25 13:58:43,588 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-55
+2026-09-25 13:58:43,683 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-56
+2026-09-25 13:58:43,759 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-57
+2026-09-25 13:58:43,892 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-58
+2026-09-25 13:58:43,931 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-59
+2026-09-25 13:58:44,024 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-60
+2026-09-25 13:58:44,118 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-61
+2026-09-25 13:58:44,194 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-62
+2026-09-25 13:58:44,287 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-63
+2026-09-25 13:58:44,365 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-64
+2026-09-25 13:58:44,459 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-65
+2026-09-25 13:58:44,535 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-66
+2026-09-25 13:58:44,629 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-67
+2026-09-25 13:58:44,723 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-68
+2026-09-25 13:58:44,800 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-69
+2026-09-25 13:58:44,894 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-70
+2026-09-25 13:58:44,972 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-71
+2026-09-25 13:58:45,066 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-72
+2026-09-25 13:58:45,144 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-73
+2026-09-25 13:58:45,237 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-74
+2026-09-25 13:58:45,315 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-75
+2026-09-25 13:58:45,410 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-76
+2026-09-25 13:58:45,502 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-77
+2026-09-25 13:58:45,581 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-78
+2026-09-25 13:58:45,676 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-79
+2026-09-25 13:58:45,754 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-80
+2026-09-25 13:58:45,849 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-81
+2026-09-25 13:58:45,924 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-82
+2026-09-25 13:58:46,017 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-83
+2026-09-25 13:58:46,094 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-84
+2026-09-25 13:58:46,187 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-85
+2026-09-25 13:58:46,280 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-86
+2026-09-25 13:58:46,358 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-87
+2026-09-25 13:58:46,469 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-88
+2026-09-25 13:58:46,530 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-89
+2026-09-25 13:58:46,642 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-90
+2026-09-25 13:58:46,721 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-91
+2026-09-25 13:58:46,814 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-92
+2026-09-25 13:58:46,893 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-93
+2026-09-25 13:58:46,985 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-94
+2026-09-25 13:58:47,078 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-95
+2026-09-25 13:58:47,155 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-96
+2026-09-25 13:58:47,249 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-97
+2026-09-25 13:58:47,325 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-98
+2026-09-25 13:58:47,418 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-99
+2026-09-25 13:58:47,511 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-100
+2026-09-25 13:58:47,588 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-101
+2026-09-25 13:58:47,683 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-102
+2026-09-25 13:58:47,760 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-103
+2026-09-25 13:58:47,854 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-104
+2026-09-25 13:58:47,934 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-105
+2026-09-25 13:58:48,029 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-106
+2026-09-25 13:58:48,107 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-107
+2026-09-25 13:58:48,199 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-108
+2026-09-25 13:58:48,292 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-109
+2026-09-25 13:58:48,368 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-110
+2026-09-25 13:58:48,462 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-111
+2026-09-25 13:58:48,540 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-112
+2026-09-25 13:58:48,633 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-113
+2026-09-25 13:58:48,728 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-114
+2026-09-25 13:58:48,805 INFO o.a.j.t.JMeterThread: Thread started: Traffic Surge (+115 Users Spike) 2-115
+2026-09-25 13:59:00,899 INFO o.a.j.r.Summariser: summary +     94 in 00:00:31 =    3.1/s Avg:  5621 Min:   967 Max: 19487 Err:     0 (0.00%) Active: 120 Started: 120 Finished: 0
+2026-09-25 13:59:00,900 INFO o.a.j.r.Summariser: summary =    201 in 00:01:07 =    3.0/s Avg:  3203 Min:   951 Max: 19487 Err:     0 (0.00%)
+2026-09-25 13:59:30,024 INFO o.a.j.r.Summariser: summary +    162 in 00:00:29 =    5.6/s Avg: 17120 Min:   404 Max: 41528 Err:    68 (41.98%) Active: 120 Started: 120 Finished: 0
+2026-09-25 13:59:30,028 INFO o.a.j.r.Summariser: summary =    363 in 00:01:36 =    3.8/s Avg:  9414 Min:   404 Max: 41528 Err:    68 (18.73%)
+2026-09-25 13:59:48,648 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-111
+2026-09-25 13:59:48,665 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-31
+2026-09-25 13:59:48,668 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-100
+2026-09-25 13:59:48,675 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-93
+2026-09-25 13:59:48,683 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-78
+2026-09-25 13:59:48,684 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-89
+2026-09-25 13:59:48,697 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-14
+2026-09-25 13:59:48,725 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-42
+2026-09-25 13:59:48,745 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-106
+2026-09-25 13:59:48,763 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-50
+2026-09-25 13:59:48,770 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-51
+2026-09-25 13:59:48,775 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-97
+2026-09-25 13:59:48,779 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-28
+2026-09-25 13:59:48,779 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-2
+2026-09-25 13:59:48,832 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-113
+2026-09-25 13:59:48,868 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-59
+2026-09-25 13:59:48,877 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-87
+2026-09-25 13:59:48,877 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-75
+2026-09-25 13:59:48,877 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-98
+2026-09-25 13:59:48,881 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-94
+2026-09-25 13:59:48,887 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-114
+2026-09-25 13:59:48,899 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-72
+2026-09-25 13:59:48,905 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-63
+2026-09-25 13:59:48,905 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-63
+2026-09-25 13:59:48,951 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-41
+2026-09-25 13:59:48,952 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-41
+2026-09-25 13:59:48,952 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-99
+2026-09-25 13:59:48,953 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-84
+2026-09-25 13:59:48,954 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-99
+2026-09-25 13:59:48,955 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-84
+2026-09-25 13:59:48,966 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-92
+2026-09-25 13:59:48,967 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-92
+2026-09-25 13:59:48,973 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-11
+2026-09-25 13:59:48,973 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-11
+2026-09-25 13:59:48,975 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-112
+2026-09-25 13:59:48,975 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-107
+2026-09-25 13:59:48,975 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-20
+2026-09-25 13:59:48,975 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-107
+2026-09-25 13:59:48,975 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-112
+2026-09-25 13:59:48,977 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-20
+2026-09-25 13:59:48,977 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-24
+2026-09-25 13:59:48,978 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-24
+2026-09-25 13:59:49,049 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-19
+2026-09-25 13:59:49,050 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-19
+2026-09-25 13:59:49,062 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-27
+2026-09-25 13:59:49,062 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-27
+2026-09-25 13:59:49,142 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-76
+2026-09-25 13:59:49,142 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-76
+2026-09-25 13:59:49,143 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-68
+2026-09-25 13:59:49,143 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-68
+2026-09-25 13:59:49,150 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-64
+2026-09-25 13:59:49,151 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-64
+2026-09-25 13:59:49,172 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-73
+2026-09-25 13:59:49,173 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-73
+2026-09-25 13:59:49,175 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-6
+2026-09-25 13:59:49,175 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-6
+2026-09-25 13:59:49,235 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-44
+2026-09-25 13:59:49,235 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-44
+2026-09-25 13:59:49,262 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-56
+2026-09-25 13:59:49,263 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-56
+2026-09-25 13:59:49,263 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-43
+2026-09-25 13:59:49,264 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-43
+2026-09-25 13:59:49,271 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-10
+2026-09-25 13:59:49,272 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-10
+2026-09-25 13:59:49,381 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-83
+2026-09-25 13:59:49,381 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-83
+2026-09-25 13:59:49,393 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-47
+2026-09-25 13:59:49,393 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-47
+2026-09-25 13:59:49,400 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-103
+2026-09-25 13:59:49,400 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-103
+2026-09-25 13:59:49,470 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-38
+2026-09-25 13:59:49,470 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-38
+2026-09-25 13:59:49,470 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-37
+2026-09-25 13:59:49,471 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-37
+2026-09-25 13:59:49,505 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-96
+2026-09-25 13:59:49,505 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-96
+2026-09-25 13:59:49,562 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-22
+2026-09-25 13:59:49,563 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-22
+2026-09-25 13:59:49,567 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-32
+2026-09-25 13:59:49,568 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-32
+2026-09-25 13:59:49,600 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-33
+2026-09-25 13:59:49,600 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-33
+2026-09-25 13:59:49,664 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-36
+2026-09-25 13:59:49,664 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-36
+2026-09-25 13:59:49,671 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-46
+2026-09-25 13:59:49,672 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-46
+2026-09-25 13:59:49,674 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-25
+2026-09-25 13:59:49,674 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-25
+2026-09-25 13:59:49,677 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-49
+2026-09-25 13:59:49,677 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-49
+2026-09-25 13:59:49,706 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-45
+2026-09-25 13:59:49,706 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-45
+2026-09-25 13:59:49,763 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-5
+2026-09-25 13:59:49,763 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-5
+2026-09-25 13:59:49,772 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-17
+2026-09-25 13:59:49,772 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-17
+2026-09-25 13:59:50,161 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-95
+2026-09-25 13:59:50,161 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-86
+2026-09-25 13:59:50,161 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-95
+2026-09-25 13:59:50,161 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-86
+2026-09-25 13:59:50,173 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-29
+2026-09-25 13:59:50,173 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-29
+2026-09-25 13:59:50,268 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-66
+2026-09-25 13:59:50,268 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-66
+2026-09-25 13:59:50,272 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-88
+2026-09-25 13:59:50,272 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-88
+2026-09-25 13:59:50,275 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-110
+2026-09-25 13:59:50,275 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-74
+2026-09-25 13:59:50,275 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-110
+2026-09-25 13:59:50,275 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-74
+2026-09-25 13:59:50,278 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-115
+2026-09-25 13:59:50,278 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-115
+2026-09-25 13:59:50,304 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-52
+2026-09-25 13:59:50,304 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-52
+2026-09-25 13:59:50,312 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-7
+2026-09-25 13:59:50,312 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-7
+2026-09-25 13:59:50,360 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-102
+2026-09-25 13:59:50,360 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-102
+2026-09-25 13:59:50,369 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-80
+2026-09-25 13:59:50,369 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-80
+2026-09-25 13:59:50,459 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-67
+2026-09-25 13:59:50,459 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-67
+2026-09-25 13:59:50,572 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-9
+2026-09-25 13:59:50,572 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-9
+2026-09-25 13:59:50,575 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-18
+2026-09-25 13:59:50,575 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-18
+2026-09-25 13:59:50,661 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-30
+2026-09-25 13:59:50,661 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-30
+2026-09-25 13:59:50,665 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-35
+2026-09-25 13:59:50,665 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-35
+2026-09-25 13:59:50,666 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-71
+2026-09-25 13:59:50,666 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-71
+2026-09-25 13:59:50,670 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-15
+2026-09-25 13:59:50,670 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-15
+2026-09-25 13:59:50,867 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-77
+2026-09-25 13:59:50,867 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-77
+2026-09-25 13:59:50,868 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-70
+2026-09-25 13:59:50,868 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-70
+2026-09-25 13:59:50,869 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-69
+2026-09-25 13:59:50,869 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-69
+2026-09-25 13:59:50,870 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-104
+2026-09-25 13:59:50,870 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-104
+2026-09-25 13:59:50,872 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-85
+2026-09-25 13:59:50,872 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-85
+2026-09-25 13:59:50,873 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-79
+2026-09-25 13:59:50,874 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-79
+2026-09-25 13:59:50,875 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-105
+2026-09-25 13:59:50,875 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-105
+2026-09-25 13:59:50,875 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-81
+2026-09-25 13:59:50,877 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-81
+2026-09-25 13:59:50,899 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-82
+2026-09-25 13:59:50,899 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-82
+2026-09-25 13:59:51,040 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-109
+2026-09-25 13:59:51,040 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-109
+2026-09-25 13:59:51,071 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-101
+2026-09-25 13:59:51,071 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-101
+2026-09-25 13:59:51,170 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-48
+2026-09-25 13:59:51,170 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-48
+2026-09-25 13:59:51,207 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-60
+2026-09-25 13:59:51,207 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-60
+2026-09-25 13:59:51,268 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-65
+2026-09-25 13:59:51,268 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-65
+2026-09-25 13:59:51,305 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-108
+2026-09-25 13:59:51,305 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-108
+2026-09-25 13:59:51,361 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-58
+2026-09-25 13:59:51,361 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-58
+2026-09-25 13:59:51,531 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-91
+2026-09-25 13:59:51,531 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-91
+2026-09-25 13:59:51,570 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-62
+2026-09-25 13:59:51,570 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-62
+2026-09-25 13:59:51,583 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-4
+2026-09-25 13:59:51,584 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-4
+2026-09-25 13:59:51,598 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-55
+2026-09-25 13:59:51,599 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-55
+2026-09-25 13:59:51,604 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-13
+2026-09-25 13:59:51,604 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-13
+2026-09-25 13:59:51,606 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-53
+2026-09-25 13:59:51,608 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-23
+2026-09-25 13:59:51,608 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-53
+2026-09-25 13:59:51,608 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-23
+2026-09-25 13:59:51,611 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-39
+2026-09-25 13:59:51,611 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-39
+2026-09-25 13:59:51,619 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-21
+2026-09-25 13:59:51,619 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-21
+2026-09-25 13:59:51,629 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-1
+2026-09-25 13:59:51,629 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-1
+2026-09-25 13:59:51,632 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-90
+2026-09-25 13:59:51,633 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-90
+2026-09-25 13:59:51,637 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-12
+2026-09-25 13:59:51,637 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-12
+2026-09-25 13:59:51,637 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-54
+2026-09-25 13:59:51,637 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-54
+2026-09-25 13:59:51,698 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-34
+2026-09-25 13:59:51,698 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-34
+2026-09-25 13:59:51,698 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-40
+2026-09-25 13:59:51,699 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-40
+2026-09-25 13:59:51,703 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-26
+2026-09-25 13:59:51,703 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-26
+2026-09-25 13:59:51,723 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-8
+2026-09-25 13:59:51,723 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-8
+2026-09-25 13:59:51,730 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-61
+2026-09-25 13:59:51,730 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-61
+2026-09-25 13:59:51,762 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-57
+2026-09-25 13:59:51,763 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-57
+2026-09-25 13:59:51,764 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-16
+2026-09-25 13:59:51,765 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-16
+2026-09-25 13:59:51,840 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Traffic Surge (+115 Users Spike) 2-3
+2026-09-25 13:59:51,841 INFO o.a.j.t.JMeterThread: Thread finished: Traffic Surge (+115 Users Spike) 2-3
+2026-09-25 14:00:00,550 INFO o.a.j.r.Summariser: summary +    839 in 00:00:31 =   27.5/s Avg:  5288 Min:   252 Max: 44956 Err:   347 (41.36%) Active: 5 Started: 120 Finished: 115
+2026-09-25 14:00:00,553 INFO o.a.j.r.Summariser: summary =   1202 in 00:02:07 =    9.5/s Avg:  6534 Min:   252 Max: 44956 Err:   415 (34.53%)
+2026-09-25 14:00:30,024 INFO o.a.j.r.Summariser: summary +     97 in 00:00:29 =    3.3/s Avg:  1031 Min:   943 Max:  1214 Err:     0 (0.00%) Active: 5 Started: 120 Finished: 115
+2026-09-25 14:00:30,027 INFO o.a.j.r.Summariser: summary =   1299 in 00:02:36 =    8.3/s Avg:  6123 Min:   252 Max: 44956 Err:   415 (31.95%)
+2026-09-25 14:01:00,758 INFO o.a.j.r.Summariser: summary +     98 in 00:00:31 =    3.2/s Avg:  1032 Min:   937 Max:  1208 Err:     0 (0.00%) Active: 5 Started: 120 Finished: 115
+2026-09-25 14:01:00,760 INFO o.a.j.r.Summariser: summary =   1397 in 00:03:07 =    7.5/s Avg:  5766 Min:   252 Max: 44956 Err:   415 (29.71%)
+2026-09-25 14:01:13,382 INFO o.a.j.t.JMeterThread: Thread finished: Baseline Load (5 Users) 1-5
+2026-09-25 14:01:14,774 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Baseline Load (5 Users) 1-1
+2026-09-25 14:01:14,775 INFO o.a.j.t.JMeterThread: Thread finished: Baseline Load (5 Users) 1-1
+2026-09-25 14:01:14,852 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Baseline Load (5 Users) 1-3
+2026-09-25 14:01:14,853 INFO o.a.j.t.JMeterThread: Thread finished: Baseline Load (5 Users) 1-3
+2026-09-25 14:01:14,855 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Baseline Load (5 Users) 1-2
+2026-09-25 14:01:14,855 INFO o.a.j.t.JMeterThread: Thread finished: Baseline Load (5 Users) 1-2
+2026-09-25 14:01:14,905 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: Baseline Load (5 Users) 1-4
+2026-09-25 14:01:14,906 INFO o.a.j.t.JMeterThread: Thread finished: Baseline Load (5 Users) 1-4
+2026-09-25 14:01:14,908 INFO o.a.j.e.StandardJMeterEngine: Notifying test listeners of end of test
+2026-09-25 14:01:14,917 INFO o.a.j.r.Summariser: summary +     48 in 00:00:14 =    3.4/s Avg:  1045 Min:   951 Max:  1226 Err:     0 (0.00%) Active: 0 Started: 120 Finished: 120
+2026-09-25 14:01:14,921 INFO o.a.j.r.Summariser: summary =   1445 in 00:03:21 =    7.2/s Avg:  5609 Min:   252 Max: 44956 Err:   415 (28.72%)
+2026-09-25 14:01:14,925 INFO o.a.j.JMeter: Generating Dashboard
+2026-09-25 14:01:14,925 INFO o.a.j.r.d.ReportGenerator: Flushing result collector before report Generation
+2026-09-25 14:01:15,115 INFO o.a.j.r.p.NormalizerSampleConsumer: Using format, 'ms', to parse timeStamp field
+2026-09-25 14:01:15,567 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.AggregateConsumer#stopProducing(): beginDate produced 0 samples
+2026-09-25 14:01:15,567 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.AggregateConsumer#stopProducing(): endDate produced 0 samples
+2026-09-25 14:01:15,573 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.ApdexSummaryConsumer#stopProducing(): apdexSummary produced 0 samples
+2026-09-25 14:01:15,573 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.RequestsSummaryConsumer#stopProducing(): requestsSummary produced 0 samples
+2026-09-25 14:01:15,581 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.StatisticsSummaryConsumer#stopProducing(): statisticsSummary produced 0 samples
+2026-09-25 14:01:15,587 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.Top5ErrorsBySamplerConsumer#stopProducing(): top5ErrorsBySampler produced 0 samples
+2026-09-25 14:01:15,587 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.ErrorsSummaryConsumer#stopProducing(): errorsSummary produced 0 samples
+2026-09-25 14:01:15,587 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.HitsPerSecondGraphConsumer#stopProducing(): hitsPerSecond produced 0 samples
+2026-09-25 14:01:15,805 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.LatencyVSRequestGraphConsumer#stopProducing(): latencyVsRequest produced 0 samples
+2026-09-25 14:01:15,808 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.SyntheticResponseTimeDistributionGraphConsumer#stopProducing(): syntheticResponseTimeDistribution produced 0 samples
+2026-09-25 14:01:15,809 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.BytesThroughputGraphConsumer#stopProducing(): bytesThroughputOverTime produced 0 samples
+2026-09-25 14:01:15,809 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.CodesPerSecondGraphConsumer#stopProducing(): codesPerSecond produced 0 samples
+2026-09-25 14:01:15,864 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimeVSRequestGraphConsumer#stopProducing(): responseTimeVsRequest produced 0 samples
+2026-09-25 14:01:15,869 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.FilterConsumer#stopProducing(): startIntervalControlerFilter produced 10115 samples
+2026-09-25 14:01:15,869 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.TotalTPSGraphConsumer#stopProducing(): totalTPS produced 0 samples
+2026-09-25 14:01:15,870 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ActiveThreadsGraphConsumer#stopProducing(): activeThreadsOverTime produced 0 samples
+2026-09-25 14:01:15,870 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.TimeVSThreadGraphConsumer#stopProducing(): timeVsThreads produced 0 samples
+2026-09-25 14:01:15,870 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimeDistributionGraphConsumer#stopProducing(): responseTimeDistribution produced 0 samples
+2026-09-25 14:01:15,871 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.TransactionsPerSecondGraphConsumer#stopProducing(): transactionsPerSecond produced 0 samples
+2026-09-25 14:01:15,871 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimePercentilesGraphConsumer#stopProducing(): responseTimePercentiles produced 0 samples
+2026-09-25 14:01:15,879 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimePercentilesOverTimeGraphConsumer#stopProducing(): responseTimePercentilesOverTime produced 0 samples
+2026-09-25 14:01:15,880 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimeOverTimeGraphConsumer#stopProducing(): responseTimesOverTime produced 0 samples
+2026-09-25 14:01:15,883 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ConnectTimeOverTimeGraphConsumer#stopProducing(): connectTimeOverTime produced 0 samples
+2026-09-25 14:01:15,883 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.LatencyOverTimeGraphConsumer#stopProducing(): latenciesOverTime produced 0 samples
+2026-09-25 14:01:15,883 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.FilterConsumer#stopProducing(): nameFilter produced 21675 samples
+2026-09-25 14:01:15,883 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.FilterConsumer#stopProducing(): dateRangeFilter produced 4335 samples
+2026-09-25 14:01:15,883 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.NormalizerSampleConsumer#stopProducing(): normalizer produced 1445 samples
+2026-09-25 14:01:15,886 INFO o.a.j.r.p.CsvFileSampleSource: produce(): 1445 samples produced in 712ms on channel 0
+2026-09-25 14:01:15,886 INFO o.a.j.r.d.ReportGenerator: Exporting data using exporter:'json' of className:'org.apache.jmeter.report.dashboard.JsonExporter'
+2026-09-25 14:01:16,093 INFO o.a.j.r.d.JsonExporter: Found data for consumer statisticsSummary in context
+2026-09-25 14:01:16,094 INFO o.a.j.r.d.JsonExporter: Creating statistics for overall
+2026-09-25 14:01:16,094 INFO o.a.j.r.d.JsonExporter: Creating statistics for other transactions
+2026-09-25 14:01:16,095 INFO o.a.j.r.d.JsonExporter: Checking output folder
+2026-09-25 14:01:16,095 INFO o.a.j.r.d.JsonExporter: Writing statistics JSON to D:\University sem 3\2yp\test  plan\Test 3\spike_report\statistics.json
+2026-09-25 14:01:16,194 INFO o.a.j.r.d.ReportGenerator: Exporting data using exporter:'html' of className:'org.apache.jmeter.report.dashboard.HtmlTemplateExporter'
+2026-09-25 14:01:16,208 INFO o.a.j.r.d.HtmlTemplateExporter: Will generate dashboard in folder: D:\University sem 3\2yp\test  plan\Test 3\spike_report
+2026-09-25 14:01:16,535 INFO o.a.j.r.d.HtmlTemplateExporter: Report will be generated in: D:\University sem 3\2yp\test  plan\Test 3\spike_report, creating folder structure
+2026-09-25 14:01:16,540 INFO o.a.j.r.d.TemplateVisitor: Copying folder from 'E:\apache-jmeter-5.6.3\bin\report-template' to 'D:\University sem 3\2yp\test  plan\Test 3\spike_report', got message: D:\University sem 3\2yp\test  plan\Test 3\spike_report, found non empty folder with following content [D:\University sem 3\2yp\test  plan\Test 3\spike_report\statistics.json], will be ignored
+2026-09-25 14:01:17,463 INFO o.a.j.JMeter: Dashboard generated
