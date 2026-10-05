@@ -19,9 +19,16 @@
     // 1. Generate a random, unique string on refresh
     const freshSessionId = crypto.randomUUID();
 
+    const RENDER_WEBHOOK_URL = 'https://n8n-opvk.onrender.com/webhook/d3d42ea4-6323-495c-b7c7-09075db3cdca/chat';
+    const NGROK_WEBHOOK_URL = 'https://oboe-likewise-revoke.ngrok-free.dev/webhook/d3d42ea4-6323-495c-b7c7-09075db3cdca/chat';
+
+    // Defaults to ngrok tunnel; can switch to Render with ?n8n=render
+    const urlParams = new URLSearchParams(window.location.search);
+    const activeWebhookUrl = urlParams.get('n8n') === 'render' ? RENDER_WEBHOOK_URL : NGROK_WEBHOOK_URL;
+
     // 2. Initialize the chat
     createChat({
-      webhookUrl: 'https://n8n-opvk.onrender.com/webhook/d3d42ea4-6323-495c-b7c7-09075db3cdca/chat',
+      webhookUrl: activeWebhookUrl,
       enableStreaming: true,
       loadPreviousSession: false,
       metadata: {
