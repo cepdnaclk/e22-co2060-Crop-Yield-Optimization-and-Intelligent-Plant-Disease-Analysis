@@ -216,6 +216,17 @@
     "detectedDisease": "Detected disease",
     "recommendedTreatment": "Recommended treatment",
     "backendProbabilities": "Model probabilities",
+    "severityLevels": {
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
+    },
+    "fallback": {
+      "description": "Detailed information is not available for this model result.",
+      "treatment": "Contact your agriculture officer to confirm the result and discuss appropriate treatment.",
+      "prevention": "Ask your agriculture officer for prevention guidance for your crop and location."
+    },
+    "diseaseReportSavedWithCount": "Disease report saved with {{count}} predictions.",
     "diseasesList": {
       "bacterialLeafBlight": "Bacterial Leaf Blight",
       "bacterialLeafBlightDesc": "A bacterial disease that causes wilting, yellowing, and leaf drying.",
@@ -225,6 +236,10 @@
       "brownSpotDesc": "A fungal disease that creates brown lesions on leaves and can reduce grain quality.",
       "brownSpotTreatment": "Apply recommended fungicide practices and correct nutrient imbalance, especially potassium and silicon where needed.",
       "brownSpotPrevention": "Maintain balanced fertilization, avoid water stress, and monitor fields regularly during humid periods.",
+      "leafSmut": "Leaf Smut",
+      "leafSmutDesc": "The model identified the uploaded leaf as Leaf Smut. Ask your agriculture officer to confirm the result.",
+      "leafSmutTreatment": "Contact your agriculture officer for treatment recommendations before applying any products.",
+      "leafSmutPrevention": "Follow your agriculture officer's guidance on monitoring and preventing leaf smut in your crop.",
       "healthy": "Healthy",
       "healthyDesc": "The uploaded leaf does not show a strong sign of disease from the model output.",
       "healthyTreatment": "No treatment is needed. Keep monitoring the crop and maintain normal agronomic practices.",

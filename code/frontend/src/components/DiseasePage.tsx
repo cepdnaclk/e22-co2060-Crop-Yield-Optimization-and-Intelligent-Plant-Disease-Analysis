@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Upload, Loader2, CheckCircle, Microscope, FileText, Shield, Leaf, MapPin } from 'lucide-react';
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
+import type { TFunction } from 'i18next';
 import uploadfile from '../utils/mediaUpload';
 import { DiseaseLocationPicker } from './DiseaseLocationPicker';
 import { farmAPI, userAPI } from '../services/api';
@@ -83,29 +84,38 @@ const DISEASE_DETAILS: Record<string, { label: string; description: string; trea
 const DISEASE_TRANSLATION_KEYS: Record<string, string> = {
   bacterial_leaf_blight: 'bacterialLeafBlight',
   brown_spot: 'brownSpot',
+  leaf_smut: 'leafSmut',
   healthy: 'healthy',
   leaf_blast: 'leafBlast',
   leaf_scald: 'leafScald',
   narrow_brown_spot: 'narrowBrownSpot',
 };
 
-function getDiseaseTranslationKey(disease: string) {
-  return DISEASE_TRANSLATION_KEYS[disease];
+function normalizeDiseaseName(disease: string) {
+  // Accept both display labels and underscore-separated class names from the scanner.
+  return disease.trim().toLowerCase().replace(/[\s_-]+/g, '_');
 }
 
-function formatDiseaseName(disease: string, t: any) {
+function getDiseaseTranslationKey(disease: string) {
+  const normalized = normalizeDiseaseName(disease);
+  return Object.prototype.hasOwnProperty.call(DISEASE_TRANSLATION_KEYS, normalized)
+    ? DISEASE_TRANSLATION_KEYS[normalized]
+    : undefined;
+}
+
+function formatDiseaseName(disease: string, t: TFunction) {
   const translationKey = getDiseaseTranslationKey(disease);
-  const fallback = DISEASE_DETAILS[disease]?.label ?? disease.replace(/_/g, ' ');
+  const fallback = DISEASE_DETAILS[normalizeDiseaseName(disease)]?.label ?? disease.replace(/_/g, ' ').trim();
 
   return translationKey
     ? t(`diseasePage.diseasesList.${translationKey}`, { defaultValue: fallback })
     : fallback;
 }
 
-function getDiseaseText(disease: string, field: 'description' | 'treatment' | 'prevention', t: any) {
+function getDiseaseText(disease: string, field: 'description' | 'treatment' | 'prevention', t: TFunction) {
   const translationKey = getDiseaseTranslationKey(disease);
   const suffix = field === 'description' ? 'Desc' : field === 'treatment' ? 'Treatment' : 'Prevention';
-  const fallback = DISEASE_DETAILS[disease]?.[field];
+  const fallback = DISEASE_DETAILS[normalizeDiseaseName(disease)]?.[field];
 
   if (translationKey) {
     return t(`diseasePage.diseasesList.${translationKey}${suffix}`, {
