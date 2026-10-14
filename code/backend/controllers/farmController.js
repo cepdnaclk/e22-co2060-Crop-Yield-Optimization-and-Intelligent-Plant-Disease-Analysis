@@ -926,6 +926,25 @@ export const getFarmerReport = async (req, res) => {
 
     const farms = await Farm.find({ farmer: user._id });
 
+    // Export only this authenticated farmer's records; never accept a farmer ID
+    // from the browser or return the user document (which includes credentials).
+    const diseaseDocuments = await DiseaseReport.find({ farmer: user._id });
+    const farmById = new Map(farms.map(farm => [String(farm._id), farm]));
+    const diseaseRecords = diseaseDocuments.flatMap(report => {
+      const farm = farmById.get(String(report.farm));
+      return (report.diseases || []).map(entry => ({
+        recordId: String(entry._id),
+        farmId: farm?.farmId || null,
+        farmName: farm?.farmName || 'Farm no longer available',
+        crop: farm?.crop || null,
+        disease: entry.disease,
+        confidence: entry.confidence,
+        location: entry.location || farm?.location || null,
+        notes: entry.notes || null,
+        createdDate: entry.createdDate || null,
+      }));
+    });
+
     let totalAcres = 0;
     const cropMap = {};
     const harvestTrendMap = {};
@@ -976,6 +995,25 @@ export const getFarmerReport = async (req, res) => {
 
     res.json({
       message: "Report retrieved successfully",
+      generatedAt: new Date().toISOString(),
+      farmer: {
+        farmerId: String(user._id),
+        firstName: user.firstName, lastName: user.lastName,
+        nic: user.nic, phone: user.phone, email: user.email,
+        address: user.address, district: user.district, division: user.division,
+      },
+      farms: farms.map(farm => ({
+        farmId: farm.farmId, farmName: farm.farmName,
+        location: farm.location, district: farm.district, division: farm.division,
+        sizeInAcres: farm.sizeInAcres, crop: farm.crop, status: farm.status,
+        createdDate: farm.createdDate,
+        harvests: (farm.harvests || []).map(harvest => ({
+          recordId: String(harvest._id), season: harvest.season, year: harvest.year,
+          harvestQty: harvest.harvestQty, pointsEarned: harvest.pointsEarned,
+          createdDate: harvest.createdDate,
+        })),
+      })),
+      diseaseRecords,
       totalPoints: Math.round(user.points || 0),
       totalAcres: parseFloat(totalAcres.toFixed(1)),
       cropVarieties: cropVarieties,

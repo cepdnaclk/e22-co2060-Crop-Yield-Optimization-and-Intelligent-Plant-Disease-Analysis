@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Download, TrendingUp, BarChart3, PieChart } from 'lucide-react';
 import {
   XAxis, YAxis, CartesianGrid, Tooltip,
@@ -7,38 +7,21 @@ import {
 } from 'recharts';
 import { farmAPI } from '../services/api';
 import { useTranslation } from 'react-i18next';
-import { translateSeason, translateCrop } from '../utils/dataTranslations';
+import { translateCrop } from '../utils/dataTranslations';
 import { AdminReportFilters } from './admin/AdminReportFilters';
-
-interface HarvestRecord {
-  season: string;
-  year: number;
-  harvestQty: number;
-  pointsEarned: number | null;
-  createdDate: string;
-}
-
-interface FarmerFarm {
-  farmId: string;
-  crop: string;
-  sizeInAcres: number;
-  harvests: HarvestRecord[];
-}
+import { toast } from 'sonner';
+import { FarmerFarm, FarmerReportData, FarmerReportKind, normalizeSeason, recordYear, selectFarmerRecords, summarizeDiseases } from '../utils/farmerReportData';
 
 const defaultCropOptions = ['Paddy', 'Corn', 'Wheat', 'Tomatoes', 'Onions', 'Carrots', 'Cabbage', 'Potatoes'];
 
-const normalizeSeason = (value?: string | null) => {
-  if (!value) return '';
-  const season = String(value).toLowerCase().trim();
-  if (season.includes('maha')) return 'Maha';
-  if (season.includes('yala')) return 'Yala';
-  return season.charAt(0).toUpperCase() + season.slice(1);
-};
-
 export function ReportsPage() {
   const { t, i18n } = useTranslation();
-  const [farms, setFarms] = useState<FarmerFarm[]>([]);
   const [loading, setLoading] = useState(true);
+  const [reportData, setReportData] = useState<FarmerReportData | null>(null);
+  const [loadError, setLoadError] = useState(false);
+  const [retry, setRetry] = useState(0);
+  const [downloading, setDownloading] = useState<FarmerReportKind | null>(null);
+  const downloadLock = useRef(false);
   const [selectedYear, setSelectedYear] = useState<string>('');
   const [selectedSeason, setSelectedSeason] = useState<string>('');
   const [selectedCrop, setSelectedCrop] = useState<string | null>(null);
@@ -48,13 +31,13 @@ export function ReportsPage() {
 
   useEffect(() => {
     const fetchReportData = async () => {
+      setLoading(true);
+      setLoadError(false);
       try {
-        const data = await farmAPI.getAllFarms();
-        const fetchedFarms = (data.farms || []).map((farm: any) => ({
-          ...farm,
-          sizeInAcres: farm.sizeInAcres ?? farm.farmSize ?? 0,
-        }));
-        setFarms(fetchedFarms);
+        const data: FarmerReportData = await farmAPI.getFarmerReport();
+        if (!data.farmer || !Array.isArray(data.farms) || !Array.isArray(data.diseaseRecords)) throw new Error('Incomplete report data');
+        const fetchedFarms = data.farms;
+        setReportData(data);
 
         const yearSet   = new Set<string>();
         const seasonSet = new Set<string>();
@@ -69,39 +52,29 @@ export function ReportsPage() {
           });
         });
 
+        data.diseaseRecords.forEach(entry => {
+          const year = recordYear(entry.createdDate);
+          if (year) yearSet.add(year);
+          if (entry.crop) cropSet.add(entry.crop);
+        });
         setAvailableCrops(Array.from(cropSet).sort());
         const sortedYears = Array.from(yearSet).sort((a, b) => Number(b) - Number(a));
         if (sortedYears.length > 0) setYears(sortedYears);
         if (seasonSet.size > 0) setSeasons(Array.from(seasonSet).sort());
       } catch (error) {
         console.error('Failed to fetch report data', error);
+        setLoadError(true);
+        setReportData(null);
       } finally {
         setLoading(false);
       }
     };
     fetchReportData();
-  }, []);
+  }, [retry]);
 
-  const allHarvests = useMemo(
-    () => farms.flatMap((farm) =>
-      (farm.harvests || []).map((harvest) => ({ ...harvest, farm }))
-    ),
-    [farms]
-  );
-
-  const filteredHarvests = useMemo(() => {
-    return allHarvests.filter((harvest) => {
-      const yearMatch   = selectedYear   ? String(harvest.year) === selectedYear : true;
-      const seasonMatch = selectedSeason ? normalizeSeason(harvest.season) === normalizeSeason(selectedSeason) : true;
-      const cropMatch   = selectedCrop   ? harvest.farm.crop.toLowerCase() === selectedCrop.toLowerCase() : true;
-      return yearMatch && seasonMatch && cropMatch;
-    });
-  }, [allHarvests, selectedYear, selectedSeason, selectedCrop]);
-
-  const filteredFarms = useMemo(() => {
-    const farmIds = new Set(filteredHarvests.map((h) => h.farm.farmId));
-    return farms.filter((farm) => farmIds.has(farm.farmId));
-  }, [farms, filteredHarvests]);
+  const { farms: filteredFarms, harvests: filteredHarvests, diseases: filteredDiseases } = useMemo(() => reportData
+    ? selectFarmerRecords(reportData, { year: selectedYear, season: selectedSeason, crop: selectedCrop })
+    : { farms: [], harvests: [], diseases: [] }, [reportData, selectedYear, selectedSeason, selectedCrop]);
 
   const totalAcres = useMemo(
     () => filteredFarms.reduce((sum, farm) => sum + Number(farm.sizeInAcres || 0), 0),
@@ -122,7 +95,7 @@ export function ReportsPage() {
       name, acres,
       value: totalAcres > 0 ? parseFloat(((acres / totalAcres) * 100).toFixed(1)) : 0,
     }));
-    return result.length > 0 ? result : [{ name: t('reportsPage.noData'), acres: 0, value: 100 }];
+    return result.length > 0 ? result : [{ name: t('reportsPage.noData'), acres: 0, value: 0 }];
   }, [filteredFarms, totalAcres, t]);
 
   const harvestTrend = useMemo(() => {
@@ -145,17 +118,36 @@ export function ReportsPage() {
     return Object.keys(trendMap).map((month) => ({ month, qty: trendMap[month] }));
   }, [filteredHarvests]);
 
-  const diseaseData = [
-    { name: 'Brown Spot',       value: 40 },
-    { name: 'Leaf Blast',       value: 35 },
-    { name: 'Bacterial Blight', value: 25 },
-  ];
+  const diseaseData = useMemo(() => summarizeDiseases(filteredDiseases), [filteredDiseases]);
+
+  const handleDownload = async (kind: FarmerReportKind) => {
+    if (!reportData || downloadLock.current) return;
+    downloadLock.current = true;
+    setDownloading(kind);
+    try {
+      const { downloadFarmerReport } = await import('../utils/farmerReportPdf');
+      downloadFarmerReport(kind, reportData, { year: selectedYear, season: selectedSeason, crop: selectedCrop });
+      toast.success(t('reportsPage.downloadSuccess'));
+    } catch (error) {
+      console.error('Farmer report download failed', error);
+      toast.error(t('reportsPage.downloadError'));
+    } finally {
+      downloadLock.current = false;
+      setDownloading(null);
+    }
+  };
 
   const COLORS = ['#10b981', '#f59e0b', '#3b82f6', '#ef4444'];
 
   if (loading) {
     return <div className="p-8 text-center text-gray-500">{t('reportsPage.loadingReports')}</div>;
   }
+  if (loadError) return (
+    <div role="alert" className="p-8 text-center space-y-4">
+      <p className="text-red-700">{t('reportsPage.loadError')}</p>
+      <button onClick={() => setRetry(value => value + 1)} className="px-4 py-2 bg-green-700 text-white rounded-lg">{t('reportsPage.retry')}</button>
+    </div>
+  );
 
   return (
     <div className="space-y-6">
@@ -227,7 +219,7 @@ export function ReportsPage() {
               {totalAcres}
             </p>
             <p style={{ fontSize: '11px', color: '#9CA3AF', fontStyle: 'normal', marginTop: '4px' }}>
-              {t('reportsPage.underCultivation')}
+              {t('reportsPage.registeredArea')}
             </p>
           </div>
         </div>
@@ -252,8 +244,8 @@ export function ReportsPage() {
             <p style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>
               {t('reportsPage.cropVarieties')}
             </p>
-            <p style={{ fontSize: '28px', fontWeight: 700, color: '#111827', margin: '0', marginBottom: '4px' }} title={cropVarietyData.length.toString()}>
-              {cropVarietyData.length}
+            <p style={{ fontSize: '28px', fontWeight: 700, color: '#111827', margin: '0', marginBottom: '4px' }}>
+              {new Set(filteredFarms.map(farm => farm.crop)).size}
             </p>
             <p style={{ fontSize: '11px', color: '#9CA3AF', fontStyle: 'normal', marginTop: '4px' }}>
               {t('reportsPage.totalVarieties')}
@@ -282,10 +274,10 @@ export function ReportsPage() {
               {t('reportsPage.diseaseReports')}
             </p>
             <p style={{ fontSize: '28px', fontWeight: 700, color: '#111827', margin: '0', marginBottom: '4px' }}>
-              12
+              {filteredDiseases.length}
             </p>
             <p style={{ fontSize: '11px', color: '#DC2626', fontStyle: 'normal', marginTop: '4px', fontWeight: 500 }}>
-              {t('reportsPage.requiresAttention')}
+              {t('reportsPage.savedObservations')}
             </p>
           </div>
         </div>
@@ -297,7 +289,7 @@ export function ReportsPage() {
         <div style={{ background: 'linear-gradient(135deg, #F0FDF4 0%, #F7FEF9 100%)', borderRadius: '14px', padding: '20px 24px', border: '1px solid #BBF7D0', boxShadow: '0 1px 4px rgba(0,0,0,0.05)' }}>
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-gray-800">{t('reportsPage.harvestTrend')}</h3>
-            <button className="text-green-600 hover:text-green-700 flex items-center gap-2 text-sm">
+            <button onClick={() => handleDownload('harvest')} disabled={!!downloading} className="text-green-600 hover:text-green-700 flex items-center gap-2 text-sm disabled:opacity-50">
               <Download className="w-4 h-4" />
               {t('reportsPage.export')}
             </button>
@@ -320,7 +312,7 @@ export function ReportsPage() {
         <div style={{ background: 'linear-gradient(135deg, #F0FDF4 0%, #F7FEF9 100%)', borderRadius: '14px', padding: '20px 24px', border: '1px solid #BBF7D0', boxShadow: '0 1px 4px rgba(0,0,0,0.05)' }}>
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-gray-800">{t('reportsPage.cropVarietyDistribution')}</h3>
-            <button className="text-green-600 hover:text-green-700 flex items-center gap-2 text-sm">
+            <button onClick={() => handleDownload('crop')} disabled={!!downloading} className="text-green-600 hover:text-green-700 flex items-center gap-2 text-sm disabled:opacity-50">
               <Download className="w-4 h-4" />
               {t('reportsPage.export')}
             </button>
@@ -393,6 +385,7 @@ export function ReportsPage() {
         <div style={{ background: 'linear-gradient(135deg, #F0FDF4 0%, #F7FEF9 100%)', borderRadius: '14px', border: '1px solid #BBF7D0', boxShadow: '0 1px 4px rgba(0,0,0,0.05)', overflow: 'hidden' }}>
           <div className="p-6 border-b border-gray-200 bg-white">
             <h3 className="text-gray-800">{t('reportsPage.diseaseReportsSummary')}</h3>
+            <p className="text-xs text-gray-500 mt-2">{t('reportsPage.diseaseScope')}</p>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">
@@ -407,6 +400,7 @@ export function ReportsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
+                {diseaseData.length === 0 && <tr><td colSpan={2} className="p-6 text-sm text-gray-500">{t('reportsPage.noDiseaseRecords')}</td></tr>}
                 {diseaseData.map((disease) => (
                   <tr key={disease.name} className="hover:bg-gray-50">
                     <td className="px-3 md:px-6 py-2 md:py-4 text-xs md:text-sm text-gray-800">{disease.name}</td>
@@ -415,7 +409,7 @@ export function ReportsPage() {
                         <div className="flex-1 bg-gray-200 rounded-full h-2 max-w-[100px]">
                           <div className="bg-red-500 h-2 rounded-full" style={{ width: `${disease.value}%` }} />
                         </div>
-                        <span className="text-gray-700">{disease.value}%</span>
+                        <span className="text-gray-700">{disease.value.toFixed(1)}% ({disease.count})</span>
                       </div>
                     </td>
                   </tr>
@@ -429,16 +423,18 @@ export function ReportsPage() {
       {/* Download Reports */}
       <div style={{ background: 'linear-gradient(135deg, #F0FDF4 0%, #F7FEF9 100%)', borderRadius: '14px', padding: '20px 24px', border: '1px solid #BBF7D0', boxShadow: '0 1px 4px rgba(0,0,0,0.05)' }}>
         <h3 className="text-gray-800 mb-4">{t('reportsPage.downloadReports')}</h3>
+        <p className="text-sm text-gray-600 mb-4">{t('reportsPage.downloadDescription')}</p>
+        <p role="status" aria-live="polite" className="text-sm text-green-700 mb-3">{downloading ? t('reportsPage.preparingReport') : ''}</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <button className="flex items-center justify-center gap-3 p-4 border-2 border-gray-200 rounded-xl hover:border-green-500 hover:bg-green-50 transition-all">
+          <button onClick={() => handleDownload('crop')} disabled={!!downloading} className="flex items-center justify-center gap-3 p-4 border-2 border-gray-200 rounded-xl hover:border-green-500 hover:bg-green-50 transition-all disabled:opacity-50">
             <Download className="w-5 h-5 text-green-600" />
             <span className="text-gray-700 font-medium">{t('reportsPage.cropDataReport')}</span>
           </button>
-          <button className="flex items-center justify-center gap-3 p-4 border-2 border-gray-200 rounded-xl hover:border-green-500 hover:bg-green-50 transition-all">
+          <button onClick={() => handleDownload('harvest')} disabled={!!downloading} className="flex items-center justify-center gap-3 p-4 border-2 border-gray-200 rounded-xl hover:border-green-500 hover:bg-green-50 transition-all disabled:opacity-50">
             <Download className="w-5 h-5 text-green-600" />
             <span className="text-gray-700 font-medium">{t('reportsPage.harvestSummary')}</span>
           </button>
-          <button className="flex items-center justify-center gap-3 p-4 border-2 border-gray-200 rounded-xl hover:border-green-500 hover:bg-green-50 transition-all">
+          <button onClick={() => handleDownload('disease')} disabled={!!downloading} className="flex items-center justify-center gap-3 p-4 border-2 border-gray-200 rounded-xl hover:border-green-500 hover:bg-green-50 transition-all disabled:opacity-50">
             <Download className="w-5 h-5 text-green-600" />
             <span className="text-gray-700 font-medium">{t('reportsPage.diseaseReportsBtn')}</span>
           </button>
