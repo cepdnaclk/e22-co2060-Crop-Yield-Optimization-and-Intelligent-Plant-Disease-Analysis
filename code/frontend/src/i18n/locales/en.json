@@ -297,6 +297,16 @@
     "verified": "Verified"
   },
   "reportsPage": {
+    "downloadDescription": "Download structured PDFs in English with farmer details, summaries and supporting records. Crop and harvest reports use the filters above. Disease reports use year and crop only.",
+    "preparingReport": "Preparing your PDF...",
+    "downloadSuccess": "Report downloaded successfully.",
+    "downloadError": "Unable to generate the PDF. Please try again.",
+    "loadError": "Unable to load your report records. Please retry before downloading.",
+    "retry": "Retry",
+    "savedObservations": "Saved analysis observations",
+    "registeredArea": "Registered farm area in scope",
+    "diseaseScope": "Saved observations by year and crop. Season is not recorded. Percentages show the share of observations, not disease severity.",
+    "noDiseaseRecords": "No saved disease observations match these filters.",
     "title": "Reports",
     "loadingReports": "Loading reports...",
     "totalPoints": "Total Points",

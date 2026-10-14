@@ -5,6 +5,11 @@ import { afterEach, describe, expect, jest, test } from "@jest/globals";
 const farmFindMock = jest.fn();
 const farmDistinctMock = jest.fn();
 const userFindOneMock = jest.fn();
+const diseaseFindMock = jest.fn().mockResolvedValue([]);
+
+await jest.unstable_mockModule("../../models/diseaseReport.js", () => ({
+  default: { find: diseaseFindMock },
+}));
 
 const FarmMock = {
   find: farmFindMock,
@@ -117,9 +122,14 @@ describe("Farm Report Routes", () => {
   });
 
   test("GET /api/farms/my-report should return farmer report", async () => {
-    userFindOneMock.mockResolvedValue({ _id: "user-1", points: 120 });
+    userFindOneMock.mockResolvedValue({ _id: "user-1", points: 120, firstName: "Nimal", password: "private", emailOtp: { code: "private" } });
+    diseaseFindMock.mockResolvedValue([
+      { farm: "farm-1", diseases: [{ _id: "observation-1", disease: "Leaf Blast", confidence: 92, notes: "Follow up", createdDate: "2026-01-10" }] },
+      { farm: "deleted-farm", diseases: [{ _id: "observation-2", disease: "Brown Spot", confidence: 81 }] },
+    ]);
     farmFindMock.mockResolvedValue([
       {
+        _id: "farm-1", farmId: "FAM001", farmName: "Sample Farm",
         crop: "Rice",
         sizeInAcres: 2,
         harvests: [
@@ -155,5 +165,21 @@ describe("Farm Report Routes", () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.message).toBe("Report retrieved successfully");
     expect(Array.isArray(response.body.harvestTrend)).toBe(true);
+    expect(farmFindMock).toHaveBeenLastCalledWith({ farmer: "user-1" });
+    expect(diseaseFindMock).toHaveBeenLastCalledWith({ farmer: "user-1" });
+    expect(response.body.farmer.firstName).toBe("Nimal");
+    expect(response.body.farmer.password).toBeUndefined();
+    expect(response.body.farmer.emailOtp).toBeUndefined();
+    expect(response.body.farms[0].farmId).toBe("FAM001");
+    expect(response.body.diseaseRecords[0]).toMatchObject({ farmId: "FAM001", crop: "Rice", disease: "Leaf Blast", confidence: 92 });
+    expect(response.body.diseaseRecords[1]).toMatchObject({ farmId: null, crop: null });
+  });
+
+  test("farmer report requires authentication before querying records", async () => {
+    const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
+    const calls = diseaseFindMock.mock.calls.length;
+    await getFarmerReport({}, res);
+    expect(res.status).toHaveBeenCalledWith(401);
+    expect(diseaseFindMock.mock.calls.length).toBe(calls);
   });
 });
