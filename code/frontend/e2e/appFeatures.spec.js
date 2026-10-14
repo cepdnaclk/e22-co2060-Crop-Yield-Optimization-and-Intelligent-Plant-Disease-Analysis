@@ -116,7 +116,28 @@ const setupMockAuth = async (page) => {
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
-      body: JSON.stringify({ report: {} })
+      body: JSON.stringify({
+        generatedAt: '2026-10-14T08:00:00.000Z',
+        farmer: {
+          farmerId: 'farmer-123', firstName: 'Nimal', lastName: 'Silva',
+          email: 'farmer@example.com', nic: '123456789V', phone: '0771234567',
+          address: '123 Farm Road, Anuradhapura', district: 'Anuradhapura', division: 'Central'
+        },
+        farms: [{
+          farmId: 'FAM001', farmName: 'Sample Farm', crop: 'Paddy',
+          sizeInAcres: 2, status: 'active', location: 'Central',
+          district: 'Anuradhapura', division: 'Central',
+          harvests: [{
+            recordId: 'harvest-1', year: 2026, season: 'Maha',
+            harvestQty: 200, pointsEarned: 10, createdDate: '2026-02-01T08:00:00.000Z'
+          }]
+        }],
+        diseaseRecords: [{
+          recordId: 'observation-1', farmId: 'FAM001', farmName: 'Sample Farm',
+          crop: 'Paddy', disease: 'Leaf smut', confidence: 0.92,
+          createdDate: '2026-02-01T08:00:00.000Z', location: 'Central', notes: 'Follow up'
+        }]
+      })
     });
   });
 };
@@ -197,13 +218,31 @@ test.describe('AgriConnect - End-To-End (E2E) Test Suite', () => {
   });
 
   // Test 9: Verify optimization reports elements
-  test('9. Reports page loads analysis charts and projections', async ({ page }) => {
+  test('9. Reports page loads records and downloads all three PDFs', async ({ page }) => {
     await setupMockAuth(page);
     await page.goto('/farmer/reports');
 
     // Asserts optimization parameters and report widgets
     await expect(page.locator('text=Total Points')).toBeVisible();
     await expect(page.locator('text=Total Acres')).toBeVisible();
+    await expect(page.getByText('Leaf smut', { exact: true })).toBeVisible();
+    await expect(page.getByRole('alert')).toHaveCount(0);
+
+    for (const [button, kind] of [
+      ['Crop Data Report', 'crop'],
+      ['Harvest Summary', 'harvest'],
+      ['Disease Reports', 'disease']
+    ]) {
+      const downloadPromise = page.waitForEvent('download');
+      await page.getByRole('button', { name: button, exact: true }).click();
+      const download = await downloadPromise;
+      expect(download.suggestedFilename()).toMatch(new RegExp(`^AgriConnect_${kind}_report_\\d{4}-\\d{2}-\\d{2}\\.pdf$`));
+      expect(await download.failure()).toBeNull();
+      const stream = await download.createReadStream();
+      const chunks = [];
+      for await (const chunk of stream) chunks.push(chunk);
+      expect(Buffer.concat(chunks).subarray(0, 5).toString()).toBe('%PDF-');
+    }
   });
 
   // Test 10: Verify inquiries messaging layout
